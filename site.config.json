@@ -1,0 +1,10 @@
+{
+  "siteUrl": "https://llm-cli-teacher-lab.vercel.app",
+  "verifiedOn": "2026-10-21",
+  "versions": {
+    "agy": "1.4.3",
+    "codex": "0.163.0",
+    "claude": "2.1.304",
+    "clawHwp": "1.5.58 (05cf0cb)"
+  }
+}

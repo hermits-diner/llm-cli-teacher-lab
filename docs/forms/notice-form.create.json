@@ -1,0 +1,133 @@
+{
+  "path": "practice-pack/mission2/notice-form.hwpx",
+  "allow_overwrite": true,
+  "theme": "government",
+  "operations": [
+    {
+      "type": "setup_document",
+      "page_size": "a4",
+      "margin_mm": 20
+    },
+    {
+      "type": "append_paragraph",
+      "text": "가상중학교 · 담당 교무부 · ☎ 000-000-0000",
+      "align": "right"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "가 정 통 신 문",
+      "align": "center"
+    },
+    {
+      "type": "apply_text_style",
+      "target": "가 정 통 신 문",
+      "size": 24,
+      "bold": true
+    },
+    {
+      "type": "append_heading",
+      "level": 2,
+      "text": "{{제목}}",
+      "align": "center"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{인사말}}"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{본문}}"
+    },
+    {
+      "type": "append_table",
+      "col_widths_cm": [
+        3.5,
+        13.5
+      ],
+      "headers": [
+        "구분",
+        "내용"
+      ],
+      "rows": [
+        [
+          "일시",
+          "{{일시}}"
+        ],
+        [
+          "장소",
+          "{{장소}}"
+        ],
+        [
+          "대상",
+          "{{대상}}"
+        ],
+        [
+          "준비물",
+          "{{준비물}}"
+        ]
+      ]
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{당부}}"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{발행일}}",
+      "align": "center"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "가 상 중 학 교 장",
+      "align": "center"
+    },
+    {
+      "type": "apply_text_style",
+      "target": "가 상 중 학 교 장",
+      "size": 16,
+      "bold": true
+    },
+    {
+      "type": "append_paragraph",
+      "text": "✂ - - - - - - - - - - - - - - 절 취 선 - - - - - - - - - - - - - -",
+      "align": "center"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "참가 동의서 (회신)",
+      "align": "center"
+    },
+    {
+      "type": "append_table",
+      "col_widths_cm": [
+        4,
+        13
+      ],
+      "no_header": true,
+      "rows": [
+        [
+          "학년 · 반 · 번호",
+          "      학년      반      번"
+        ],
+        [
+          "학생 이름",
+          ""
+        ],
+        [
+          "참가 여부",
+          "□ 참가      □ 불참"
+        ],
+        [
+          "보호자 서명",
+          ""
+        ]
+      ]
+    },
+    {
+      "type": "append_paragraph",
+      "text": "위 「{{제목}}」에 대하여 위와 같이 회신합니다.",
+      "align": "center"
+    }
+  ]
+}

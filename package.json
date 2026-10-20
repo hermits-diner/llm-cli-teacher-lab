@@ -1,0 +1,37 @@
+{
+  "name": "llm-cli-teacher-lab",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "downloads": "node scripts/make-downloads.mjs",
+    "dev": "node scripts/make-downloads.mjs && next dev",
+    "build": "node scripts/make-downloads.mjs && next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "verify:missions": "node scripts/verify-missions.mjs",
+    "db:init": "node --env-file=.env.local scripts/db-init.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@neondatabase/serverless": "^1.2.0",
+    "@next/mdx": "^16.4.2",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "fflate": "^0.8.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  }
+}

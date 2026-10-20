@@ -1,0 +1,152 @@
+export const metadata = { title: "막혔어요" };
+
+# 막혔어요
+
+<p className="lead">화면에 보이는 오류 문구나 코드로 찾으세요. 그래도 안 되면 손을 들어 도움을 요청하세요.</p>
+
+## 설치 프로그램 오류 코드
+
+설치 프로그램(setup.bat)이 마지막에 `Error code: E05` 처럼 알려 줍니다. 자세한 기록은 `C:\ai-lab\setup.log` 에 있습니다.
+
+<h3 id="E01"><code>E01</code> curl 또는 tar가 없음</h3>
+
+Windows 10(1803) 이상에 들어 있는 기본 프로그램이 없는 경우입니다. Windows 업데이트를 하거나 다른 컴퓨터를 쓰세요.
+
+<h3 id="E02"><code>E02</code> C:\ai-lab 폴더를 만들 수 없음</h3>
+
+이 컴퓨터가 C 드라이브에 쓰는 것을 막고 있습니다. 학교·기관에서 관리하는 컴퓨터일 가능성이 큽니다. 개인 노트북으로 다시 하세요.
+
+<h3 id="E03"><code>E03</code> 인터넷 연결 실패</h3>
+
+설치에 필요한 사이트에 접속하지 못했습니다. `[FAIL]` 로 표시된 주소를 확인하세요.
+
+- 와이파이에 연결되어 있는지 확인합니다.
+- 학교망은 일부 사이트를 막을 수 있습니다. 휴대폰 핫스팟으로 바꿔 다시 해 보세요.
+
+<h3 id="E04"><code>E04</code> Node.js 준비 실패</h3>
+
+내려받는 중에 끊겼거나 파일이 손상되었습니다. 다시 실행하면 처음부터 받습니다. 계속 실패하면 백신 프로그램이 내려받기를 막는지 확인하세요.
+
+<h3 id="E05"><code>E05</code> AI 도구 설치 실패</h3>
+
+공식 설치 프로그램이 실패했습니다. 위쪽에 영어로 나온 오류 메시지를 확인하세요.
+
+- 다시 실행하면 대부분 해결됩니다.
+- 백신이나 보안 프로그램이 막았다면 잠시 끄거나 예외로 등록해야 할 수 있습니다.
+- 아래 **직접 설치하기** 의 명령을 cmd에 붙여넣어 보세요.
+
+<h3 id="E06"><code>E06</code> 실습 폴더를 내려받지 못함</h3>
+
+이 사이트에 접속되는지 확인한 뒤 다시 실행하세요. 브라우저로 [실습 폴더 zip](/ai-lab.zip) 을 직접 받아 `C:\ai-lab` 에 압축을 풀어도 됩니다.
+
+<h3 id="E07"><code>E07</code> PowerShell이 막혀 있음</h3>
+
+Codex CLI 설치 프로그램은 PowerShell을 씁니다. 보안 정책으로 막힌 컴퓨터에서는 Codex를 설치할 수 없습니다. 다른 도구(Antigravity CLI, Claude Code)를 고르세요.
+
+## 직접 설치하기
+
+설치 프로그램이 계속 실패할 때 쓰는 공식 설치 명령입니다. **cmd** 에 붙여넣으세요.
+
+<ForTool tool="agy">
+
+```cmd
+curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+</ForTool>
+<ForTool tool="codex">
+
+```cmd
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+```
+
+</ForTool>
+<ForTool tool="claude">
+
+```cmd
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+</ForTool>
+
+설치가 끝나면 **새 cmd 창** 을 열어야 명령이 인식됩니다.
+
+## 자주 만나는 문제
+
+### "The token '&&' is not a valid statement separator"
+
+명령을 PowerShell에 붙여넣었습니다. 창을 닫고 <kbd>Windows</kbd> 키 → `cmd` → **명령 프롬프트** 를 열어 다시 붙여넣으세요.
+
+### "'curl'은(는) 내부 또는 외부 명령 … 이 아닙니다"
+
+Windows가 오래된 버전입니다. [E01](#E01) 을 보세요.
+
+### "'agy'(또는 codex, claude)은(는) 내부 또는 외부 명령 … 이 아닙니다"
+
+설치 직후에는 이미 열려 있던 창이 새 프로그램을 모릅니다. `C:\ai-lab` 의 `start-…cmd` 파일을 더블클릭해서 실행하세요. 이 파일은 경로를 알아서 맞춰 줍니다.
+
+### 로그인 브라우저가 열리지 않아요
+
+- 기본 브라우저가 정해져 있는지 확인합니다.
+- 검은 창에 주소가 보이면 그 주소를 복사해 브라우저에 붙여넣습니다.
+
+<ForTool tool="codex">
+
+- Codex는 `codex login --device-auth` 로 코드 입력 방식 로그인을 할 수 있습니다.
+
+</ForTool>
+
+<ForTool tool="agy">
+
+### 학교 Google 계정으로 로그인이 안 돼요
+
+학교에서 받은 Workspace 계정은 막힐 수 있습니다. 개인 `@gmail.com` 계정으로 로그인하세요.
+
+</ForTool>
+
+<ForTool tool="codex">
+
+### "model is not supported when using Codex with a ChatGPT account"
+
+Codex가 오래된 버전입니다. cmd에서 업데이트한 뒤 다시 실행하세요. 2026년 10월에 이 사이트를 만들면서 실제로 겪은 문제이고, 업데이트로 해결되었습니다.
+
+```cmd
+codex update
+```
+
+ChatGPT 무료 요금제라면 CLI를 쓰지 못할 수 있습니다. Plus 이상 요금제로 로그인하세요.
+
+</ForTool>
+
+### 사용량 한도에 걸렸어요
+
+무료 또는 기본 요금제는 일정 기간 쓸 수 있는 양이 정해져 있습니다. 화면에 다시 쓸 수 있는 시각이 나오면 그때까지 기다리거나, 옆 선생님과 화면을 함께 보며 진행하세요.
+
+### 한글을 치면 글자가 사라지거나 밀려요
+
+검은 창의 한글 입력은 불안정할 때가 있습니다. 이 사이트의 **AI에게 말하기** 상자에서 **복사** 를 눌러 붙여넣으세요. 직접 써야 하면 메모장에 쓴 뒤 붙여넣습니다.
+
+### AI가 같은 허락을 계속 물어요
+
+허락 질문에서 "다시 묻지 않기(don't ask again)" 계열의 선택지를 고르면 같은 명령은 다시 묻지 않습니다. 무엇을 허락하는지 이해한 경우에만 고르세요.
+
+### Netlify 주소를 열면 접근 권한 안내가 나와요
+
+사이트가 비공개 상태입니다. Netlify의 사이트 화면에서 **Make public** 을 누르세요.
+
+### Netlify에 "Site not available" 이 떠요
+
+무료 크레딧을 다 쓰면 다음 달까지 사이트가 멈춥니다. 연습 배포를 줄이고, 꼭 필요할 때만 올리세요.
+
+### 결과 .hwpx에 `{{ }}` 가 남아 있어요
+
+AI에게 "빈칸이 남았어. 다시 채워 줘" 라고 말하세요. 도구가 어떤 칸이 비었는지 알려 주기 때문에 AI가 바로 고칠 수 있습니다.
+
+### .hwpx 파일이 열리지 않아요
+
+- 한글 2014 이전 버전은 .hwpx를 못 열 수 있습니다. [rhwp 웹 뷰어](https://edwardkim.github.io/rhwp/) 나 한컴오피스 뷰어로 열어 보세요.
+- 한글에서 파일을 연 채로 AI에게 다시 만들게 하면 저장에 실패합니다. 한글을 먼저 닫으세요.
+
+### 설치 파일을 열 때 "Windows의 PC 보호" 가 떠요
+
+인터넷에서 받은 파일이라서 나오는 경고입니다. **추가 정보** → **실행** 을 누르세요. 불안하면 [한 줄로 설치하기](/prepare#prep-install) 를 쓰세요.

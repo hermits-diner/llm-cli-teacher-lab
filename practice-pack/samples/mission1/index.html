@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2학년 3반 학급 안내 (예시)</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --ink: #1f2933; --muted: #5f6b76;
+    --accent: #2f6f5e; --accent-soft: #e3efe9; --line: #e3ded3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+  header { background: var(--accent); color: #fff; padding: 40px 20px 32px; }
+  header .wrap { max-width: 760px; margin: 0 auto; }
+  header p { margin: 0; opacity: .85; font-size: 15px; }
+  header h1 { margin: 6px 0 0; font-size: clamp(26px, 6vw, 36px); letter-spacing: -0.5px; }
+  main { max-width: 760px; margin: -18px auto 40px; padding: 0 16px; display: grid; gap: 16px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  h2 { margin: 0 0 10px; font-size: 19px; color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: center; }
+  th { background: var(--accent-soft); font-weight: 600; }
+  ul { margin: 0; padding-left: 20px; }
+  .notice li { margin-bottom: 6px; }
+  .check label { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line); cursor: pointer; }
+  .check input { width: 20px; height: 20px; accent-color: var(--accent); }
+  .check input:checked + span { color: var(--muted); text-decoration: line-through; }
+  .count { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding-bottom: 32px; }
+  @media (max-width: 480px) { th, td { font-size: 13px; padding: 6px 2px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p>가상중학교 · 담임 김가상 선생님</p>
+    <h1>2학년 3반에 오신 것을 환영합니다</h1>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>담임 인사</h2>
+    <p>서로 존중하고, 실수해도 다시 도전하는 반을 함께 만들어 가요. 궁금한 점은 언제든 이야기해 주세요.</p>
+  </section>
+
+  <section>
+    <h2>이번 주 알림</h2>
+    <ul class="notice">
+      <li>11월 5일(목)까지 현장체험학습 참가 동의서 제출</li>
+      <li>11월 12일(목) 진로 현장체험학습 — 도시락, 물, 편한 운동화</li>
+      <li>금요일 6교시 학급 회의 — 안건을 미리 생각해 오세요</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>시간표</h2>
+    <table>
+      <thead><tr><th>교시</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>국어</td><td>수학</td><td>영어</td><td>과학</td><td>정보</td></tr>
+        <tr><td>2</td><td>수학</td><td>영어</td><td>사회</td><td>국어</td><td>체육</td></tr>
+        <tr><td>3</td><td>과학</td><td>체육</td><td>국어</td><td>수학</td><td>음악</td></tr>
+        <tr><td>4</td><td>영어</td><td>미술</td><td>미술</td><td>사회</td><td>수학</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="check">
+    <h2>내일 준비물 체크</h2>
+    <label><input type="checkbox"><span>체육복</span></label>
+    <label><input type="checkbox"><span>수학 익힘책</span></label>
+    <label><input type="checkbox"><span>미술 준비물 (색연필)</span></label>
+    <label><input type="checkbox"><span>동의서 (학부모 서명)</span></label>
+    <p class="count" id="count"></p>
+  </section>
+</main>
+
+<footer>연수용 예시 페이지입니다. 모든 내용은 가상입니다.</footer>
+
+<script>
+  const boxes = [...document.querySelectorAll('.check input')];
+  const count = document.getElementById('count');
+  const update = () => {
+    const done = boxes.filter((b) => b.checked).length;
+    count.textContent = done === boxes.length ? '모두 챙겼어요! 👍' : `${boxes.length}개 중 ${done}개 챙김`;
+  };
+  boxes.forEach((b) => b.addEventListener('change', update));
+  update();
+</script>
+</body>
+</html>

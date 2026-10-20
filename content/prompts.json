@@ -1,0 +1,7 @@
+{
+  "hello": "안녕! 이 폴더에 어떤 파일들이 있는지 쉽게 설명해 줘.",
+  "m1": "mission1/site 폴더에 index.html 한 파일로 '우리 반 안내' 웹페이지를 만들어 줘. 담임 인사, 이번 주 알림 3개, 시간표, 준비물 체크리스트를 넣고 휴대폰에서도 보기 좋게 해 줘. 내용은 모두 가상으로 채워 줘.",
+  "m1edit": "방금 만든 페이지의 색을 따뜻한 느낌으로 바꾸고, 맨 위에 학급 표어 한 줄을 크게 넣어 줘.",
+  "m2": "mission2/notice-memo.txt 메모를 바탕으로 mission2/notice-form.hwpx 가정통신문 양식을 채워서 mission2/notice-result.hwpx 로 저장해 줘.",
+  "m2x": "mission2/worksheet-memo.txt 메모를 바탕으로 mission2/worksheet-form.hwpx 활동지를 채워서 mission2/worksheet-result.hwpx 로 저장해 줘. 확인 문제는 3개 만들어 줘."
+}

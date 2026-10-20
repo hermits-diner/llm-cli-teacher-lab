@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+# cmd.exe needs CRLF; LF-only batch files break labels and goto
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.hwpx binary
+*.hwp binary
+*.wasm binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.ico binary

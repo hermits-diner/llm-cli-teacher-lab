@@ -1,0 +1,123 @@
+{
+  "path": "practice-pack/mission2/worksheet-form.hwpx",
+  "allow_overwrite": true,
+  "theme": "clean",
+  "operations": [
+    {
+      "type": "setup_document",
+      "page_size": "a4",
+      "margin_mm": 18
+    },
+    {
+      "type": "append_paragraph",
+      "text": "가상중학교 · 2학년",
+      "align": "right"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "수 업 활 동 지",
+      "align": "center"
+    },
+    {
+      "type": "apply_text_style",
+      "target": "수 업 활 동 지",
+      "size": 22,
+      "bold": true
+    },
+    {
+      "type": "append_table",
+      "col_widths_cm": [
+        2.8,
+        5.7,
+        2.8,
+        5.7
+      ],
+      "no_header": true,
+      "rows": [
+        [
+          "과목",
+          "{{과목}}",
+          "단원",
+          "{{단원}}"
+        ],
+        [
+          "학번",
+          "      학년      반      번",
+          "이름",
+          ""
+        ]
+      ]
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "학습 목표"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{학습목표}}"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "생각 열기"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{생각열기}}"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "활동 1"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{활동1}}"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "활동 2"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{활동2}}"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "확인 문제"
+    },
+    {
+      "type": "append_paragraph",
+      "text": "{{확인문제}}"
+    },
+    {
+      "type": "append_heading",
+      "level": 3,
+      "text": "스스로 평가"
+    },
+    {
+      "type": "append_table",
+      "col_widths_cm": [
+        12,
+        5
+      ],
+      "headers": [
+        "평가 내용",
+        "점검"
+      ],
+      "rows": [
+        [
+          "{{평가1}}",
+          "☆ ☆ ☆ ☆ ☆"
+        ],
+        [
+          "{{평가2}}",
+          "☆ ☆ ☆ ☆ ☆"
+        ]
+      ]
+    }
+  ]
+}

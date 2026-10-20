@@ -1,0 +1,23 @@
+# dependencies / build
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# generated download files (built from practice-pack/ and downloads-src/)
+public/setup.bat
+public/ai-lab.zip
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# tooling
+.vercel/
+.remember/
+.playwright-mcp/
+npm-debug.log*
+.DS_Store
+Thumbs.db
