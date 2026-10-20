@@ -21,6 +21,9 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
   const [state, setState] = useState<State | null>(null);
   const [adminMode, setAdminMode] = useState(false);
   const [admin, setAdmin] = useState<string | null>(null);
+  // The list is CDN-cached for a few seconds, so show this browser's own changes right away.
+  const [mine, setMine] = useState<GalleryPost[]>([]);
+  const [hiddenIds, setHiddenIds] = useState<GalleryPost["id"][]>([]);
 
   const load = useCallback(async () => {
     try {
@@ -50,6 +53,7 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
     });
     if (res.ok) {
       sessionStorage.setItem(ADMIN_KEY, admin);
+      setHiddenIds((ids) => [...ids, id]);
       load();
     } else {
       sessionStorage.removeItem(ADMIN_KEY);
@@ -70,6 +74,10 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
         )}
       </div>
     );
+
+  const posts = [...mine.filter((m) => !state.posts.some((p) => p.id === m.id)), ...state.posts].filter(
+    (p) => !hiddenIds.includes(p.id),
+  );
 
   return (
     <>
@@ -92,19 +100,25 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
         </form>
       )}
       {state.open ? (
-        <GalleryForm codeRequired={state.codeRequired} onPosted={load} />
+        <GalleryForm
+          codeRequired={state.codeRequired}
+          onPosted={(post) => {
+            setMine((m) => [post, ...m]);
+            load();
+          }}
+        />
       ) : (
         <p className="gallery__status">지금은 등록을 받지 않습니다. 올라온 페이지를 구경해 보세요.</p>
       )}
 
       <h2>
-        올라온 페이지 <span className="gallery__count">{state.posts.length}개</span>
+        올라온 페이지 <span className="gallery__count">{posts.length}개</span>
       </h2>
-      {state.posts.length === 0 ? (
+      {posts.length === 0 ? (
         <p className="gallery__status">아직 올라온 페이지가 없습니다. 첫 번째로 올려 보세요.</p>
       ) : (
         <ul className="gallery">
-          {state.posts.map((p) => (
+          {posts.map((p) => (
             <li key={p.id} className="gallery__item">
               <a href={p.origin} target="_blank" rel="noopener noreferrer nofollow ugc" className="gallery__link">
                 <span className="gallery__nick">{p.nickname}</span>
@@ -126,7 +140,7 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
   );
 }
 
-function GalleryForm({ codeRequired, onPosted }: { codeRequired: boolean; onPosted: () => void }) {
+function GalleryForm({ codeRequired, onPosted }: { codeRequired: boolean; onPosted: (post: GalleryPost) => void }) {
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [tool, setTool] = useState<ToolId>("agy");
@@ -150,7 +164,7 @@ function GalleryForm({ codeRequired, onPosted }: { codeRequired: boolean; onPost
       if (res.ok) {
         setMessage({ ok: true, text: "갤러리에 올렸습니다." });
         (e.target as HTMLFormElement).reset();
-        onPosted();
+        onPosted(data.post);
       } else setMessage({ ok: false, text: data.message });
     } catch {
       setMessage({ ok: false, text: "보내지 못했습니다. 인터넷 연결을 확인하세요." });
