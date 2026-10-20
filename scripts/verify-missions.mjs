@@ -3,8 +3,7 @@
 //
 //   node scripts/verify-missions.mjs [--tools claude,codex,agy] [--missions m1,m2,m2x] [--runs 1] [--out <dir>]
 //
-// Runs with permission prompts disabled because nobody is there to click "approve";
-// each run gets its own throwaway folder.
+// Each run gets its own throwaway folder; see `command` for the unattended permission modes.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -32,15 +31,21 @@ const exe = {
   codex: process.env.VERIFY_CODEX_EXE || path.join(local, "Programs", "OpenAI", "Codex", "bin", "codex.exe"),
   agy: path.join(local, "agy", "bin", "agy.exe"),
 };
+// Nobody is there to click "approve", so each tool gets the narrowest unattended mode
+// that still lets the missions run: file edits plus `node` commands only.
 const command = {
-  claude: (p) => [exe.claude, ["-p", p, "--dangerously-skip-permissions", "--output-format", "json"]],
+  claude: (p) => [
+    exe.claude,
+    ["-p", p, "--permission-mode", "acceptEdits", "--allowedTools", "Read,Write,Edit,Glob,Grep,Bash(node:*)", "--output-format", "json"],
+  ],
   // -m: a personal ~/.codex/config.toml may pin a model ChatGPT sign-in cannot use;
   // a fresh teacher install has no such file, so pin the account's listed default here.
   codex: (p) => [
     exe.codex,
     ["exec", "--skip-git-repo-check", "-s", "workspace-write", "-m", process.env.VERIFY_CODEX_MODEL || "gpt-6-luna", p],
   ],
-  agy: (p) => [exe.agy, ["-p", p, "--dangerously-skip-permissions", "--output-format", "json"]],
+  // agy has no per-command allowlist flag; --sandbox restricts its terminal instead.
+  agy: (p) => [exe.agy, ["-p", p, "--sandbox", "--dangerously-skip-permissions", "--output-format", "json"]],
 };
 
 function extractPack(dir) {

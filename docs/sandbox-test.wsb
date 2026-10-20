@@ -1,0 +1,13 @@
+<!--
+  Clean-Windows test for setup.bat (Windows Sandbox).
+  Opens the prepare page and a cmd window; paste the one-line install command
+  yourself, exactly as teachers do. Do not automate it with `cmd /k "...&..."`:
+  the Antigravity installer refuses to run when %CMDCMDLINE% contains & | < > ^.
+-->
+<Configuration>
+  <Networking>Enable</Networking>
+  <MemoryInMB>4096</MemoryInMB>
+  <LogonCommand>
+    <Command>cmd.exe /c start "" https://llm-cli-teacher-lab.vercel.app/prepare &amp;&amp; start "" cmd.exe</Command>
+  </LogonCommand>
+</Configuration>

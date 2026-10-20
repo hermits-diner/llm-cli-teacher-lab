@@ -138,3 +138,42 @@
 
 - 한컴 COM으로 PDF를 만들어 확인하는 방법: 보안 확인 팝업이 바탕화면에 떠서 자동화가 멈출 수 있다. 한글에서의 최종 확인은 사람이 직접 연다.
 - 사용자의 Codex 업데이트, 개인 설정 수정: 환경을 바꾸는 일이라 하지 않았다. 최신판은 스크래치 폴더에 따로 설치해서 검증했다.
+
+### 7. 공개·배포 (사용자 확인 후)
+
+- GitHub 공개 저장소: https://github.com/hermits-diner/llm-cli-teacher-lab
+- Vercel 프로젝트 `llm-cli-teacher-lab`을 hermit-s-diner 팀에 만들고 GitHub와 연결했다. 운영 주소는 https://llm-cli-teacher-lab.vercel.app 이다.
+  - 함정: `vercel project add`로 프로젝트를 만들면 Framework Preset이 **Other**로 잡힌다. 그대로 두면 `public/`만 정적으로 서빙된다. → `vercel.json`에 `"framework": "nextjs"`를 고정했다.
+  - `vercel link`가 `.gitignore`에 `.vercel`과 `.env*`를 덧붙였다. 기존 규칙과 겹치는 내용이라 지웠다.
+- 운영 주소에서 확인한 것
+  - 모든 페이지가 200을 반환한다.
+  - `/setup.bat`: `Content-Disposition: attachment`, ASCII, CRLF, 사이트 주소 포함
+  - `/ai-lab.zip`: 148KB
+  - `/api/gallery`: DB를 아직 연결하지 않아 503이다(의도한 동작).
+- **운영 주소에서 받은 setup.bat으로 설치 흐름 전체(agy)가 OK였다.**
+- 런처 확인: 시스템 Node가 없는 PATH(`System32;Windows`만 남김)에서 `start-agy.cmd`가 `tools\node\node.exe` v24.22.0과 agy를 찾았다.
+- 모바일 폭(390px)에서 8개 페이지 × 3개 도구, 24가지 경우 모두 가로 넘침이 없었다(iframe으로 측정).
+- Neon 연결은 Marketplace 약관 동의(브라우저)가 필요해서 사용자 조치를 기다리는 중이다.
+
+### 8. 자동 보안 리뷰 반영: 검증 스크립트의 권한 축소
+
+- 지적: verify-missions가 `--dangerously-skip-permissions`로 에이전트를 실행한다.
+- 조치
+  - Claude: `--permission-mode acceptEdits --allowedTools Read,Write,Edit,Glob,Grep,Bash(node:*)`
+  - agy: per-command 허용 목록 플래그가 없어서 `--sandbox`(터미널 제한)를 추가했다.
+  - Codex: 원래 `workspace-write` 샌드박스였으므로 그대로 두었다.
+- 재검증 결과 4/4 통과(agy m1·m2, claude m1·m2)
+
+### 9. 미션 1 소요 시간 줄이기
+
+- Claude의 미션 1 소요 시간이 회차마다 늘었다. 196초 → 293초 → 417초였고, 그때마다 결과물이 229줄 → 399줄 → 705줄로 커졌다. 20분짜리 2교시에 7분 대기는 지나치게 길다.
+- AGENTS.md 미션 1 항목에 "첫 버전은 간결하게(300줄 안팎), 꾸밈은 고칠 때"라는 규칙을 넣었다.
+- 재측정 결과:
+
+| 도구 | 소요 시간 | 결과 줄 수 |
+|---|---|---|
+| Claude | 195초 | 250줄 |
+| agy | 64초 | 302줄 |
+| Codex | 46초 | 138줄 |
+
+- 세 도구 모두 통과했다. "빨리 만들고 말로 다듬는다"는 2교시의 학습 흐름과도 맞는다.
