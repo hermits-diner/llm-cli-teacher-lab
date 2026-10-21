@@ -36,6 +36,29 @@ AGENTS.md 맨 아래에 '우리 학교 문서 규칙' 항목을 만들고 이렇
 
 형식별 부탁 문장은 [만들 수 있는 파일과 부탁 예시](/files), 도구 명령은 [도구별 명령어](/commands) 에 있습니다.
 
+<More title="다음 단계: 고칠 때마다 자동으로 게시하기 (GitHub + Vercel)">
+
+오늘은 폴더를 끌어다 놓아 올렸습니다. GitHub와 Vercel을 연결해 두면 AI에게 **"고치고 깃허브에 올려 줘"** 한마디로 같은 주소에 새 버전이 게시됩니다. Netlify 무료 요금제는 한 달에 20번쯤 올릴 수 있지만, Vercel 무료 요금제는 하루 100번까지 됩니다.
+
+1. [github.com](https://github.com) 에 **개인 계정**으로 가입합니다. 학교·단체(조직) 계정의 저장소는 Vercel 무료 요금제에 연결할 수 없습니다.
+2. [git-scm.com](https://git-scm.com) 에서 Git을 설치합니다. 처음 올릴 때 인터넷 창이 열리면 GitHub에 로그인합니다.
+3. GitHub에서 빈 저장소를 하나 만들고, 페이지 폴더(예: `mission1\site`)에서 AI에게 부탁합니다.
+
+```prompt
+이 폴더를 https://github.com/내아이디/class-notice 저장소에 올려 줘. 처음이면 git 설정부터 해 줘.
+```
+
+4. [vercel.com](https://vercel.com) 에 **Continue with GitHub** 로 가입하고, **Add New → Project** 에서 그 저장소를 골라 **Deploy** 를 누릅니다. `class-notice.vercel.app` 같은 주소가 생깁니다. 저장소 이름은 영문·숫자·하이픈으로 짓습니다.
+5. 이제부터는 이렇게만 말하면 1분 안에 같은 주소에 반영됩니다.
+
+```prompt
+맨 위 알림을 이번 주 내용으로 바꾸고 깃허브에 올려 줘.
+```
+
+저장소를 공개로 만들면 페이지의 코드도 누구나 볼 수 있습니다. 학생 이름·연락처는 넣지 않습니다.
+
+</More>
+
 ## 꼭 기억할 것
 
 <Callout kind="warn" title="학생 개인정보는 넣지 않습니다">
