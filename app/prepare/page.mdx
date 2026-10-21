@@ -70,7 +70,7 @@ claude.ai 무료 요금제로는 Claude Code를 쓸 수 없습니다. Pro 이상
 
 아래 명령을 복사해서 검은 창에 붙여넣고 <kbd>Enter</kbd> 를 누릅니다. 붙여넣기는 <kbd>Ctrl</kbd>+<kbd>V</kbd> 또는 마우스 오른쪽 클릭입니다.
 
-<Cmd>{`mkdir C:\\ai-lab 2>nul & curl -fsSL ${SITE_URL}/setup.bat -o C:\\ai-lab\\setup.bat && C:\\ai-lab\\setup.bat`}</Cmd>
+<Cmd>{`curl -fsSL ${SITE_URL}/setup.bat -o "%TEMP%\\ai-lab-setup.bat" && "%TEMP%\\ai-lab-setup.bat"`}</Cmd>
 
 설치 프로그램이 영어 메뉴를 보여 줍니다. 내 도구의 번호를 누르세요.
 
@@ -81,7 +81,7 @@ claude.ai 무료 요금제로는 Claude Code를 쓸 수 없습니다. Pro 이상
 | <kbd>3</kbd> | Antigravity CLI |
 | <kbd>4</kbd> | 설치 없이 이 PC 점검만 |
 
-그다음은 기다리면 됩니다. 실습 폴더(`C:\ai-lab`), Node.js, AI 도구를 차례로 설치하고 마지막에 결과를 보여 줍니다.
+그다음은 기다리면 됩니다. 실습 폴더(바탕화면의 `ai-lab`), Node.js, AI 도구를 차례로 설치하고 마지막에 결과를 보여 줍니다.
 
 ```screen
  ======================== RESULT ========================
@@ -94,17 +94,17 @@ claude.ai 무료 요금제로는 Claude Code를 쓸 수 없습니다. Pro 이상
    All done.
 ```
 
-모두 `OK` 이면 성공입니다. `C:\ai-lab` 폴더가 자동으로 열립니다. `FAIL` 이 있으면 화면 아래의 오류 코드(예: `E05`)로 [도움말](/help) 에서 해결 방법을 찾으세요.
+모두 `OK` 이면 성공입니다. 바탕화면에 생긴 `ai-lab` 폴더가 자동으로 열립니다. `FAIL` 이 있으면 화면 아래의 오류 코드(예: `E05`)로 [도움말](/help) 에서 해결 방법을 찾으세요.
 
 <Callout title="관리자 권한이 필요 없습니다">
-설치는 내 계정 폴더와 `C:\ai-lab` 에만 합니다. 이미 쓰던 다른 프로그램은 건드리지 않습니다.
+설치는 내 계정 폴더와 바탕화면의 `ai-lab` 폴더에만 합니다. 이미 쓰던 다른 프로그램은 건드리지 않습니다.
 </Callout>
 
 </Step>
 
 <Step id="prep-login" title="처음 실행하고 로그인하기">
 
-열린 `C:\ai-lab` 폴더에서 아래 파일을 **더블클릭** 합니다.
+열린 `ai-lab` 폴더에서 아래 파일을 **더블클릭** 합니다.
 
 <ForTool tool="agy">
 

@@ -13,7 +13,7 @@
 | --- | --- |
 | `app/` | 사이트 페이지. 본문은 `page.mdx` 파일이라 바로 고칠 수 있습니다 |
 | `content/prompts.json` | 사이트에 보이는 프롬프트입니다. 검증 스크립트도 이 문장을 그대로 씁니다 |
-| `practice-pack/` | 교사 PC의 `C:\ai-lab`에 풀리는 실습 폴더의 원본 |
+| `practice-pack/` | 교사 PC의 바탕화면 `ai-lab` 폴더에 풀리는 실습 폴더의 원본 |
 | `downloads-src/setup.bat` | 자동 설치 프로그램 원본(ASCII만 사용) |
 | `docs/forms/` | 실습 양식(.hwpx)을 만드는 정의 파일 |
 | `scripts/` | 다운로드 파일 생성, 양식 생성, 미션 검증, DB 초기화 |

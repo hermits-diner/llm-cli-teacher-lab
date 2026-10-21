@@ -25,9 +25,9 @@ export default function Home() {
         </p>
 
         <figure className="demo" aria-label="실습 화면 예시">
-          <div className="demo__bar">C:\ai-lab</div>
+          <div className="demo__bar">바탕화면\ai-lab</div>
           <div className="demo__body">
-            <p className="demo__line demo__line--cmd">C:\ai-lab&gt;start-agy</p>
+            <p className="demo__line demo__line--cmd">C:\Users\선생님\Desktop\ai-lab&gt;start-agy</p>
             <p className="demo__line demo__line--you">&gt; {prompts.m2}</p>
             <p className="demo__line">● 양식에서 채울 칸 9개를 찾았습니다.</p>
             <p className="demo__line">● 메모를 읽고 칸마다 들어갈 문장을 썼습니다.</p>

@@ -1,5 +1,5 @@
 // Build the files teachers download:
-//   practice-pack/       -> public/ai-lab.zip   (extracted to C:\ai-lab by setup.bat)
+//   practice-pack/       -> public/ai-lab.zip   (extracted to Desktop\ai-lab by setup.bat)
 //   downloads-src/setup.bat -> public/setup.bat
 //
 // In the repo, agent instruction files live under "_" names (_AGENTS.md, _agents/) so the

@@ -13,10 +13,13 @@ rem  would end the block early.
 rem ==================================================================
 
 set "AL_SITE=https://llm-cli-teacher-lab.vercel.app"
-set "AL_LAB=C:\ai-lab"
+set "AL_LAB="
+set "AL_SELF=%~f0"
 rem test-only overrides (local server / throwaway folder)
 if defined AI_LAB_SITE set "AL_SITE=%AI_LAB_SITE%"
 if defined AI_LAB_DIR set "AL_LAB=%AI_LAB_DIR%"
+rem the practice folder is "ai-lab" on the desktop
+if not defined AL_LAB call :find_desktop
 set "AL_TMP=%AL_LAB%\_setup"
 set "AL_LOG=%AL_LAB%\setup.log"
 set "AL_NODE_VER=v24.22.0"
@@ -111,6 +114,19 @@ call :install_tool
 goto :summary
 
 rem ------------------------------------------------------------------
+:find_desktop
+rem OneDrive or a school policy may move the desktop, so read its real place
+rem from the registry. The value usually starts with the USERPROFILE
+rem variable, which "call set" expands.
+set "AL_DESK="
+for /f "tokens=2,*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop 2^>nul ^| findstr /i "REG_"') do set "AL_DESK=%%b"
+if defined AL_DESK call set "AL_DESK=%AL_DESK%"
+if not defined AL_DESK set "AL_DESK=%USERPROFILE%\Desktop"
+if not exist "%AL_DESK%\" set "AL_DESK=%USERPROFILE%\Desktop"
+set "AL_LAB=%AL_DESK%\ai-lab"
+exit /b 0
+
+rem ------------------------------------------------------------------
 :check_base
 if not exist "%AL_CURL%" goto :base_old
 if not exist "%AL_TAR%" goto :base_old
@@ -131,7 +147,7 @@ exit /b 1
 :base_nowrite
 set "AL_R_BASE=FAIL"
 set "AL_ERR=E02"
-echo        [FAIL] Cannot create %AL_LAB%. This PC may block writing to C:\
+echo        [FAIL] Cannot create %AL_LAB%. This PC may block writing to the desktop.
 exit /b 1
 
 rem ------------------------------------------------------------------
@@ -200,6 +216,9 @@ if errorlevel 1 goto :pack_bad
 rem -k keeps files that already exist, so earlier work is never overwritten
 "%AL_TAR%" -xkf "%AL_TMP%\ai-lab.zip" -C "%AL_LAB%"
 if not exist "%AL_LAB%\AGENTS.md" goto :pack_bad
+rem keep a copy here so "run setup.bat again" works (fails quietly when this
+rem already is that copy)
+copy /y "%AL_SELF%" "%AL_LAB%\setup.bat" >nul 2>&1
 set "AL_R_PACK=OK"
 echo        [ OK ] %AL_LAB%
 call :log "pack ok"
@@ -227,8 +246,10 @@ move "%AL_TMP%\%AL_NODE_NAME%" "%AL_NODE_DIR%" >nul
 if not exist "%AL_NODE_DIR%\node.exe" goto :node_bad
 del "%AL_TMP%\%AL_NODE_NAME%.zip" >nul 2>&1
 :node_ok
+rem via a file, not for /f: the desktop path may hold spaces or ")"
 set "AL_NODE_V=?"
-for /f %%v in ('%AL_NODE_DIR%\node.exe -v') do set "AL_NODE_V=%%v"
+"%AL_NODE_DIR%\node.exe" -v >"%AL_TMP%\node-version.txt" 2>nul
+set /p AL_NODE_V=<"%AL_TMP%\node-version.txt"
 set "AL_R_NODE=OK %AL_NODE_V%"
 echo        [ OK ] Node.js %AL_NODE_V%
 call :log "node ok %AL_NODE_V%"
