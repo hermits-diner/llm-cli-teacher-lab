@@ -74,4 +74,5 @@ node scripts/make-forms.mjs
 ## 라이선스와 출처
 
 - 실습 폴더의 HWPX 편집 엔진은 [claw-hwp](https://github.com/DoHyun468/claw-hwp)(MIT)의 일부입니다. 자세한 내용은 `practice-pack/tools/claw-hwp/NOTICE.md`에 있습니다.
+- 페이지 사진 6장은 [Unsplash](https://unsplash.com) 무료 라이선스 사진입니다. 작가와 원본 링크는 `components/PagePhoto.tsx`와 각 사진 아래에 있습니다.
 - 실습 자료의 학교·행사·인물은 모두 가상입니다.

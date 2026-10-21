@@ -687,6 +687,33 @@ kbd {
   color: var(--ok);
 }
 
+/* ------------------------------------------------------------------ page photo
+   A wide crop of an Unsplash photo under the lead of each period page. */
+.page-photo {
+  margin: 1.5rem 0 0.5rem;
+}
+.page-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+  border-radius: var(--radius-200);
+  box-shadow: var(--shadow-card);
+}
+.page-photo figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  text-align: right;
+  color: var(--text-tertiary);
+}
+.page-photo figcaption a {
+  color: inherit;
+}
+html[data-present] .page-photo img {
+  aspect-ratio: 16 / 4.5;
+}
+
 /* ------------------------------------------------------------------ agent-coding flow
    Five step cards in a row with arrows between them. A U-shaped ballpoint
    line runs from the middle of card 5 back to card 3 (실행 → 고치기 loop);

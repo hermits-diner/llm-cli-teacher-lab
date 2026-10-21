@@ -5,6 +5,7 @@ import { Callout } from "@/components/Callout";
 import { Cmd } from "@/components/Cmd";
 import { ForTool, ToolText } from "@/components/ForTool";
 import { More } from "@/components/More";
+import { PagePhoto } from "@/components/PagePhoto";
 import { Prompt } from "@/components/Prompt";
 import { Step, Steps } from "@/components/Steps";
 
@@ -29,6 +30,7 @@ function Pre({ children }: { children?: React.ReactNode }) {
 const components: MDXComponents = {
   pre: Pre,
   AgentFlow,
+  PagePhoto,
   Cmd,
   Prompt,
   Callout,
