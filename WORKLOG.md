@@ -424,7 +424,9 @@
   - `npm run typecheck` 통과, `npm run build` 통과. `public/setup.bat`은 "CRLF, ASCII" 검사를 통과했다. setup.bat 작업본도 CR 415 = LF 415.
   - `next start`로 mission-1·prepare·help·wrap-up·gallery·home·files 모두 200, Netlify 문구 없음. 2교시 배포 단계 화면을 캡처해 확인했다.
 - 남은 것
-  - 첫 로딩 한 번에 React 418(하이드레이션 불일치) 콘솔 오류가 났다. 같은 페이지를 다시 열거나 브라우저를 새로 띄우면 재현되지 않았고, 수정 전 운영 사이트에서도 나지 않았다. 원인은 확정하지 못했다. 배포 후 운영에서 한 번 더 본다.
+  - 로컬 `next start` 첫 로딩 한 번에 React 418(하이드레이션 불일치) 콘솔 오류가 났다. 다시 열면 재현되지 않았고, 배포 후 운영의 mission-1·help·prepare에서도 나지 않았다. 원인은 확정하지 못했다.
   - 홈 결과 카드 `result-web.png`(학급 안내 페이지 자체)와 2교시 사진 `photos/mission-1.jpg`(휴대폰·노트북)에는 Netlify 화면이 없어 그대로 둔다.
   - Connect Git(마무리 다음 단계)은 문서 기준이고 실제로 시험하지 않았다.
-  - 커밋·배포는 하지 않았다.
+- 배포 확인 (커밋 29f66b2, 푸시 후 약 35초에 반영)
+  - 운영 7개 페이지 200, Netlify 문구 0건. 운영 `setup.bat` 177행 `call :net "https://vercel.com"`.
+  - 운영 갤러리 API: netlify 주소 → "Vercel 주소만", 리허설 긴 주소 → "Visit 버튼으로 연 짧은 주소". 둘 다 거부라 DB에는 쓰지 않았다.
