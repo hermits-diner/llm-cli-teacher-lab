@@ -106,7 +106,7 @@ export default function Home() {
             <td>
               <Link href="/start">👋 1교시 첫 만남</Link>
             </td>
-            <td>AI에게 말 걸기, 결재 요청 읽는 법</td>
+            <td>AI에게 말 걸기, AI가 일하는 모습 지켜보기</td>
           </tr>
           <tr>
             <td>15–35분</td>

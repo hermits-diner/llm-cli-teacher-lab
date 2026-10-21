@@ -222,3 +222,22 @@
 - 하지 않은 것
   - 틀린 관리 키를 넣으면 입력칸이 조용히 다시 나타날 뿐 오류 문구가 없다. 강사 혼자 쓰는 기능이라 그대로 두었다.
   - `GALLERY_CODE`와 `NEXT_PUBLIC_GALLERY_BACKUP_URL`은 운영에 설정하지 않았다. 연수 당일 강사가 정할 값이다.
+
+### 11. 연수 런처에 자동 승인 켜기 (사용자 결정)
+
+- 사용자가 "전부 승인"을 골랐다. 안전장치가 있는 자동 모드(`--mode auto`, `--permission-mode auto`, `workspace-write` + `never`)도 함께 제시했다.
+  - `start-agy.cmd`: `agy --dangerously-skip-permissions`
+  - `start-claude.cmd`: `claude --dangerously-skip-permissions`
+  - `start-codex.cmd`: `codex --dangerously-bypass-approvals-and-sandbox`
+- 수업 흐름을 "부탁 → 결재 → 확인 → 고치기"에서 **"부탁 → 확인 → 고치기"**로 바꿨다. 1교시 "결재 요청 읽기" 단계는 **"지켜보고 멈추기"(Esc)**로 바꿨다. 소개·2·3·4교시·홈·도움말·파일 페이지의 결재 문구도 함께 고쳤다.
+- 허락 질문이 사라진 대신 업무 지침서(`_AGENTS.md`)에 규칙을 넣었다. "파일 지우기, 이 폴더 밖의 파일 읽기·쓰기는 먼저 묻고 기다린다."
+- 4교시와 소개 페이지에 안내를 넣었다. "연수용 실행 파일만 자동 승인이고, 평소에는 `agy`·`codex`·`claude` 만 입력해 허락을 묻는 방식으로 쓴다."
+- **첫 실행 화면 확인** (빈 폴더에 zip을 풀고 런처를 가상 터미널로 실행, `@lydell/node-pty` + `@xterm/headless`)
+  - Codex: 폴더 신뢰 질문 없이 바로 `permissions: YOLO mode`. 준비 페이지의 "trust" 단계를 이 표시 확인으로 바꿨다.
+  - Claude: "Yes, I trust this folder" 다음에 `⏵⏵ bypass permissions on`
+  - agy: "Yes, I trust this folder" 다음에 바로 입력창. 모드 표시는 없다.
+  - **확인 못 한 것**: 처음 쓰는 PC에서 Claude가 띄우는 Bypass Permissions 경고 화면. 이 PC는 경고 없이 바로 켜졌다(예전에 수락한 것으로 보인다). 이 PC의 설정 파일을 보려던 확인은 자동 모드 검사에 막혔다. 준비 페이지에는 "경고 화면이 나오면 **Yes, I accept**"를 넣었다. → Windows Sandbox 시험 때 실제 문구를 확인할 것.
+- **동작 확인** (세 도구 모두 같은 런처로 실행)
+  - "hello.txt 만들고 `node -v` 실행" → 세 도구 모두 허락 질문 없이 완료
+  - "hello.txt 지워 줘" → agy·Claude는 지침대로 먼저 물어보고 지우지 않았다. **Codex는 바로 지웠다.** 사용자가 직접 지우라고 한 경우라 지시를 따른 것으로 볼 수도 있지만, 지침의 "먼저 묻기"는 지키지 않았다. 지침은 안내일 뿐 강제가 아니다.
+- `verify-missions`는 보안 리뷰(8번)에서 좁힌 권한을 그대로 둔다. 교사 런처와 플래그가 다르다는 점에 주의할 것.

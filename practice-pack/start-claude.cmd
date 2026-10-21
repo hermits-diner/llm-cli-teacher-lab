@@ -12,4 +12,5 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-claude
+rem Auto-approve: the AI acts without asking. Esc stops it.
+claude --dangerously-skip-permissions

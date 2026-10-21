@@ -4,6 +4,7 @@
   start-agy.cmd     Antigravity CLI
   start-codex.cmd   Codex CLI
   start-claude.cmd  Claude Code
+  * AI가 매번 허락을 묻지 않고 바로 일합니다. 멈추려면 Esc.
 
 [폴더 안내]
   mission1\site\     미션 1: AI가 웹페이지(index.html)를 만들 곳

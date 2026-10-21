@@ -12,4 +12,5 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-codex
+rem Auto-approve: the AI acts without asking. Esc stops it.
+codex --dangerously-bypass-approvals-and-sandbox
