@@ -30,8 +30,8 @@ export default function Cover() {
             <br />및 업무활용
           </h1>
           <p className="cover__sub">
-            검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 90분 뒤에는 학급 안내 웹페이지
-            하나와 가정통신문 한 장이 남습니다.
+            검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 90분 뒤에는 학급 안내나 수업 퀴즈
+            웹페이지 하나와, 가정통신문이나 수업 활동지 한 장이 남습니다.
           </p>
           <div className="cover__actions">
             <Link className="button button--lg" href="/home">
@@ -69,7 +69,7 @@ export default function Cover() {
             <span>휴대폰으로 열기</span>
           </div>
           <figcaption>
-            <Icon name="globe" /> 2교시 학급 안내 웹페이지 · <Icon name="document" /> 3교시 가정통신문
+            <Icon name="globe" /> 2교시 웹페이지 · <Icon name="document" /> 3교시 한글 양식
           </figcaption>
         </figure>
       </div>

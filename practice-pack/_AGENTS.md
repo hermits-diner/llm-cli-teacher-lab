@@ -35,7 +35,7 @@
 6. 스킬의 `scripts/validate.py` 로 파일 구조를 검사합니다. 페이지를 그림으로 바꾸는 검사는 하지 않습니다. 선생님이 한글에서 직접 열어 확인합니다.
 
 - 원본 양식(`*-form.hwpx`)은 덮어쓰지 않습니다.
-- 다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo.txt` → `worksheet-result.hwpx`
+- 다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo-m3.txt` → `worksheet-m3-result.hwpx`
 
 ## 선택 과제 — 슬라이드(.pptx) 만들기
 - 선생님이 설치한 **pptx 스킬**을 씁니다. 결과물은 `slides/` 폴더에 만듭니다.
@@ -44,5 +44,5 @@
 - 도형과 선의 `w`·`h` 에 **음수를 쓰지 않습니다.** PowerPoint가 파일 전체를 손상된 것으로 보고 열지 않습니다. 오른쪽 위로 올라가는 선은 `h` 를 양수로 두고 `flipV: true` 를, 왼쪽으로 가는 선은 `flipH: true` 를 씁니다.
 - 만든 뒤 두 가지를 검사합니다. LibreOffice로 그림을 만들어 검사하는 단계는 건너뜁니다.
   1. 스킬의 `scripts/office/validate.py`
-  2. `python tools/pptx-check.py slides/parents-ai.pptx` 의 `"count"` 가 **0** 이어야 합니다. 0이 아니면 만든 스크립트를 고쳐 다시 만듭니다.
+  2. `python tools/pptx-check.py slides/(만든 파일).pptx` 의 `"count"` 가 **0** 이어야 합니다. 0이 아니면 만든 스크립트를 고쳐 다시 만듭니다.
 - 선생님이 PowerPoint(또는 한컴오피스)에서 직접 열어 확인합니다.

@@ -24,7 +24,8 @@ export default function Home() {
           AI가 파일을 만듭니다
         </h1>
         <p className="lead">
-          코딩을 몰라도 됩니다. 순서대로 따라 하면 90분 뒤 웹페이지 하나와 가정통신문 한 장이 남습니다.
+          코딩을 몰라도 됩니다. 순서대로 따라 하면 90분 뒤 웹페이지 하나와 한글 문서 한 장이 남습니다. 실습마다
+          업무용(학급 안내·가정통신문)과 수업용(퀴즈·활동지) 가운데 골라서 합니다.
         </p>
 
         <figure className="demo" aria-label="실습 화면 예시">
@@ -63,7 +64,7 @@ export default function Home() {
             sizes="(min-width: 1024px) 45vw, 100vw"
           />
           <figcaption>
-            <strong>2교시</strong> 학급 안내 웹페이지. Vercel에 올려 주소로 공유합니다.
+            <strong>2교시</strong> 학급 안내(또는 수업 퀴즈) 웹페이지. Vercel에 올려 주소로 공유합니다.
           </figcaption>
         </figure>
         <figure className="result">
@@ -75,7 +76,7 @@ export default function Home() {
             sizes="(min-width: 1024px) 45vw, 100vw"
           />
           <figcaption>
-            <strong>3교시</strong> 메모로 채운 가정통신문(.hwpx). 한글에서 바로 엽니다.
+            <strong>3교시</strong> 메모로 채운 가정통신문(또는 수업 활동지) .hwpx. 한글에서 바로 엽니다.
           </figcaption>
         </figure>
       </div>
@@ -116,14 +117,14 @@ export default function Home() {
             <td>
               <Link href="/mission-1"><Icon name="globe" /> 2교시 웹페이지</Link>
             </td>
-            <td>학급 안내 페이지 만들어 인터넷에 올리기</td>
+            <td>학급 안내 또는 수업 퀴즈 페이지 만들어 인터넷에 올리기</td>
           </tr>
           <tr>
             <td>35–70분</td>
             <td>
-              <Link href="/mission-2"><Icon name="document" /> 3교시 가정통신문</Link>
+              <Link href="/mission-2"><Icon name="document" /> 3교시 한글 양식</Link>
             </td>
-            <td>hwpx 스킬 설치하고 메모로 한글 양식 채우기</td>
+            <td>hwpx 스킬 설치하고 메모로 가정통신문 또는 수업 활동지 채우기</td>
           </tr>
           <tr>
             <td>70–90분</td>

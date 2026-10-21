@@ -29,7 +29,8 @@ const REQUIRED = [
   "mission2/notice-form.hwpx",
   "mission2/notice-memo.txt",
   "mission2/worksheet-form.hwpx",
-  "mission2/worksheet-memo.txt",
+  "mission2/worksheet-memo-m3.txt",
+  "mission2/worksheet-memo-h2.txt",
   "samples/mission1/index.html",
   "samples/mission2/notice-sample.hwpx",
 ];

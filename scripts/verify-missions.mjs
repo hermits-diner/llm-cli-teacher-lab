@@ -1,10 +1,10 @@
 // Run the real mission prompts through each CLI on a fresh copy of the practice pack
 // and check the results. Uses the logged-in accounts on this PC (consumes some quota).
 //
-//   node scripts/verify-missions.mjs [--tools claude,codex,agy] [--missions m1,m2,m2x] [--runs 1] [--out <dir>]
+//   node scripts/verify-missions.mjs [--tools claude,codex,agy] [--missions m1,m2,m2xM3] [--runs 1] [--out <dir>]
 //
 // Each run gets its own throwaway folder; see `command` for the unattended permission modes.
-// m2 and m2x need the hwpx skill installed globally first, as teachers do in period 3.
+// m2 and m2x* need the hwpx skill installed globally first, as teachers do in period 3.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -19,7 +19,7 @@ const arg = (name, def) => {
   return i === -1 ? def : process.argv[i + 1];
 };
 const tools = arg("tools", "claude,codex,agy").split(",");
-const missions = arg("missions", "m1,m2,m2x").split(",");
+const missions = arg("missions", "m1,m2,m2xM3").split(",");
 const runs = Number(arg("runs", "1"));
 const outRoot = arg("out", path.join(os.tmpdir(), `ai-lab-verify-${Date.now()}`));
 const TIMEOUT_MS = 8 * 60 * 1000;
@@ -82,6 +82,24 @@ const hwpxText = (dir, f) => {
   return [...xml.matchAll(/<hp:t>([^<]*)<\/hp:t>/g)].map((m) => m[1]).join("\n");
 };
 
+function quizChecks(dir, keyword) {
+  const problems = checks.m1(dir);
+  const f = path.join(dir, "mission1/site/index.html");
+  if (fs.existsSync(f) && !fs.readFileSync(f, "utf8").includes(keyword)) problems.push(`'${keyword}' 없음`);
+  return problems;
+}
+
+function worksheetChecks(dir, before, name, keywords) {
+  const f = path.join(dir, "mission2", name);
+  if (!fs.existsSync(f)) return [`${name} 없음`];
+  const problems = [];
+  const text = hwpxText(dir, `mission2/${name}`);
+  if (text.includes("{{")) problems.push("빈 칸 남음");
+  for (const k of keywords) if (!text.includes(k)) problems.push(`'${k}' 없음`);
+  if (sha(path.join(dir, "mission2/worksheet-form.hwpx")) !== before.worksheet) problems.push("원본 양식이 바뀜");
+  return problems;
+}
+
 const checks = {
   m1(dir) {
     const f = path.join(dir, "mission1/site/index.html");
@@ -93,6 +111,8 @@ const checks = {
     if (/<(script|link)[^>]+(src|href)=["']https?:/i.test(html)) problems.push("외부 리소스 사용");
     return problems;
   },
+  m1quizM3: (dir) => quizChecks(dir, "이차방정식"),
+  m1quizH2: (dir) => quizChecks(dir, "what"),
   m2(dir, before) {
     const f = path.join(dir, "mission2/notice-result.hwpx");
     if (!fs.existsSync(f)) return ["notice-result.hwpx 없음"];
@@ -106,16 +126,8 @@ const checks = {
     if (sha(path.join(dir, "mission2/notice-form.hwpx")) !== before.notice) problems.push("원본 양식이 바뀜");
     return problems;
   },
-  m2x(dir, before) {
-    const f = path.join(dir, "mission2/worksheet-result.hwpx");
-    if (!fs.existsSync(f)) return ["worksheet-result.hwpx 없음"];
-    const problems = [];
-    const text = hwpxText(dir, "mission2/worksheet-result.hwpx");
-    if (text.includes("{{")) problems.push("빈 칸 남음");
-    for (const k of ["정보", "순서도"]) if (!text.includes(k)) problems.push(`'${k}' 없음`);
-    if (sha(path.join(dir, "mission2/worksheet-form.hwpx")) !== before.worksheet) problems.push("원본 양식이 바뀜");
-    return problems;
-  },
+  m2xM3: (dir, before) => worksheetChecks(dir, before, "worksheet-m3-result.hwpx", ["국어", "주장", "근거"]),
+  m2xH2: (dir, before) => worksheetChecks(dir, before, "worksheet-h2-result.hwpx", ["문학", "비유", "상징"]),
 };
 
 function runOne(tool, mission, n) {

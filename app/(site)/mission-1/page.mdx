@@ -2,9 +2,9 @@ import prompts from "@/content/prompts.json";
 
 export const metadata = { title: "2교시 웹페이지" };
 
-# 2교시 학급 안내 웹페이지
+# 2교시 웹페이지 만들기
 
-<p className="lead">AI에게 웹페이지를 만들게 하고, 인터넷에 올려 휴대폰으로 열어 봅니다. 20분.</p>
+<p className="lead">AI에게 학급 안내 페이지나 수업용 퀴즈 페이지를 만들게 하고, 인터넷에 올려 휴대폰으로 열어 봅니다. 20분.</p>
 
 <PagePhoto id="mission-1" />
 
@@ -16,11 +16,21 @@ export const metadata = { title: "2교시 웹페이지" };
 
 <Step id="m1-make" title="만들어 달라고 부탁하기">
 
-1교시에 켜 둔 AI 창에 붙여넣습니다. 창을 닫았다면 [다시 켜세요](/start#start-run).
+1교시에 켜 둔 AI 창에 붙여넣습니다. 창을 닫았다면 [다시 켜세요](/start#start-run). 아래 셋 가운데 **하나** 를 고릅니다.
+
+**업무** 우리 반 안내 페이지
 
 <Prompt>{prompts.m1}</Prompt>
 
-AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다.
+**수업 · 중3** 수학 '이차방정식' 복습 퀴즈
+
+<Prompt>{prompts.m1quizM3}</Prompt>
+
+**수업 · 고2** 영어 문법 '관계대명사 what과 that' 퀴즈
+
+<Prompt>{prompts.m1quizH2}</Prompt>
+
+AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다. 퀴즈는 과목·학년·단원만 바꾸면 내 수업용이 됩니다. 문제와 정답은 AI가 틀릴 수 있으니 **반드시 직접 풀어 확인** 하세요.
 
 </Step>
 
@@ -34,9 +44,15 @@ AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다.
 
 <Step id="m1-edit" title="말로 고치기">
 
+**업무** 를 골랐다면
+
 <Prompt>{prompts.m1edit}</Prompt>
 
-<kbd>F5</kbd> 로 새로고침하면 바뀐 모습이 보입니다. "3교시를 체육으로 바꿔 줘" 처럼 **구체적일수록** 정확합니다.
+**수업** 을 골랐다면
+
+<Prompt>{prompts.m1quizEdit}</Prompt>
+
+<kbd>F5</kbd> 로 새로고침하면 바뀐 모습이 보입니다. "3교시를 체육으로 바꿔 줘", "3번 문항 해설을 더 쉽게 써 줘" 처럼 **구체적일수록** 정확합니다.
 
 </Step>
 
@@ -79,5 +95,5 @@ AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다.
 </More>
 
 <Callout kind="check" title="다음 시간">
-[3교시 가정통신문](/mission-2)
+[3교시 한글 양식 채우기](/mission-2)
 </Callout>
