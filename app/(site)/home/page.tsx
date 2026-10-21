@@ -123,7 +123,7 @@ export default function Home() {
             <td>
               <Link href="/mission-2"><Icon name="document" /> 3교시 가정통신문</Link>
             </td>
-            <td>메모로 한글 양식 채우기</td>
+            <td>hwpx 스킬 설치하고 메모로 한글 양식 채우기</td>
           </tr>
           <tr>
             <td>70–90분</td>
@@ -148,6 +148,12 @@ export default function Home() {
         </li>
         <li>
           <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때
+        </li>
+        <li>
+          <Link href="/slides">선택 과제: 슬라이드 만들기</Link> — pptx 스킬을 설치해 PowerPoint 파일 만들기
+        </li>
+        <li>
+          <Link href="/canva">부록: Canva 연결해 슬라이드 만들기</Link> — MCP와 플러그인 맛보기
         </li>
       </ul>
 

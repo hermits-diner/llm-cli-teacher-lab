@@ -9,10 +9,11 @@
 
 ## 지켜야 할 것
 - 이 폴더 안에서만 파일을 만들고 고칩니다. 다른 폴더는 건드리지 않습니다.
-- 이 실습은 선생님이 매번 허락하지 않는 자동 승인으로 켜 둡니다. 그래서 **파일 지우기, 이 폴더 밖의 파일 읽기·쓰기**는 실행하기 전에 먼저 선생님께 묻고 답을 기다립니다.
+  - 예외: 선생님이 **스킬 설치**를 부탁하면, 부탁에 적힌 명령으로 사용자 폴더의 스킬 폴더(`.agents`, `.claude`, `.gemini`)에 설치해도 됩니다.
+- 이 실습은 선생님이 매번 허락하지 않는 자동 승인으로 켜 둡니다. 그래서 **파일 지우기, 이 폴더 밖의 파일 읽기·쓰기**(위의 스킬 설치는 빼고)는 실행하기 전에 먼저 선생님께 묻고 답을 기다립니다.
 - 학생 이름·연락처·성적 같은 개인정보를 만들거나 묻지 않습니다. 예시가 필요하면 '가상' 데이터를 씁니다.
-- 프로그램을 설치하지 않습니다(npm install, pip install, winget 등). 필요한 도구는 이미 준비되어 있습니다.
-- Python은 쓰지 않습니다(설치되어 있지 않습니다). 파일 처리가 필요하면 `node` 를 씁니다.
+- 스킬에 필요한 Python 패키지(`pip install`)와 Node 패키지(`npm install`)는 설치해도 됩니다. 그 밖의 프로그램(LibreOffice, Poppler, winget, 설치 프로그램 등)은 **설치하지 않습니다**. 스킬 설명이 그런 프로그램을 요구하는 단계(그림으로 바꿔 검사하기 등)는 건너뛰고, 건너뛰었다고 알려 줍니다.
+- Node.js, Python, Git은 이미 설치되어 있습니다(`node`, `python`, `git`).
 - 운영체제는 Windows입니다. 명령의 경로는 슬래시(`/`)로 씁니다.
 - `samples/` 폴더는 선생님이 보는 완성 예시입니다. 작업할 때 열어 보거나 내용을 가져다 쓰지 않습니다. 항상 메모와 요청을 바탕으로 새로 씁니다.
 
@@ -23,15 +24,25 @@
 - 연수 시간이 짧으므로 첫 버전은 **간결하게**(파일 전체 300줄 안팎) 만듭니다. 꾸밈은 선생님이 고쳐 달라고 할 때 더합니다.
 
 ## 미션 2 — 한글(HWPX) 양식 채우기
-`.hwpx` 양식의 `{{칸이름}}` 을 채울 때는 **반드시** 아래 순서를 따릅니다(스킬 `school-hwpx` 와 같은 내용).
+선생님이 설치한 **hwpx 스킬**을 씁니다. 스킬이 보이지 않으면 설치부터 하라고 알려 줍니다. 양식의 `{{칸이름}}` 을 채울 때는 **반드시** 아래 순서를 따릅니다.
 
-1. 칸 목록 보기: `node tools/hwpx-fill.mjs --list mission2/notice-form.hwpx`
+1. 빈칸 목록 보기: `python tools/blanks.py mission2/notice-form.hwpx`
+   - 표 안의 칸까지 모두 나옵니다. 스킬의 `analyze`·`text_extract` 는 표 안의 칸을 빠뜨리므로 목록은 이 도구로 봅니다.
 2. 메모 읽기: `mission2/notice-memo.txt`
-3. 값 파일 쓰기: 칸 이름을 키로 하는 JSON을 `mission2/notice-values.json` 에 저장합니다. 여러 줄은 `\n` 으로 씁니다.
-4. 채우기: `node tools/hwpx-fill.mjs mission2/notice-form.hwpx mission2/notice-values.json mission2/notice-result.hwpx`
-5. 출력의 `"ok": true` 를 확인합니다. `false` 이면 알려 준 칸을 값 파일에서 고쳐 4번을 다시 실행합니다.
-6. 내용 확인: `node tools/hwpx-fill.mjs --text mission2/notice-result.hwpx`
+3. 대응표 쓰기: 1번 목록의 **모든** 칸을 키로 하는 JSON(`{"{{칸이름}}": "값"}`)을 `mission2/notice-map.json` 에 저장합니다. 여러 줄은 `\n` 으로 씁니다.
+4. 채우기: 스킬의 `scripts/fill_hwpx.py replace mission2/notice-form.hwpx mission2/notice-result.hwpx --map mission2/notice-map.json`
+5. 남은 칸 확인: `python tools/blanks.py mission2/notice-result.hwpx` 의 `"count"` 가 **0** 이어야 합니다. 0이 아니면 남은 칸을 대응표에 넣고 4번부터 다시 합니다.
+6. 스킬의 `scripts/validate.py` 로 파일 구조를 검사합니다. 페이지를 그림으로 바꾸는 검사는 하지 않습니다. 선생님이 한글에서 직접 열어 확인합니다.
 
-다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo.txt` → `worksheet-result.hwpx`
+- 원본 양식(`*-form.hwpx`)은 덮어쓰지 않습니다.
+- 다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo.txt` → `worksheet-result.hwpx`
 
-하지 말 것: `.hwpx` 를 직접 압축 해제·수정하기, `echo` 나 파이프(`|`)로 JSON 넘기기, 원본 양식(`*-form.hwpx`) 덮어쓰기.
+## 선택 과제 — 슬라이드(.pptx) 만들기
+- 선생님이 설치한 **pptx 스킬**을 씁니다. 결과물은 `slides/` 폴더에 만듭니다.
+- `pptxgenjs` 가 없으면 `slides/` 폴더 안에서 `npm install pptxgenjs` 로 설치합니다.
+- 글꼴은 `맑은 고딕` 처럼 Windows에 있는 한글 글꼴을 씁니다.
+- 도형과 선의 `w`·`h` 에 **음수를 쓰지 않습니다.** PowerPoint가 파일 전체를 손상된 것으로 보고 열지 않습니다. 오른쪽 위로 올라가는 선은 `h` 를 양수로 두고 `flipV: true` 를, 왼쪽으로 가는 선은 `flipH: true` 를 씁니다.
+- 만든 뒤 두 가지를 검사합니다. LibreOffice로 그림을 만들어 검사하는 단계는 건너뜁니다.
+  1. 스킬의 `scripts/office/validate.py`
+  2. `python tools/pptx-check.py slides/parents-ai.pptx` 의 `"count"` 가 **0** 이어야 합니다. 0이 아니면 만든 스크립트를 고쳐 다시 만듭니다.
+- 선생님이 PowerPoint(또는 한컴오피스)에서 직접 열어 확인합니다.

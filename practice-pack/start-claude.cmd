@@ -1,7 +1,8 @@
 @echo off
 rem AI Lab launcher - Claude Code
 cd /d "%~dp0"
-set "PATH=%~dp0tools\node;%USERPROFILE%\.local\bin;%PATH%"
+set "PATH=%LOCALAPPDATA%\Programs\Python\Python314;%LOCALAPPDATA%\Programs\Python\Python314\Scripts;%~dp0tools\node;%~dp0tools\git\cmd;%USERPROFILE%\.local\bin;%PATH%"
+set "PYTHONUTF8=1"
 if not exist "mission1\site" mkdir "mission1\site"
 where claude >nul 2>nul
 if errorlevel 1 (

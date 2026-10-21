@@ -36,8 +36,12 @@ export const metadata = { title: "도구별 명령어와 사용 예시" };
 | 파일 지정하기 | `@파일` | `@파일` | `@파일` |
 | 명령 바로 실행 | `!명령` | `!명령` | `!명령` |
 | AI가 읽는 지침 파일 | `AGENTS.md`, `GEMINI.md` | `AGENTS.md` | `CLAUDE.md` (없으면 `AGENTS.md`) |
+| 플러그인 둘러보기·설치 | `/plugin` | `/plugins` | `/plugin` |
+| 스킬 전역 설치 (`-a` 값) | `antigravity-cli` | `codex` | `claude-code` |
 
 실습 폴더에는 `AGENTS.md` 와 `CLAUDE.md` 가 둘 다 들어 있어, 세 도구가 같은 규칙을 읽습니다.
+
+스킬은 AI에게 부탁해 설치합니다. 부탁 문장 안의 `npx -y skills add (저장소) -g -a (위 표의 값) --copy -y` 가 GitHub에서 스킬을 받아 내 도구의 전역 스킬 폴더에 넣습니다. 예시는 [3교시](/mission-2#m2-install) 에 있습니다. 설치한 뒤에는 AI를 다시 켭니다.
 
 ## 쓰는 모델
 

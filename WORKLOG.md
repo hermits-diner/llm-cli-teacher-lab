@@ -431,3 +431,116 @@
 - 배포 확인 (커밋 29f66b2, 푸시 후 약 35초에 반영)
   - 운영 7개 페이지 200, Netlify 문구 0건. 운영 `setup.bat` 177행 `call :net "https://vercel.com"`.
   - 운영 갤러리 API: netlify 주소 → "Vercel 주소만", 리허설 긴 주소 → "Visit 버튼으로 연 짧은 주소". 둘 다 거부라 DB에는 쓰지 않았다.
+
+### 20. Canva·Padlet MCP 안내 (보류, 조사만)
+
+- 상태: 사용자 결정으로 나중에 다룬다. 사이트는 바꾸지 않았다.
+- 정해 둔 방향 (사용자 답변)
+  - 새 페이지(예: `/connect`)에 연결 방법과 AI에게 부탁하는 예시 문장을 함께 싣는다. 소개의 MCP 설명과 마무리에서 링크한다.
+  - 예시 문장은 실제로 시험한 뒤 싣는다.
+  - 계정: 교사는 AI 도구는 개인 계정, Canva·Padlet은 학교 계정을 쓰는 경우와, 연수 전용 계정을 쓰는 경우가 섞여 있다. 리허설은 개인 계정과 학교 계정 모두로 한다.
+  - 연수용 실행 파일은 자동 승인이므로, 안내는 "허락을 묻는 방식으로 켠 AI에서만 연결"을 전제로 한다.
+- 조사 결과 (2026-10-22)
+  - Padlet: `https://mcp.padlet.com`, 무료 계정 가능. 문서에 Claude·ChatGPT·Gemini만 있고 Codex·agy는 언급이 없다. 공개·편집 권한 변경, 학생 게시물 검토·채점 도구가 있다(학생 정보와 닿음).
+  - Canva: 공식 AI 커넥터는 Free·Education 계정에서도 된다. 지원 목록은 ChatGPT·Claude·Gemini·Copilot 앱뿐이고 CLI는 없다. 개발자 문서는 Developer Portal 앱 등록을 요구한다. Education 관리자가 커넥터를 끌 수 있다.
+  - Claude Code는 claude.ai에서 연결한 커넥터를 그대로 쓴다. 이 PC의 Claude Code에서 Padlet 계정 조회(읽기 전용)가 실제로 됐다. Canva는 커넥터만 있고 로그인 전이다.
+  - AI 도구 로그인과 Canva·Padlet 로그인은 따로다. 브라우저에 로그인된 계정이 연결되므로 연결 직후 "지금 연결된 계정이 누구야?"로 확인하는 단계가 필요하다.
+  - 그 밖의 후보: Notion(`mcp.notion.com/mcp`, 모든 요금제, Claude Code·Codex·Antigravity 연결 문서 있음), 카카오 PlayMCP(`playmcp.kakao.com/mcp`, 톡캘린더·나와의 채팅방 등). Google Workspace 공식 MCP는 Cloud 프로젝트·OAuth 클라이언트·개발자 미리보기 가입이 필요해 초보 교사용으로 맞지 않다. 나이스는 공식 MCP가 없다.
+- 다음에 할 일: Claude Code에서 Canva 로그인 → 예시 문장 시험, Codex·agy에서 두 서비스 등록·로그인 시험, 학교 계정에서 막히는지 확인.
+
+### 21. 스킬을 "교사가 직접 설치"하는 연수로 개편: 결정과 사전 시험
+
+- 결정 (사용자)
+  - 실습 3가지: HTML 작성·Vercel 배포(2교시), **hwpx 스킬 설치 → 문서 작성**(3교시), **pptx 스킬 설치 → 슬라이드**(선택 과제). 90분 유지.
+  - 스킬은 교사가 AI에게 "설치해 줘"라고 부탁해 **전역**으로 설치한다. 우리 스킬(school-hwpx·school-pptx)은 만들지 않고, claw-hwp·school-hwpx는 처음부터 넣지 않는다.
+  - hwpx 스킬은 공개 스킬 **jkf87/hwpx-skill**, pptx 스킬은 **Anthropic 원본**(`anthropics/skills`의 pptx). Python은 setup.bat이 설치한다. LibreOffice 설치를 전제하지 않는다.
+  - Canva MCP로 슬라이드 만들기는 **부록**, 플러그인 설명을 넣는다. 그 밖의 MCP는 나중에.
+  - 계획 원본: `~/.claude/plans/skills-install-restructure.md`
+- 확인한 사실 (이 PC에서 직접 측정)
+  - 세 CLI 모두 pptx 스킬이 기본 내장이 아니다. Codex 0.154.0 기본 스킬 5개, agy 1.4.3 기본 스킬 9개. Claude Code에는 claude.ai 계정 동기화로 들어올 수 있다.
+  - 전역 스킬 폴더는 빈 시험 스킬(`probe-…`)을 세 후보 폴더에 넣고 AI에게 물어 확인했다.
+    - Claude Code `~/.claude/skills`, Codex `~/.agents/skills`
+    - **agy 1.4.3은 `~/.gemini/config/skills`만** 읽는다. 웹 문서의 `~/.gemini/antigravity-cli/skills`와 `skills` 도구가 넣는 `~/.agents/skills`는 읽지 않는다.
+    - `~/.gemini/config/skills.json`에 `entries: [{ path }]`로 `~/.agents/skills`를 등록하면 읽는다. 단 `~`는 안 되고 **절대 경로(슬래시)**만 된다.
+  - `npx skills add`(vercel-labs/skills)는 저장소를 **git clone**한다. Git이 없으면 `spawn git ENOENT`로 실패한다. 교사 PC에는 Git이 없으므로 MinGit을 함께 설치한다.
+  - jkf87 최신본
+    - 스킬 문서는 `python`을 쓰고, 하위 실행은 `sys.executable`이다. `python3`는 사용 예 주석에만 있다.
+    - 패키지: `lxml jsonschema Pillow pywin32`, 글자 추출(`text_extract.py`)은 `python-hwpx`도 필요하다.
+    - 한국어 Windows 콘솔(cp949)에서 ☑ 같은 기호를 출력하다 실패한다 → `PYTHONUTF8=1`.
+    - 페이지 그림 검사(`render_hwpx.py`)는 문서와 달리 **Poppler(pdftoppm)가 없으면 실행되지 않는다** → 교사가 한글에서 직접 연다.
+    - 우리 양식의 `{{ }}`는 `fill_hwpx.py replace --map`으로 채워진다. 한컴오피스로 열어 1쪽 정상, 본문 `\n`은 문단 둘이 된다. `check --strict`의 "한컴 미경유" 경고는 실제로는 문제없었다.
+  - Anthropic pptx: 만들기는 pptxgenjs(npm), 읽기·검사는 `markitdown[pptx] Pillow defusedxml lxml`. **LibreOffice 없이** 만들기 → `validate.py` → `markitdown`까지 되고 PowerPoint에서 열린다. 스킬은 "pptxgenjs가 미리 깔려 있다"고 가정하므로 작업 폴더에 `npm install`이 필요하다.
+  - 라이선스: Anthropic pptx는 "All rights reserved, source-available" → 재배포 불가, 교사가 원본에서 설치. jkf87은 README에만 MIT(LICENSE 파일 없음) → 재배포하지 않고 교사가 원본에서 설치.
+- 하지 않은 것
+  - **Windows 샌드박스 시험**: 이 PC에 기능이 꺼져 있다(`WindowsSandbox.exe`·`wsb` 없음). 켜려면 관리자 권한과 재부팅이 필요해서, 임시 폴더 시험으로 대신했다.
+
+### 22. setup.bat: Python·Git 설치, PATH, 환경 설정
+
+- 바꾼 것 (5단계 → 7단계)
+  - [5/7] Python 3.14.9 공식 설치 프로그램을 **사용자 계정 모드**로 조용히 설치한다(`InstallAllUsers=0`, `TargetDir=%LOCALAPPDATA%\Programs\Python\Python314`, 관리자·UAC 없음, `start /wait`). SHA256은 python.org 공식 값과 대조했다(amd64 `a247a0b6…`, arm64 `4508e6a5…`).
+  - `python.exe`를 복사해 **`python3.exe`**를 만든다. Windows의 `python3`는 Store 바로가기다.
+  - Python 폴더와 Scripts를 사용자 PATH **맨 앞**에 넣는다(`AL_PFRONT`). 사용자 PATH 앞쪽의 `WindowsApps`(Store 별칭)보다 먼저 잡혀야 하기 때문이다. Node·Git·AI 도구는 뒤에 붙인다.
+  - 사용자 환경변수 `PYTHONUTF8=1`을 등록한다.
+  - [6/7] MinGit 2.56.0.2(64-bit/arm64, SHA256 공식 값 일치)를 `ai-lab\tools\git`에 풀고 `cmd`를 PATH에 넣는다.
+  - Node 폴더도 PATH에 넣는다. 전역 스킬을 `ai-lab` 밖에서도 쓰게 하기 위해서다.
+  - agy를 고르면 `~/.gemini/config/skills.json`에 `~/.agents/skills`(절대 경로)를 더한다. 기존 항목은 유지하고, 이미 있으면 그대로 둔다.
+  - PATH 등록을 `:path_put` 하나로 모았다. 실패하면 경고만 하고 결과 화면 PATH 줄을 WARN으로 바꾼다.
+  - 새 오류 코드: E08(Python), E09(Git). Node·Python·Git 중 무엇이 실패해도 AI 도구는 설치한다. AI 도구가 OK면 "지금 시작해도 되고, 3교시 전에 FAIL 줄을 고쳐라"를 보인다.
+  - 인터넷 점검에 github.com, python.org, pypi.org, registry.npmjs.org를 넣었다.
+  - 시험용 스위치 `AI_LAB_NO_ENV=1`: 사용자 PATH·환경변수를 건드리지 않는다.
+  - 실행 파일(`start-*.cmd`)도 Python·Git을 PATH에 넣고 `PYTHONUTF8=1`을 켠다. PATH 등록이 실패해도 동작하게 하기 위해서다.
+- 확인
+  - 시험본(agy 설치 부분만 Node로 대신, 폴더 열기만 echo)을 임시 홈·임시 LocalAppData·로컬 서버로 실행 → 7단계 모두 OK. `skills.json` 생성, `python3.exe` 생성을 확인했다.
+  - 그 환경에서 MinGit만으로 두 스킬을 `-a antigravity-cli`로 설치했다. Python 3.14에 hwpx 패키지는 16초, pptx 패키지는 20초에 설치됐다. 양식 채우기(빈칸 0, validate 통과)와 pptx 만들기(validate 통과, 5장)도 됐다.
+  - `npm run build`의 setup.bat 검사(ASCII·CRLF) 통과.
+- 삽질
+  - 처음 시험 폴더(세션 임시 폴더 아래)는 경로가 너무 길어, Python 설치 프로그램이 `pip\_vendor\urllib3\util` 아래 파일을 260자 제한에 걸려 **조용히 빼먹었다** → `No module named 'pip._vendor.urllib3.util'`. 교사 PC의 실제 경로는 짧아 해당 없음. `C:\Users\…\alt`로 옮겨 다시 시험했다.
+  - 시험으로 깐 Python을 `/uninstall /quiet`로 지워도 `HKCU\Software\Python\PythonCore\3.14\InstalledFeatures` 키가 남았다. 시험 전에는 없던 키라 지웠다.
+  - `Start-Process cmd /c "…"`에 따옴표가 셋 이상이면 cmd가 앞뒤 따옴표를 벗겨 경로가 깨진다 → 전체를 한 번 더 따옴표로 감쌌다.
+  - 이 Bash 도구의 heredoc 안에서는 `\`가 `\` 하나로 줄어든다. 변환 스크립트에 역슬래시를 쓰지 말고 다른 문자로 쓴 뒤 바꿔 넣어야 했다.
+  - PowerShell 문자열 `"$t: …"`는 `$t:`를 범위 지정 변수로 읽어 구문 오류가 난다 → `"${t}: …"`.
+
+### 23. 실습 폴더·3교시·선택 과제·부록과 세 AI 실제 시험
+
+- 바꾼 것
+  - 실습 폴더: `tools/claw-hwp`, `tools/hwpx-fill.mjs`, school-hwpx 스킬을 지웠다. 지침서(`_AGENTS.md`)를 고쳤다.
+    - 스킬 설치 부탁이면 사용자 폴더의 스킬 폴더에 설치해도 된다.
+    - pip·npm 패키지는 설치해도 되고, LibreOffice·Poppler·winget 등은 설치하지 않고 그 단계를 건너뛴다.
+    - Python 사용 금지 규칙을 뺐다.
+    - 미션 2 순서와 슬라이드 규칙을 넣었다.
+  - 사이트
+    - 3교시: 설치 부탁 → 다시 켜기 → 양식 채우기
+    - 새 페이지 `/slides`(선택 과제), `/canva`(부록: Canva·플러그인)
+    - 소개 표에 플러그인 열 추가
+    - 막혔어요: E08·E09, 스킬이 안 보임, 보안 경고, `python3` Store, cp949
+    - 그 밖: 준비 결과 화면, 1교시 예시, 마무리 표, 명령어 표, 홈 참고 목록, 시간표 연결
+  - 부탁 문장은 `content/prompts.json`의 `install.hwpx|pptx.<도구>`에 둔다. 도구별 차이는 `-a` 값뿐이다.
+  - `verify-missions.mjs`: 결과 글자를 hwpx zip에서 직접 읽고, Claude에 `python` 실행을 허용했다. `make-forms.mjs`의 견본 채우기는 hwpx 스킬 `replace`로 바꿨다(임시 출력으로 시험, 빈칸 0).
+- 세 AI 실제 시험 (이 PC에 로그인된 계정, 임시 작업 폴더, 시험용 Python·Node·Git만 PATH에 둠)
+  - hwpx 스킬 설치 부탁: agy 36초, Codex 18초, Claude Code 39초, 모두 성공. Claude Code는 같은 대화에서 바로 새 스킬을 인식했다. 설치 도구가 보안 검사 결과 3개를 보여 주며 그중 하나(Socket)가 경고 1건을 냈다.
+  - 가정통신문 1차: 세 도구 모두 파일을 만들었지만 **Codex가 `{{일시}}`·`{{장소}}`를 남기고 "모두 채웠다"고 보고**했다.
+    - 원인: 스킬의 `analyze`·`text_extract`가 **표 안의 칸을 빠뜨린다**.
+    - 대책: 실습 폴더에 `tools/blanks.py`(표 포함 `{{ }}` 목록)를 넣고, 지침서에 "채우기 전 목록, 채운 뒤 count 0 확인"을 넣었다.
+  - 가정통신문 2차(새 지침서): **세 도구 모두 빈칸 0**(agy 93초, Codex 93초, Claude Code 220초). 한컴오피스로 열어 세 결과 모두 1쪽, 메모 내용 일치를 눈으로 확인했다.
+  - pptx 스킬 설치 부탁: agy 28초, Codex 18초, Claude Code 28초.
+  - 슬라이드 1차: 세 도구 모두 `parents-ai.pptx`를 만들었고 `validate.py`도 통과했다(agy 232초, Codex 176초, Claude Code 392초). LibreOffice를 설치하거나 실행하려 하지 않았다.
+    - **Codex 파일만 PowerPoint가 열지 못했다**(0x80070570). 원인은 대각선을 `w`·`h` 음수로 그려 생긴 음수 크기(`cy="-155448"` 등)이고, `validate.py`는 이를 잡지 못한다.
+    - 대책: `tools/pptx-check.py`(음수 크기 검사)를 넣고, 지침서에 "음수 금지, flipV/flipH, count 0 확인"을 넣었다.
+    - agy·Claude 결과는 PowerPoint에서 정상으로 열렸다.
+  - 슬라이드 2차(Codex, 새 지침서, 새 작업 폴더): 89초, `pptx-check` 0건, PowerPoint에서 5장 정상.
+- 하지 않은 것 / 남은 것
+  - 깨끗한 Windows(샌드박스·실제 교사 PC)에서 setup → 로그인 → 3교시까지 이어서 한 리허설. 이 PC에는 샌드박스가 없다.
+  - 학교(교육용) Canva·Padlet 계정 시험, Codex·agy의 Canva 플러그인 경로(공식 문서 기준으로만 적음), ARM64·32비트 실기.
+  - 시험에서 이 PC 전역 폴더에 설치한 두 스킬·`skills.json`·Python 3.14는 시험 뒤 원상 복구했다(24번).
+
+### 24. 시험 뒤 원상 복구와 참고 사항
+
+- 복구한 것
+  - 이 PC 전역 폴더에 시험으로 설치한 `hwpx`·`pptx` 스킬(`~/.agents/skills`, `~/.claude/skills`)을 지웠다. 시험 전 목록과 같다.
+  - `~/.agents/.skill-lock.json`은 시험 전에 백업한 파일로 되돌렸다(바이트 비교 일치). 시험 동안만 만든 `~/.gemini/config/skills.json`은 지웠다.
+  - 시험 setup이 설치한 Python 3.14는 설치 프로그램 `/uninstall /quiet`로 지웠다. 남은 `HKCU\Software\Python\PythonCore\3.14` 키도 지웠다(남은 등록: 3.12). `C:\Users\JunghoonOh\alt` 시험 폴더를 지웠다.
+  - 시험용 로컬 서버(8787)와 예전에 띄운 `next start`(3100, 지난 작업 때 남아 옛 빌드를 보여 주던 프로세스)를 끝냈다.
+- 참고
+  - 사용자 환경변수 `PYTHONUTF8=1`은 이미 있었다. `HKCU\Environment` 키의 마지막 변경 시각이 2026-10-20 15:20이라, 이번 시험이 바꾼 것이 아니다.
+  - 이 PC의 `~/.codex/config.toml` 기본 모델(`gpt-5.6-sol`)과 `verify-missions.mjs` 기본값(`gpt-6-luna`)은 지금 ChatGPT 계정에서 거부된다. 이 PC의 Codex 0.154.0이 쓸 수 있는 모델은 `gpt-5.6-terra`·`gpt-5.6-luna`였다(`codex debug models`). 시험은 `-m gpt-5.6-terra`로 했다. 교사의 새 설치는 개인 설정 파일이 없어 해당 없음.
+  - `Stop`한 백그라운드 작업이라도 Windows에서는 자식 `node` 프로세스가 남을 수 있다. 다음에 같은 포트를 쓸 때는 포트 점유 프로세스부터 확인할 것.

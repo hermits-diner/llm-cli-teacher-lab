@@ -56,10 +56,10 @@ export const PERIODS: { href: string; also?: string[]; label: string; title: str
     { href: "/prepare", also: ["/install"], label: "연수 전", title: "준비", time: "30분", icon: "toolbox" },
     { href: "/start", label: "1교시", title: "첫 만남", time: "10분", icon: "hello" },
     { href: "/mission-1", label: "2교시", title: "웹페이지", time: "20분", icon: "globe" },
-    { href: "/mission-2", label: "3교시", title: "가정통신문", time: "35분", icon: "document" },
+    { href: "/mission-2", also: ["/slides"], label: "3교시", title: "가정통신문", time: "35분", icon: "document" },
     {
       href: "/wrap-up",
-      also: ["/gallery", "/files", "/commands"],
+      also: ["/gallery", "/files", "/commands", "/canva"],
       label: "4교시",
       title: "나누고 마무리",
       time: "20분",

@@ -4,10 +4,11 @@
 //   node scripts/verify-missions.mjs [--tools claude,codex,agy] [--missions m1,m2,m2x] [--runs 1] [--out <dir>]
 //
 // Each run gets its own throwaway folder; see `command` for the unattended permission modes.
+// m2 and m2x need the hwpx skill installed globally first, as teachers do in period 3.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import crypto from "node:crypto";
 import { unzipSync } from "fflate";
 
@@ -32,11 +33,20 @@ const exe = {
   agy: path.join(local, "agy", "bin", "agy.exe"),
 };
 // Nobody is there to click "approve", so each tool gets the narrowest unattended mode
-// that still lets the missions run: file edits plus `node` commands only.
+// that still lets the missions run: file edits plus `node` and `python` commands only.
 const command = {
   claude: (p) => [
     exe.claude,
-    ["-p", p, "--permission-mode", "acceptEdits", "--allowedTools", "Read,Write,Edit,Glob,Grep,Bash(node:*)", "--output-format", "json"],
+    [
+      "-p",
+      p,
+      "--permission-mode",
+      "acceptEdits",
+      "--allowedTools",
+      "Read,Write,Edit,Glob,Grep,Skill,Bash(node:*),Bash(python:*),Bash(python3:*)",
+      "--output-format",
+      "json",
+    ],
   ],
   // -m: a personal ~/.codex/config.toml may pin a model ChatGPT sign-in cannot use;
   // a fresh teacher install has no such file, so pin the account's listed default here.
@@ -61,8 +71,16 @@ function extractPack(dir) {
 }
 
 const sha = (f) => crypto.createHash("sha256").update(fs.readFileSync(f)).digest("hex");
-const hwpxText = (dir, f) =>
-  spawnSync(process.execPath, ["tools/hwpx-fill.mjs", "--text", f], { cwd: dir, encoding: "utf8" }).stdout;
+// Body text of every section, one <hp:t> run per line; enough for keyword checks.
+const hwpxText = (dir, f) => {
+  const files = unzipSync(fs.readFileSync(path.join(dir, f)));
+  const xml = Object.keys(files)
+    .filter((n) => /^Contents\/section\d+\.xml$/.test(n))
+    .sort()
+    .map((n) => new TextDecoder().decode(files[n]))
+    .join("\n");
+  return [...xml.matchAll(/<hp:t>([^<]*)<\/hp:t>/g)].map((m) => m[1]).join("\n");
+};
 
 const checks = {
   m1(dir) {

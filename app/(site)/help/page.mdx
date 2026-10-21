@@ -25,12 +25,12 @@ Windows 10(1803) 이상에 들어 있는 기본 프로그램이 없는 경우입
 
 <h3 id="E04"><code>E04</code> Node.js 준비 실패</h3>
 
-Node.js는 3교시 한글 양식 도구를 돌리는 프로그램입니다. 결과 화면에서 AI 도구 줄이 `OK` 면 1·2교시는 그대로 할 수 있으니, 3교시 전까지 해결하면 됩니다. `Could not prepare Node.js` 바로 위 줄을 보고 찾으세요.
+Node.js는 3교시에 스킬을 설치하고, 선택 과제에서 슬라이드를 만들 때 쓰는 프로그램입니다. 결과 화면에서 AI 도구 줄이 `OK` 면 1·2교시는 그대로 할 수 있으니, 3교시 전까지 해결하면 됩니다. `Could not prepare Node.js` 바로 위 줄을 보고 찾으세요.
 
 - **위에 다른 `[FAIL]` 줄이 없을 때**: 내려받다가 끊긴 경우입니다. 다시 실행하면 처음부터 받습니다. 2단계에서 `https://nodejs.org` 가 `[FAIL]` 이었다면 학교망이 막은 것이니 휴대폰 핫스팟으로 바꿔 다시 하세요.
 - **`checksum mismatch`**: 받은 파일이 손상되었습니다. 다시 실행하세요. 계속 같으면 보안 프로그램이 내려받기나 파일 검사(certutil)를 막고 있을 수 있습니다.
 - **`does not run`**: 파일은 받았지만 보안 프로그램이 실행을 막았습니다. 백신에서 `ai-lab\tools\node\node.exe` 를 예외로 등록한 뒤 다시 실행하세요. 학교에서 관리하는 컴퓨터라면 개인 노트북을 쓰세요.
-- **`32-bit Windows`**: 32비트 Windows에서는 Node.js 24가 돌아가지 않습니다. 64비트 Windows 컴퓨터를 쓰세요. 점검(<kbd>4</kbd>)만 했을 때도 이 경우 E04가 나옵니다.
+- **`32-bit Windows`**: 32비트 Windows에서는 Node.js 24가 돌아가지 않습니다. 이 경우 Python과 Git도 설치하지 않습니다. 64비트 Windows 컴퓨터를 쓰세요. 점검(<kbd>4</kbd>)만 했을 때도 이 경우 E04가 나옵니다.
 
 <h3 id="E05"><code>E05</code> AI 도구 설치 실패</h3>
 
@@ -47,6 +47,23 @@ Node.js는 3교시 한글 양식 도구를 돌리는 프로그램입니다. 결�
 <h3 id="E07"><code>E07</code> PowerShell이 막혀 있음</h3>
 
 Codex CLI 설치 프로그램은 PowerShell을 씁니다. 보안 정책으로 막힌 컴퓨터에서는 Codex를 설치할 수 없습니다. 다른 도구(Antigravity CLI, Claude Code)를 고르세요.
+
+<h3 id="E08"><code>E08</code> Python 준비 실패</h3>
+
+Python은 3교시 hwpx 스킬과 선택 과제 pptx 스킬이 쓰는 프로그램입니다. 결과 화면에서 AI 도구 줄이 `OK` 면 1·2교시는 그대로 할 수 있으니, 3교시 전까지 해결하면 됩니다. `Could not prepare Python` 바로 위 줄을 보고 찾으세요.
+
+- **위에 다른 `[FAIL]` 줄이 없을 때**: 내려받다가 끊긴 경우입니다. 다시 실행하세요. 2단계에서 `https://www.python.org` 가 `[FAIL]` 이었다면 학교망이 막은 것이니 휴대폰 핫스팟으로 바꿔 다시 하세요.
+- **`checksum mismatch`**: 받은 파일이 손상되었습니다. 다시 실행하세요. 계속 같으면 보안 프로그램이 막고 있을 수 있습니다.
+- **`does not run`**: 보안 프로그램이 실행을 막았습니다. 백신에서 `사용자 폴더\AppData\Local\Programs\Python\Python314` 를 예외로 등록한 뒤 다시 실행하세요.
+- 다른 Python이 이미 깔려 있어도 괜찮습니다. 이 설치는 `Python314` 폴더에 따로 들어가고, 관리자 권한도 쓰지 않습니다.
+
+<h3 id="E09"><code>E09</code> Git 준비 실패</h3>
+
+Git은 3교시에 스킬을 GitHub에서 받아 올 때 씁니다. 결과 화면에서 AI 도구 줄이 `OK` 면 1·2교시는 그대로 할 수 있으니, 3교시 전까지 해결하면 됩니다.
+
+- **위에 다른 `[FAIL]` 줄이 없을 때**: 다시 실행하세요. 2단계에서 `https://github.com` 이 `[FAIL]` 이었다면 학교망이 막은 것이니 휴대폰 핫스팟으로 바꿔 다시 하세요.
+- **`checksum mismatch`**: 다시 실행하세요. 계속 같으면 보안 프로그램이 막고 있을 수 있습니다.
+- **`does not run`**: 백신에서 `ai-lab\tools\git` 폴더를 예외로 등록한 뒤 다시 실행하세요.
 
 ## 직접 설치하기
 
@@ -152,6 +169,28 @@ ChatGPT 무료 요금제라면 CLI를 쓰지 못할 수 있습니다. Plus 이�
 ### 고쳐서 다시 올렸더니 주소가 하나 더 생겼어요
 
 vercel.com/drop 에 다시 놓으면 새 프로젝트가 생깁니다. [vercel.com](https://vercel.com) 에서 처음 만든 프로젝트를 열고, 그 화면에 `site` 폴더를 끌어다 놓으세요. 처음 주소가 새 내용으로 바뀝니다.
+
+<h3 id="skills">스킬이 안 보여요</h3>
+
+- AI는 켤 때 스킬 목록을 읽습니다. 설치한 뒤 검은 창을 닫고 `start-…cmd` 로 **다시 켜세요.**
+- 설치 부탁 문장의 `-a` 뒤가 내 도구와 맞는지 확인합니다. Antigravity CLI는 `antigravity-cli`, Codex CLI는 `codex`, Claude Code는 `claude-code` 입니다.
+- Antigravity CLI는 설치 프로그램이 "스킬 폴더(`.agents\skills`)를 읽으라"고 등록해 둡니다. 설치 결과에 `Antigravity CLI also reads skills from .agents\skills` 줄이 없었다면 설치 프로그램(setup.bat)을 다시 실행하세요.
+- 설치 중에 `Failed to clone` 이나 `spawn git ENOENT` 가 나왔다면 Git이 없는 것입니다. [E09](#E09) 를 보세요.
+
+### 스킬을 설치할 때 보안 검사 경고가 나와요
+
+설치 도구가 공개 보안 검사 결과를 함께 보여 주는 것입니다. 이 사이트가 안내하는 두 스킬은 연수를 준비하며 직접 설치해 써 본 것입니다. 다른 스킬을 설치할 때는 경고 내용을 읽어 보고, 출처를 믿을 수 있을 때만 설치하세요.
+
+### `python3` 를 실행하면 Microsoft Store가 열려요
+
+Windows에는 `python3` 라는 이름의 Store 바로가기가 있습니다. 설치 프로그램은 진짜 `python3` 를 PATH 맨 앞에 넣어 이 문제를 막습니다.
+
+- 설치 직후라면 AI 창을 닫고 **새로** 켜세요.
+- 계속되면 Windows **설정 → 앱 → 고급 앱 설정 → 앱 실행 별칭** 에서 `python.exe`, `python3.exe` (앱 설치 관리자)를 끄세요.
+
+### `UnicodeEncodeError` 나 `cp949` 오류가 나요
+
+Python이 한글·기호를 화면에 쓰다가 실패한 것입니다. 설치 프로그램이 `PYTHONUTF8=1` 을 켜 두지만, 이미 열려 있던 창에는 적용되지 않습니다. AI 창을 닫고 `start-…cmd` 로 다시 켜세요.
 
 ### 결과 .hwpx에 `{{ }}` 가 남아 있어요
 

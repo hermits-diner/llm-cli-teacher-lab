@@ -4,7 +4,10 @@
 //
 // create.js needs the full upstream engine (rhwp WASM), which is NOT shipped in the
 // practice pack, so point CLAW_HWP_SCRIPTS at an upstream checkout (commit 05cf0cb).
+// The sample is then filled the way teachers do it in period 3: with the hwpx skill
+// (jkf87/hwpx-skill) and Python. HWPX_SKILL_SCRIPTS overrides its scripts folder.
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -30,10 +33,22 @@ for (const name of ["notice", "worksheet"]) {
   console.log(`built ${JSON.parse(def).path}`);
 }
 
+const skill = process.env.HWPX_SKILL_SCRIPTS || path.join(os.homedir(), ".agents", "skills", "hwpx", "scripts");
+const values = JSON.parse(fs.readFileSync(path.join(root, "docs/forms/notice-sample.values.json"), "utf8"));
+const map = Object.fromEntries(Object.entries(values).map(([k, v]) => [k.startsWith("{{") ? k : `{{${k}}}`, v]));
+const mapFile = path.join(os.tmpdir(), "notice-sample.map.json");
+fs.writeFileSync(mapFile, JSON.stringify(map));
 const fill = spawnSync(
-  process.execPath,
-  ["practice-pack/tools/hwpx-fill.mjs", "practice-pack/mission2/notice-form.hwpx", "docs/forms/notice-sample.values.json", "practice-pack/samples/mission2/notice-sample.hwpx"],
-  { cwd: root, encoding: "utf8" },
+  "python",
+  [
+    path.join(skill, "fill_hwpx.py"),
+    "replace",
+    "practice-pack/mission2/notice-form.hwpx",
+    "practice-pack/samples/mission2/notice-sample.hwpx",
+    "--map",
+    mapFile,
+  ],
+  { cwd: root, encoding: "utf8", env: { ...process.env, PYTHONUTF8: "1" } },
 );
-if (fill.status !== 0) throw new Error(`sample fill failed: ${fill.stdout}`);
+if (fill.status !== 0) throw new Error(`sample fill failed: ${fill.stdout}${fill.stderr}`);
 console.log("built practice-pack/samples/mission2/notice-sample.hwpx");

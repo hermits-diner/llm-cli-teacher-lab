@@ -15,7 +15,8 @@ rem ==================================================================
 set "AL_SITE=https://llm-cli-teacher-lab.vercel.app"
 set "AL_LAB="
 set "AL_SELF=%~f0"
-rem test-only overrides (local server / throwaway folder)
+rem test-only overrides (local server / throwaway folder). AI_LAB_NO_ENV=1
+rem leaves the user PATH and environment variables untouched.
 if defined AI_LAB_SITE set "AL_SITE=%AI_LAB_SITE%"
 if defined AI_LAB_DIR set "AL_LAB=%AI_LAB_DIR%"
 rem the practice folder is "ai-lab" on the desktop
@@ -31,6 +32,20 @@ set "AL_NODE_ARCH=x64"
 set "AL_NODE_SHA=f9683a19877e12a9b167305c8db71040d812876359de21f0d2e97c3f321f80c3"
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_ARCH=arm64"
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_SHA=3a5c209a5bc59e65b3bc0fa13ed5e166a26bd3d55332847f498b76b037408d61"
+rem Python: official installer, per-user (no admin). Skills run Python.
+set "AL_PY_VER=3.14.9"
+set "AL_PY_DIR=%LOCALAPPDATA%\Programs\Python\Python314"
+set "AL_PY_ARCH=amd64"
+set "AL_PY_SHA=a247a0b612244a803f507b39fb7121e3602e4160d59c3b99d98e735289c53394"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_PY_ARCH=arm64"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_PY_SHA=4508e6a54c69566b8faec461d84d85eebee65c39a15eb910bc2ad873d09b022b"
+rem Git: portable MinGit. "npx skills add" clones skills with git.
+set "AL_GIT_VER=2.56.0.2"
+set "AL_GIT_TAG=v2.56.0.windows.2"
+set "AL_GIT_ARCH=64-bit"
+set "AL_GIT_SHA=da35e72aa21c005a5a0d298cfbae110bc1609a815730ea0dde84b01a1b3cd3be"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_GIT_ARCH=arm64"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_GIT_SHA=38b33dc6024026e3315cf88ab2cfea65205bbd7bb3a8e824bd21c8ad4fe609a7"
 rem Node.js 23 and later have no 32-bit Windows build. PROCESSOR_ARCHITEW6432
 rem is set when a 32-bit cmd runs on 64-bit Windows, where x64 Node.js works.
 if /i "%PROCESSOR_ARCHITECTURE%"=="x86" if not defined PROCESSOR_ARCHITEW6432 set "AL_NODE_ARCH=x86"
@@ -39,7 +54,11 @@ set "AL_R_BASE=-"
 set "AL_R_NET=-"
 set "AL_R_PACK=-"
 set "AL_R_NODE=-"
+set "AL_R_PY=-"
+set "AL_R_GIT=-"
 set "AL_R_TOOL=-"
+set "AL_PATH_WARN="
+set "AL_PFRONT="
 set "AL_R_PATH=-"
 set "AL_ERR="
 set "AL_TOOL="
@@ -90,32 +109,42 @@ if not defined AL_TOOL goto :bye
 
 rem ------------------------------------------------------------------
 echo.
-echo  [1/5] Checking this PC ...
+echo  [1/7] Checking this PC ...
 call :check_base
 if errorlevel 1 goto :summary
 
 echo.
-echo  [2/5] Checking internet access ...
+echo  [2/7] Checking internet access ...
 call :check_net
 if "%AL_TOOL%"=="check" goto :summary
 if "%AL_ERR%"=="E07" goto :summary
 
 echo.
-echo  [3/5] Downloading the practice folder to %AL_LAB% ...
+echo  [3/7] Downloading the practice folder to %AL_LAB% ...
 call :install_pack
 if errorlevel 1 goto :summary
 
+rem Node.js, Python and Git failures do not stop the install: the AI tool
+rem needs none of them, only the skills (period 3, slide task) do, so the
+rem first sessions can go ahead.
 echo.
-echo  [4/5] Preparing Node.js %AL_NODE_VER% (portable, no admin needed) ...
-rem A Node.js failure does not stop the install: the AI tool does not need
-rem Node.js, only the HWPX form tool does, so the first sessions can go ahead.
+echo  [4/7] Preparing Node.js %AL_NODE_VER% (portable, no admin needed) ...
 call :install_node
 
 echo.
-echo  [5/5] Installing %AL_TOOL_NAME% ...
+echo  [5/7] Installing Python %AL_PY_VER% for this user (no admin needed) ...
+call :install_python
+
+echo.
+echo  [6/7] Preparing Git %AL_GIT_VER% (portable, used to install skills) ...
+call :install_git
+
+echo.
+echo  [7/7] Installing %AL_TOOL_NAME% ...
 echo        (the official installer prints its own messages below)
 echo.
 call :install_tool
+if "%AL_TOOL%"=="agy" call :agy_skills
 goto :summary
 
 rem ------------------------------------------------------------------
@@ -144,7 +173,7 @@ call :log "start tool=%AL_TOOL% arch=%PROCESSOR_ARCHITECTURE%"
 set "AL_R_BASE=OK"
 echo        [ OK ] curl, tar, folder %AL_LAB%
 if "%AL_NODE_ARCH%"=="x86" set "AL_R_BASE=WARN (32-bit Windows, no Node.js)"
-if "%AL_NODE_ARCH%"=="x86" echo        [WARN] 32-bit Windows. Node.js does not run here; the HWPX form tool needs it.
+if "%AL_NODE_ARCH%"=="x86" echo        [WARN] 32-bit Windows. Node.js, Python and Git are skipped; skills need them.
 exit /b 0
 :base_old
 set "AL_R_BASE=FAIL"
@@ -166,15 +195,18 @@ if "%AL_TOOL%"=="claude" call :net "https://claude.ai"
 if "%AL_TOOL%"=="claude" call :net "https://downloads.claude.ai"
 if "%AL_TOOL%"=="codex" call :net "https://chatgpt.com"
 if "%AL_TOOL%"=="codex" call :net "https://releases.openai.com"
-if "%AL_TOOL%"=="codex" call :net "https://github.com"
 if "%AL_TOOL%"=="agy" call :net "https://antigravity.google"
 if "%AL_TOOL%"=="check" call :net "https://claude.ai"
 if "%AL_TOOL%"=="check" call :net "https://downloads.claude.ai"
 if "%AL_TOOL%"=="check" call :net "https://chatgpt.com"
 if "%AL_TOOL%"=="check" call :net "https://releases.openai.com"
-if "%AL_TOOL%"=="check" call :net "https://github.com"
 if "%AL_TOOL%"=="check" call :net "https://antigravity.google"
 call :net "https://vercel.com"
+rem period 3: skills come from GitHub, their parts from PyPI and npm
+call :net "https://github.com"
+call :net "https://www.python.org"
+call :net "https://pypi.org"
+call :net "https://registry.npmjs.org"
 if "%AL_TOOL%"=="codex" call :check_ps
 if "%AL_TOOL%"=="check" call :check_ps
 if defined AL_NET_FAIL goto :net_bad
@@ -264,6 +296,8 @@ if not "%AL_NODE_V:~0,1%"=="v" goto :node_norun
 set "AL_R_NODE=OK %AL_NODE_V%"
 echo        [ OK ] Node.js %AL_NODE_V%
 call :log "node ok %AL_NODE_V%"
+set "AL_PDIR=%AL_NODE_DIR%"
+call :path_put
 exit /b 0
 :node_x86
 echo        [FAIL] 32-bit Windows. Node.js 24 has no 32-bit version.
@@ -278,6 +312,98 @@ set "AL_R_NODE=FAIL"
 set "AL_ERR=E04"
 echo        [FAIL] Could not prepare Node.js
 call :log "node FAIL"
+exit /b 1
+
+rem ------------------------------------------------------------------
+:install_python
+set "AL_PY_NAME=python-%AL_PY_VER%-%AL_PY_ARCH%.exe"
+if "%AL_NODE_ARCH%"=="x86" goto :py_x86
+if exist "%AL_PY_DIR%\python.exe" goto :py_ok
+"%AL_CURL%" -fL --progress-bar --retry 3 --retry-delay 2 -o "%AL_TMP%\%AL_PY_NAME%" "https://www.python.org/ftp/python/%AL_PY_VER%/%AL_PY_NAME%"
+if errorlevel 1 goto :py_bad
+certutil -hashfile "%AL_TMP%\%AL_PY_NAME%" SHA256 | findstr /i /x "%AL_PY_SHA%" >nul
+if errorlevel 1 goto :py_badsum
+rem Per-user and quiet: no admin rights, no UAC prompt. start /wait because
+rem the installer is a windowed program that cmd would not wait for.
+start "" /wait "%AL_TMP%\%AL_PY_NAME%" /quiet InstallAllUsers=0 PrependPath=0 Include_launcher=0 Include_test=0 Include_doc=0 Include_tcltk=0 Shortcuts=0 AssociateFiles=0 TargetDir="%AL_PY_DIR%"
+if not exist "%AL_PY_DIR%\python.exe" goto :py_bad
+del "%AL_TMP%\%AL_PY_NAME%" >nul 2>&1
+:py_ok
+rem Skills and AIs often type "python3". On Windows that name opens the
+rem Microsoft Store unless a real python3.exe comes first in PATH.
+if not exist "%AL_PY_DIR%\python3.exe" copy /y "%AL_PY_DIR%\python.exe" "%AL_PY_DIR%\python3.exe" >nul
+set "AL_PY_V="
+"%AL_PY_DIR%\python3.exe" -V >"%AL_TMP%\python-version.txt" 2>nul
+set /p AL_PY_V=<"%AL_TMP%\python-version.txt"
+if not defined AL_PY_V goto :py_norun
+if not "%AL_PY_V:~0,7%"=="Python " goto :py_norun
+set "AL_R_PY=OK %AL_PY_V:~7%"
+echo        [ OK ] %AL_PY_V%
+call :log "python ok %AL_PY_V%"
+rem in front of the PATH: the Store shortcuts sit early in the user PATH
+set "AL_PFRONT=1"
+set "AL_PDIR=%AL_PY_DIR%\Scripts"
+call :path_put
+set "AL_PDIR=%AL_PY_DIR%"
+call :path_put
+set "AL_PFRONT="
+rem UTF-8 console output; in the Korean code page Python fails on symbols
+if not defined AI_LAB_NO_ENV "%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "[Environment]::SetEnvironmentVariable('PYTHONUTF8','1','User')" >nul 2>&1
+exit /b 0
+:py_x86
+echo        [FAIL] 32-bit Windows is not supported here.
+goto :py_bad
+:py_norun
+echo        [FAIL] python.exe is there but does not run (blocked by a security program?)
+goto :py_bad
+:py_badsum
+echo        [FAIL] Downloaded Python file is damaged (checksum mismatch)
+:py_bad
+set "AL_R_PY=FAIL"
+if not defined AL_ERR set "AL_ERR=E08"
+echo        [FAIL] Could not prepare Python
+call :log "python FAIL"
+exit /b 1
+
+rem ------------------------------------------------------------------
+:install_git
+set "AL_GIT_DIR=%AL_LAB%\tools\git"
+set "AL_GIT_NAME=MinGit-%AL_GIT_VER%-%AL_GIT_ARCH%"
+if "%AL_NODE_ARCH%"=="x86" goto :git_x86
+if exist "%AL_GIT_DIR%\cmd\git.exe" goto :git_ok
+"%AL_CURL%" -fL --progress-bar --retry 3 --retry-delay 2 -o "%AL_TMP%\%AL_GIT_NAME%.zip" "https://github.com/git-for-windows/git/releases/download/%AL_GIT_TAG%/%AL_GIT_NAME%.zip"
+if errorlevel 1 goto :git_bad
+certutil -hashfile "%AL_TMP%\%AL_GIT_NAME%.zip" SHA256 | findstr /i /x "%AL_GIT_SHA%" >nul
+if errorlevel 1 goto :git_badsum
+if not exist "%AL_GIT_DIR%\" mkdir "%AL_GIT_DIR%"
+"%AL_TAR%" -xf "%AL_TMP%\%AL_GIT_NAME%.zip" -C "%AL_GIT_DIR%"
+if errorlevel 1 goto :git_bad
+del "%AL_TMP%\%AL_GIT_NAME%.zip" >nul 2>&1
+:git_ok
+set "AL_GIT_V="
+"%AL_GIT_DIR%\cmd\git.exe" --version >"%AL_TMP%\git-version.txt" 2>nul
+set /p AL_GIT_V=<"%AL_TMP%\git-version.txt"
+if not defined AL_GIT_V goto :git_norun
+if not "%AL_GIT_V:~0,12%"=="git version " goto :git_norun
+set "AL_R_GIT=OK %AL_GIT_V:~12%"
+echo        [ OK ] Git %AL_GIT_V:~12%
+call :log "git ok %AL_GIT_V%"
+set "AL_PDIR=%AL_GIT_DIR%\cmd"
+call :path_put
+exit /b 0
+:git_x86
+echo        [FAIL] 32-bit Windows is not supported here.
+goto :git_bad
+:git_norun
+echo        [FAIL] git.exe is there but does not run (blocked by a security program?)
+goto :git_bad
+:git_badsum
+echo        [FAIL] Downloaded Git file is damaged (checksum mismatch)
+:git_bad
+set "AL_R_GIT=FAIL"
+if not defined AL_ERR set "AL_ERR=E09"
+echo        [FAIL] Could not prepare Git
+call :log "git FAIL"
 exit /b 1
 
 rem ------------------------------------------------------------------
@@ -337,20 +463,16 @@ exit /b 1
 rem ------------------------------------------------------------------
 :add_path
 rem Puts the tool's folder in the user PATH so it runs from any folder.
-rem Not setx: it cuts PATH at 1024 characters. PowerShell keeps the other
-rem entries and the value type as they are, and does nothing when the
-rem folder is already in the user or machine PATH (exit 3). Setting and
-rem clearing AI_LAB_TMP makes Windows reload the environment for new
-rem windows. The folder is read from the AL_BIN variable inside PowerShell.
 rem Optional: a failure is only a warning; start-*.cmd still works.
-if not exist "%AL_PS%" goto :path_bad
-"%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "try { $ErrorActionPreference='Stop'; $b=$env:AL_BIN.TrimEnd('\'); $k=[Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment'); $o=[string]$k.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames); $t=[Microsoft.Win32.RegistryValueKind]::ExpandString; if ($o) { $t=$k.GetValueKind('Path') }; $p=@($o -split ';' | Where-Object { $_ }); $m=@(([string][Environment]::GetEnvironmentVariable('Path','Machine')) -split ';' | Where-Object { $_ }); foreach ($e in ($p + $m)) { if ([Environment]::ExpandEnvironmentVariables($e).TrimEnd('\') -ieq $b) { exit 3 } }; $k.SetValue('Path', (($p + $b) -join ';'), $t); [Environment]::SetEnvironmentVariable('AI_LAB_TMP','1','User'); [Environment]::SetEnvironmentVariable('AI_LAB_TMP',$null,'User'); exit 0 } catch { exit 1 }" >nul 2>&1
-set "AL_RC=%errorlevel%"
+set "AL_PDIR=%AL_BIN%"
+call :path_put
 if "%AL_RC%"=="0" set "AL_R_PATH=OK (added)"
 if "%AL_RC%"=="3" set "AL_R_PATH=OK"
 if "%AL_R_PATH%"=="-" goto :path_bad
 echo        [ OK ] %AL_TOOL% runs from any folder (in a NEW cmd window)
 call :log "path ok rc=%AL_RC%"
+rem Node.js, Python or Git could not be added earlier
+if defined AL_PATH_WARN set "AL_R_PATH=WARN (use start-%AL_TOOL%.cmd)"
 exit /b 0
 :path_bad
 set "AL_R_PATH=WARN (use start-%AL_TOOL%.cmd)"
@@ -358,11 +480,52 @@ echo        [WARN] Could not add %AL_TOOL% to PATH. start-%AL_TOOL%.cmd still wo
 call :log "path FAIL"
 exit /b 0
 
+:path_put
+rem Adds the folder in AL_PDIR to the user PATH; AL_PFRONT=1 puts it first.
+rem Sets AL_RC: 0 added, 3 already in the user or machine PATH, 1 failed.
+rem Not setx: it cuts PATH at 1024 characters. PowerShell keeps the other
+rem entries and the value type as they are. Setting and clearing AI_LAB_TMP
+rem makes Windows reload the environment for new windows. The folder is
+rem read from the AL_PDIR variable inside PowerShell.
+set "AL_RC=1"
+if defined AI_LAB_NO_ENV set "AL_RC=3"
+if defined AI_LAB_NO_ENV exit /b 0
+if not exist "%AL_PS%" goto :put_bad
+"%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "try { $ErrorActionPreference='Stop'; $b=$env:AL_PDIR.TrimEnd('\'); $k=[Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment'); $o=[string]$k.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames); $t=[Microsoft.Win32.RegistryValueKind]::ExpandString; if ($o) { $t=$k.GetValueKind('Path') }; $p=@($o -split ';' | Where-Object { $_ }); $m=@(([string][Environment]::GetEnvironmentVariable('Path','Machine')) -split ';' | Where-Object { $_ }); foreach ($e in ($p + $m)) { if ([Environment]::ExpandEnvironmentVariables($e).TrimEnd('\') -ieq $b) { exit 3 } }; if ($env:AL_PFRONT) { $n=@($b) + $p } else { $n=$p + $b }; $k.SetValue('Path', ($n -join ';'), $t); [Environment]::SetEnvironmentVariable('AI_LAB_TMP','1','User'); [Environment]::SetEnvironmentVariable('AI_LAB_TMP',$null,'User'); exit 0 } catch { exit 1 }" >nul 2>&1
+set "AL_RC=%errorlevel%"
+if "%AL_RC%"=="0" exit /b 0
+if "%AL_RC%"=="3" exit /b 0
+:put_bad
+set "AL_RC=1"
+set "AL_PATH_WARN=1"
+echo        [WARN] Could not add %AL_PDIR% to PATH
+call :log "path FAIL %AL_PDIR%"
+exit /b 0
+
+rem ------------------------------------------------------------------
+:agy_skills
+rem Antigravity CLI reads global skills only from ~\.gemini\config\skills,
+rem but "npx skills add -g -a antigravity-cli" installs to ~\.agents\skills
+rem (shared with Codex). Register that folder in agy's skills.json once,
+rem keeping any entries already there. Absolute path with "/": agy ignores "~".
+if not exist "%AL_PS%" goto :agy_skills_bad
+"%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "try { $ErrorActionPreference='Stop'; $h=$env:USERPROFILE; $s=Join-Path $h '.agents\skills'; [void][IO.Directory]::CreateDirectory($s); $d=Join-Path $h '.gemini\config'; [void][IO.Directory]::CreateDirectory($d); $f=Join-Path $d 'skills.json'; $p=$s.Replace('\','/'); $j=New-Object PSObject; if (Test-Path $f) { $x=[IO.File]::ReadAllText($f); if ($x.Trim()) { $j=$x | ConvertFrom-Json } }; $e=@(); if ($j.PSObject.Properties['entries']) { $e=@($j.entries) }; foreach ($i in $e) { if ([string]$i.path -ieq $p) { exit 3 } }; $e += New-Object PSObject -Property @{ path=$p }; if ($j.PSObject.Properties['entries']) { $j.entries=$e } else { $j | Add-Member -NotePropertyName entries -NotePropertyValue $e }; [IO.File]::WriteAllText($f, ($j | ConvertTo-Json -Depth 10), (New-Object Text.UTF8Encoding $false)); exit 0 } catch { exit 1 }" >nul 2>&1
+if errorlevel 2 goto :agy_skills_ok
+if errorlevel 1 goto :agy_skills_bad
+:agy_skills_ok
+echo        [ OK ] Antigravity CLI also reads skills from .agents\skills
+call :log "agy skills.json ok"
+exit /b 0
+:agy_skills_bad
+echo        [WARN] Could not update .gemini\config\skills.json (agy may not see skills)
+call :log "agy skills.json FAIL"
+exit /b 0
+
 rem ------------------------------------------------------------------
 :summary
 rem check mode installs nothing, so a 32-bit PC is flagged here
 if "%AL_TOOL%"=="check" if "%AL_NODE_ARCH%"=="x86" if not defined AL_ERR set "AL_ERR=E04"
-call :log "end base=%AL_R_BASE% net=%AL_R_NET% pack=%AL_R_PACK% node=%AL_R_NODE% tool=%AL_R_TOOL% path=%AL_R_PATH% err=%AL_ERR%"
+call :log "end base=%AL_R_BASE% net=%AL_R_NET% pack=%AL_R_PACK% node=%AL_R_NODE% python=%AL_R_PY% git=%AL_R_GIT% tool=%AL_R_TOOL% path=%AL_R_PATH% err=%AL_ERR%"
 echo.
 echo  ======================== RESULT ========================
 echo    PC check          : %AL_R_BASE%
@@ -370,6 +533,8 @@ echo    Internet          : %AL_R_NET%
 if "%AL_TOOL%"=="check" goto :summary_tail
 echo    Practice folder   : %AL_R_PACK%
 echo    Node.js           : %AL_R_NODE%
+echo    Python            : %AL_R_PY%
+echo    Git               : %AL_R_GIT%
 echo    %AL_TOOL_NAME%   : %AL_R_TOOL%
 echo    PATH (any folder) : %AL_R_PATH%
 :summary_tail
@@ -394,14 +559,20 @@ goto :bye
 echo    Error code: %AL_ERR%
 echo    How to fix: %AL_SITE%/help#%AL_ERR%
 if "%AL_R_NODE%"=="FAIL" if not "%AL_ERR%"=="E04" echo    Node.js   : %AL_SITE%/help#E04
+if "%AL_R_PY%"=="FAIL" if not "%AL_ERR%"=="E08" echo    Python    : %AL_SITE%/help#E08
+if "%AL_R_GIT%"=="FAIL" if not "%AL_ERR%"=="E09" echo    Git       : %AL_SITE%/help#E09
 echo    Log file  : %AL_LOG%
 echo.
-rem only Node.js failed: the AI tool works, so the first sessions can go ahead
-if "%AL_ERR%"=="E04" if "%AL_R_TOOL:~0,2%"=="OK" goto :summary_node_only
+rem only Node.js, Python or Git failed: the AI tool works, so the first
+rem sessions can go ahead
+if not "%AL_R_TOOL:~0,2%"=="OK" goto :bye
+if "%AL_ERR%"=="E04" goto :summary_parts_only
+if "%AL_ERR%"=="E08" goto :summary_parts_only
+if "%AL_ERR%"=="E09" goto :summary_parts_only
 goto :bye
-:summary_node_only
+:summary_parts_only
 echo    %AL_TOOL_NAME% is ready, so you can start now.
-echo    Fix Node.js before the HWPX form practice: it needs Node.js.
+echo    Fix the FAIL lines above before period 3: skills need them.
 goto :summary_next
 :bye
 echo  Press any key to close this window.

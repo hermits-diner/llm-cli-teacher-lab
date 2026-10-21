@@ -63,7 +63,7 @@ npm run db:init
 
 ## 실습 양식 다시 만들기
 
-양식 정의(`docs/forms/*.create.json`)를 고친 뒤 실행합니다. 새 문서를 만드는 데 필요한 rhwp WASM은 저장소에 넣지 않았으므로, claw-hwp 원본(커밋 `05cf0cb`)을 받아 그 경로를 지정합니다.
+양식 정의(`docs/forms/*.create.json`)를 고친 뒤 실행합니다. 새 문서를 만드는 데 필요한 rhwp WASM은 저장소에 넣지 않았으므로, claw-hwp 원본(커밋 `05cf0cb`)을 받아 그 경로를 지정합니다. 완성 예시(`notice-sample.hwpx`)는 3교시와 같은 방법으로 hwpx 스킬(jkf87/hwpx-skill)과 Python으로 채우므로, 이 PC에 그 스킬이 전역으로 설치되어 있어야 합니다.
 
 ```powershell
 git clone https://github.com/DoHyun468/claw-hwp ..\claw-hwp
@@ -73,6 +73,7 @@ node scripts/make-forms.mjs
 
 ## 라이선스와 출처
 
-- 실습 폴더의 HWPX 편집 엔진은 [claw-hwp](https://github.com/DoHyun468/claw-hwp)(MIT)의 일부입니다. 자세한 내용은 `practice-pack/tools/claw-hwp/NOTICE.md`에 있습니다.
+- 실습 양식(.hwpx)은 [claw-hwp](https://github.com/DoHyun468/claw-hwp)(MIT)로 만들었습니다. 실습 폴더에는 엔진을 넣지 않습니다.
+- 3교시 hwpx 스킬([jkf87/hwpx-skill](https://github.com/jkf87/hwpx-skill))과 선택 과제 pptx 스킬([anthropics/skills](https://github.com/anthropics/skills))은 교사가 원본에서 직접 설치합니다. 이 저장소는 두 스킬을 재배포하지 않습니다.
 - 페이지 사진 6장은 [Unsplash](https://unsplash.com) 무료 라이선스 사진입니다. 작가와 원본 링크는 `components/PagePhoto.tsx`와 각 사진 아래에 있습니다.
 - 실습 자료의 학교·행사·인물은 모두 가상입니다.
