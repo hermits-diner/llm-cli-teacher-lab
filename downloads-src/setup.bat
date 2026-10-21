@@ -37,6 +37,7 @@ set "AL_R_NET=-"
 set "AL_R_PACK=-"
 set "AL_R_NODE=-"
 set "AL_R_TOOL=-"
+set "AL_R_PATH=-"
 set "AL_ERR="
 set "AL_TOOL="
 set "AL_TOOL_NAME=AI tool"
@@ -272,6 +273,7 @@ exit /b 1
 
 :tool_claude
 set "AL_EXE=%USERPROFILE%\.local\bin\claude.exe"
+set "AL_BIN=%USERPROFILE%\.local\bin"
 "%AL_CURL%" -fsSL https://claude.ai/install.cmd -o "%AL_TMP%\claude-install.cmd"
 if errorlevel 1 goto :tool_check
 call "%AL_TMP%\claude-install.cmd" stable
@@ -279,6 +281,7 @@ goto :tool_check
 
 :tool_codex
 set "AL_EXE=%LOCALAPPDATA%\Programs\OpenAI\Codex\bin\codex.exe"
+set "AL_BIN=%LOCALAPPDATA%\Programs\OpenAI\Codex\bin"
 rem skips the installer's "Start Codex now? [y/N]" question
 set "CODEX_NON_INTERACTIVE=1"
 "%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "irm https://chatgpt.com/codex/install.ps1 | iex"
@@ -286,6 +289,7 @@ goto :tool_check
 
 :tool_agy
 set "AL_EXE=%LOCALAPPDATA%\agy\bin\agy.exe"
+set "AL_BIN=%LOCALAPPDATA%\agy\bin"
 rem the agy installer exits early (code 0) when agy is already installed
 "%AL_CURL%" -fsSL https://antigravity.google/cli/install.cmd -o "%AL_TMP%\agy-install.cmd"
 if errorlevel 1 goto :tool_check
@@ -304,6 +308,7 @@ set "AL_R_TOOL=OK %AL_TOOL_V%"
 echo.
 echo        [ OK ] %AL_TOOL_NAME% %AL_TOOL_V%
 call :log "tool ok %AL_TOOL% %AL_TOOL_V%"
+call :add_path
 exit /b 0
 :tool_bad
 set "AL_R_TOOL=FAIL"
@@ -314,8 +319,32 @@ call :log "tool FAIL %AL_TOOL%"
 exit /b 1
 
 rem ------------------------------------------------------------------
+:add_path
+rem Puts the tool's folder in the user PATH so it runs from any folder.
+rem Not setx: it cuts PATH at 1024 characters. PowerShell keeps the other
+rem entries and the value type as they are, and does nothing when the
+rem folder is already in the user or machine PATH (exit 3). Setting and
+rem clearing AI_LAB_TMP makes Windows reload the environment for new
+rem windows. The folder is read from the AL_BIN variable inside PowerShell.
+rem Optional: a failure is only a warning; start-*.cmd still works.
+if not exist "%AL_PS%" goto :path_bad
+"%AL_PS%" -NoProfile -ExecutionPolicy Bypass -Command "try { $ErrorActionPreference='Stop'; $b=$env:AL_BIN.TrimEnd('\'); $k=[Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment'); $o=[string]$k.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames); $t=[Microsoft.Win32.RegistryValueKind]::ExpandString; if ($o) { $t=$k.GetValueKind('Path') }; $p=@($o -split ';' | Where-Object { $_ }); $m=@(([string][Environment]::GetEnvironmentVariable('Path','Machine')) -split ';' | Where-Object { $_ }); foreach ($e in ($p + $m)) { if ([Environment]::ExpandEnvironmentVariables($e).TrimEnd('\') -ieq $b) { exit 3 } }; $k.SetValue('Path', (($p + $b) -join ';'), $t); [Environment]::SetEnvironmentVariable('AI_LAB_TMP','1','User'); [Environment]::SetEnvironmentVariable('AI_LAB_TMP',$null,'User'); exit 0 } catch { exit 1 }" >nul 2>&1
+set "AL_RC=%errorlevel%"
+if "%AL_RC%"=="0" set "AL_R_PATH=OK (added)"
+if "%AL_RC%"=="3" set "AL_R_PATH=OK"
+if "%AL_R_PATH%"=="-" goto :path_bad
+echo        [ OK ] %AL_TOOL% runs from any folder (in a NEW cmd window)
+call :log "path ok rc=%AL_RC%"
+exit /b 0
+:path_bad
+set "AL_R_PATH=WARN (use start-%AL_TOOL%.cmd)"
+echo        [WARN] Could not add %AL_TOOL% to PATH. start-%AL_TOOL%.cmd still works.
+call :log "path FAIL"
+exit /b 0
+
+rem ------------------------------------------------------------------
 :summary
-call :log "end base=%AL_R_BASE% net=%AL_R_NET% pack=%AL_R_PACK% node=%AL_R_NODE% tool=%AL_R_TOOL% err=%AL_ERR%"
+call :log "end base=%AL_R_BASE% net=%AL_R_NET% pack=%AL_R_PACK% node=%AL_R_NODE% tool=%AL_R_TOOL% path=%AL_R_PATH% err=%AL_ERR%"
 echo.
 echo  ======================== RESULT ========================
 echo    PC check          : %AL_R_BASE%
@@ -324,6 +353,7 @@ if "%AL_TOOL%"=="check" goto :summary_tail
 echo    Practice folder   : %AL_R_PACK%
 echo    Node.js           : %AL_R_NODE%
 echo    %AL_TOOL_NAME%   : %AL_R_TOOL%
+echo    PATH (any folder) : %AL_R_PATH%
 :summary_tail
 echo  ========================================================
 echo.
@@ -333,6 +363,7 @@ echo    All done.
 echo.
 echo    Next:  open  %AL_LAB%  and double-click  start-%AL_TOOL%.cmd
 echo           (the folder opens now)
+if "%AL_R_PATH:~0,2%"=="OK" echo           You can also type  %AL_TOOL%  in a NEW cmd window, in any folder.
 echo.
 start "" "%AL_LAB%"
 goto :bye
