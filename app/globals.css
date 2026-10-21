@@ -95,7 +95,10 @@
   --font-label: var(--font-geist-mono), var(--font-noto), "Malgun Gothic", monospace;
   --font-cmd: "Cascadia Mono", Consolas, "D2Coding", "Malgun Gothic", monospace;
 
-  --measure: 44rem;
+  /* The site is used on desktop screens: pages run wide for cards, cmd
+     windows and tables, while running text keeps a readable line length. */
+  --measure: 72rem;
+  --measure-text: 46rem;
   --shadow-card: none;
   --shadow-paper: 0 2px 4px rgba(21, 32, 43, 0.08), 0 22px 44px -20px rgba(21, 32, 43, 0.4);
   color-scheme: light;
@@ -167,7 +170,9 @@ html {
   background: var(--bg-secondary);
   color: var(--text-default);
   font-family: var(--font-body);
-  font-size: 106.25%; /* 17px: readable when projected */
+  /* 17px up to a 1440px window (readable when projected), growing to 20px on
+     a Full HD screen so the whole layout scales with it. */
+  font-size: clamp(106.25%, 0.625vw + 0.5rem, 125%);
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -397,7 +402,7 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 }
 .page p,
 .page li {
-  max-width: 40rem;
+  max-width: var(--measure-text);
 }
 .page ul,
 .page ol {
@@ -712,6 +717,7 @@ kbd {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 6;
+  max-height: 20rem;
   object-fit: cover;
   border-radius: var(--radius-200);
   box-shadow: var(--shadow-card);
@@ -1017,6 +1023,35 @@ html[data-present] .page-photo img {
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-top: var(--space-600);
+}
+/* On a desktop screen the title runs across the page and the session demo
+   sits beside the lead and the buttons. Presenting keeps the stacked hero. */
+@media (min-width: 64rem) {
+  html:not([data-present]) .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas:
+      "title title"
+      "lead demo"
+      "actions demo";
+    grid-template-rows: auto auto 1fr;
+    column-gap: 2.5rem;
+  }
+  html:not([data-present]) .hero__title {
+    grid-area: title;
+  }
+  html:not([data-present]) .hero .lead {
+    grid-area: lead;
+    margin-top: 0.5rem;
+  }
+  html:not([data-present]) .hero .demo {
+    grid-area: demo;
+    margin: 0.75rem 0 0;
+  }
+  html:not([data-present]) .hero__actions {
+    grid-area: actions;
+    align-self: start;
+  }
 }
 .results {
   display: grid;
@@ -1580,7 +1615,8 @@ html[data-present] .site-footer {
     transition: none;
   }
 }
-/* Result screenshots are tall; keep them to one slide while presenting. */
+/* Result screenshots are tall; size them by the screen height so they fill a
+   Full HD slide yet stay on one slide on a 720px laptop. */
 html[data-present] .results {
-  grid-template-columns: repeat(2, minmax(0, 13rem));
+  grid-template-columns: repeat(2, minmax(0, min(22rem, 40vh)));
 }

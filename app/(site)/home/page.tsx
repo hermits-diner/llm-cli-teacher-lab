@@ -60,6 +60,7 @@ export default function Home() {
             alt="휴대폰 화면에 열린 학급 안내 웹페이지. 담임 인사, 이번 주 알림, 시간표가 보인다."
             width={390}
             height={780}
+            sizes="(min-width: 1024px) 45vw, 100vw"
           />
           <figcaption>
             <strong>2교시</strong> 학급 안내 웹페이지. Netlify에 올려 주소로 공유합니다.
@@ -71,6 +72,7 @@ export default function Home() {
             alt="한글 문서로 만든 가정통신문. 현장체험학습 안내와 회신서가 있다."
             width={794}
             height={1123}
+            sizes="(min-width: 1024px) 45vw, 100vw"
           />
           <figcaption>
             <strong>3교시</strong> 메모로 채운 가정통신문(.hwpx). 한글에서 바로 엽니다.
