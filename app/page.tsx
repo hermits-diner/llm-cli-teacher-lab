@@ -5,11 +5,12 @@ import { CoverKeys } from "@/components/CoverKeys";
 import { SITE_URL, TOOLS } from "@/lib/site";
 import { Icon } from "@/components/Icon";
 
-export const metadata: Metadata = { title: { absolute: "교사를 위한 AI 에이전트 코딩 (LLM CLI 활용)" } };
+export const metadata: Metadata = { title: { absolute: "LLM CLI 기반 수업자료제작 및 업무활용" } };
 
 // The title slide. Shown on the projector while teachers arrive, so the site
 // address is large enough to read from the back of the room. The two results
-// of the day lie on the right like handouts on a desk.
+// of the day lie on the right like handouts on a desk, with a QR code stuck
+// beside them for teachers to open the site on their phones.
 export default function Cover() {
   const host = SITE_URL.replace(/^https?:\/\//, "");
   return (
@@ -22,11 +23,11 @@ export default function Cover() {
       <div className="cover__body">
         <div className="cover__text">
           <h1 className="cover__title">
-            <span className="cover__kicker">교사를 위한</span>
-            AI 에이전트 코딩
-            <span className="cover__subtitle">
-              <mark>LLM CLI</mark> 활용
+            <span className="cover__kicker">
+              <mark>LLM CLI</mark> 기반
             </span>
+            수업자료제작
+            <br />및 업무활용
           </h1>
           <p className="cover__sub">
             검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 90분 뒤에는 학급 안내 웹페이지
@@ -63,6 +64,10 @@ export default function Cover() {
             height={780}
             priority
           />
+          <div className="cover__qr">
+            <Image src="/images/site-qr.png" alt="이 사이트 주소의 QR 코드" width={180} height={180} unoptimized />
+            <span>휴대폰으로 열기</span>
+          </div>
           <figcaption>
             <Icon name="globe" /> 2교시 학급 안내 웹페이지 · <Icon name="document" /> 3교시 가정통신문
           </figcaption>

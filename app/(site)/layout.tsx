@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Presenter, PresentToggle } from "@/components/Presenter";
 import { Timetable } from "@/components/Timetable";
 import { ToolPicker } from "@/components/ToolPicker";
+import { ThemePicker } from "@/components/ThemePicker";
 import { VERIFIED_ON, VERSIONS } from "@/lib/site";
 
 // Header, timetable strip and footer for every page except the cover at "/".
@@ -13,11 +14,12 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </a>
       <header className="site-header">
         <Link href="/home" className="site-title">
-          교사를 위한 AI 에이전트 코딩
+          LLM CLI 기반 수업자료제작 및 업무활용
         </Link>
         <Link href="/help" className="help-link">
           막혔어요
         </Link>
+        <ThemePicker />
         <PresentToggle />
         <ToolPicker />
       </header>

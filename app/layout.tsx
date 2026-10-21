@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Gaegu, Gothic_A1, Inter, Noto_Sans_KR } from "next/font/google";
 import { toolBootScript } from "@/components/ToolPicker";
+import { themeBootScript } from "@/components/ThemePicker";
 import { DEFAULT_TOOL } from "@/lib/site";
 import "./globals.css";
 
@@ -14,7 +15,7 @@ const gothic = Gothic_A1({ subsets: ["latin"], weight: ["700", "800"], display: 
 const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", variable: "--font-gaegu" });
 
 export const metadata: Metadata = {
-  title: { default: "교사를 위한 AI 에이전트 코딩", template: "%s | 교사를 위한 AI 에이전트 코딩" },
+  title: { default: "LLM CLI 기반 수업자료제작 및 업무활용", template: "%s | LLM CLI 기반 수업자료제작 및 업무활용" },
   description: "명령창에서 AI에게 일을 시켜 보는 90분 실습. 따라 하면 웹페이지와 가정통신문이 완성됩니다.",
 };
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: toolBootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body>{children}</body>
     </html>

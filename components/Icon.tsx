@@ -49,6 +49,31 @@ const PATHS = {
       <path d="M16.5 3.5h.01M20.5 7.5h.01M9.5 4.5h.01M19.5 15.5h.01" />
     </>
   ),
+  // agent-coding steps (AgentFlow): folder, terminal, eye, pencil
+  folder: (
+    <>
+      <path d="M3 7.5V18c0 .8.7 1.5 1.5 1.5h15c.8 0 1.5-.7 1.5-1.5V9c0-.8-.7-1.5-1.5-1.5H12L10 5H4.5C3.7 5 3 5.7 3 6.5Z" />
+      <path d="M3 10.5h18" />
+    </>
+  ),
+  terminal: (
+    <>
+      <rect x="3" y="4.5" width="18" height="15" rx="2" />
+      <path d="m7 9.5 3 2.5-3 2.5M12.5 15h4.5" />
+    </>
+  ),
+  eye: (
+    <>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  pencil: (
+    <>
+      <path d="M15.5 4.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+      <path d="m13.5 6.5 3 3" />
+    </>
+  ),
   // callout "도움말": a light bulb
   tip: (
     <>

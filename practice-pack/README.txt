@@ -1,4 +1,4 @@
-교사를 위한 AI 에이전트 코딩(LLM CLI 활용) — 실습 폴더 (바탕화면\ai-lab)
+LLM CLI 기반 수업자료제작 및 업무활용 — 실습 폴더 (바탕화면\ai-lab)
 
 [시작하기]  내가 고른 도구의 파일을 더블클릭하세요.
   start-agy.cmd     Antigravity CLI

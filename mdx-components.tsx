@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactElement } from "react";
+import { AgentFlow } from "@/components/AgentFlow";
 import { Callout } from "@/components/Callout";
 import { Cmd } from "@/components/Cmd";
 import { ForTool, ToolText } from "@/components/ForTool";
@@ -27,6 +28,7 @@ function Pre({ children }: { children?: React.ReactNode }) {
 
 const components: MDXComponents = {
   pre: Pre,
+  AgentFlow,
   Cmd,
   Prompt,
   Callout,
