@@ -31,6 +31,9 @@ set "AL_NODE_ARCH=x64"
 set "AL_NODE_SHA=f9683a19877e12a9b167305c8db71040d812876359de21f0d2e97c3f321f80c3"
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_ARCH=arm64"
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_SHA=3a5c209a5bc59e65b3bc0fa13ed5e166a26bd3d55332847f498b76b037408d61"
+rem Node.js 23 and later have no 32-bit Windows build. PROCESSOR_ARCHITEW6432
+rem is set when a 32-bit cmd runs on 64-bit Windows, where x64 Node.js works.
+if /i "%PROCESSOR_ARCHITECTURE%"=="x86" if not defined PROCESSOR_ARCHITEW6432 set "AL_NODE_ARCH=x86"
 
 set "AL_R_BASE=-"
 set "AL_R_NET=-"
@@ -104,8 +107,9 @@ if errorlevel 1 goto :summary
 
 echo.
 echo  [4/5] Preparing Node.js %AL_NODE_VER% (portable, no admin needed) ...
+rem A Node.js failure does not stop the install: the AI tool does not need
+rem Node.js, only the HWPX form tool does, so the first sessions can go ahead.
 call :install_node
-if errorlevel 1 goto :summary
 
 echo.
 echo  [5/5] Installing %AL_TOOL_NAME% ...
@@ -139,6 +143,8 @@ del "%AL_TMP%\write.test" >nul 2>&1
 call :log "start tool=%AL_TOOL% arch=%PROCESSOR_ARCHITECTURE%"
 set "AL_R_BASE=OK"
 echo        [ OK ] curl, tar, folder %AL_LAB%
+if "%AL_NODE_ARCH%"=="x86" set "AL_R_BASE=WARN (32-bit Windows, no Node.js)"
+if "%AL_NODE_ARCH%"=="x86" echo        [WARN] 32-bit Windows. Node.js does not run here; the HWPX form tool needs it.
 exit /b 0
 :base_old
 set "AL_R_BASE=FAIL"
@@ -235,6 +241,7 @@ rem ------------------------------------------------------------------
 :install_node
 set "AL_NODE_DIR=%AL_LAB%\tools\node"
 set "AL_NODE_NAME=node-%AL_NODE_VER%-win-%AL_NODE_ARCH%"
+if "%AL_NODE_ARCH%"=="x86" goto :node_x86
 if exist "%AL_NODE_DIR%\node.exe" goto :node_ok
 "%AL_CURL%" -fL --progress-bar --retry 3 --retry-delay 2 -o "%AL_TMP%\%AL_NODE_NAME%.zip" "https://nodejs.org/dist/%AL_NODE_VER%/%AL_NODE_NAME%.zip"
 if errorlevel 1 goto :node_bad
@@ -248,13 +255,22 @@ if not exist "%AL_NODE_DIR%\node.exe" goto :node_bad
 del "%AL_TMP%\%AL_NODE_NAME%.zip" >nul 2>&1
 :node_ok
 rem via a file, not for /f: the desktop path may hold spaces or ")"
-set "AL_NODE_V=?"
+set "AL_NODE_V="
 "%AL_NODE_DIR%\node.exe" -v >"%AL_TMP%\node-version.txt" 2>nul
 set /p AL_NODE_V=<"%AL_TMP%\node-version.txt"
+rem the file can be there while a security program blocks running it
+if not defined AL_NODE_V goto :node_norun
+if not "%AL_NODE_V:~0,1%"=="v" goto :node_norun
 set "AL_R_NODE=OK %AL_NODE_V%"
 echo        [ OK ] Node.js %AL_NODE_V%
 call :log "node ok %AL_NODE_V%"
 exit /b 0
+:node_x86
+echo        [FAIL] 32-bit Windows. Node.js 24 has no 32-bit version.
+goto :node_bad
+:node_norun
+echo        [FAIL] node.exe is there but does not run (blocked by a security program?)
+goto :node_bad
 :node_badsum
 echo        [FAIL] Downloaded Node.js file is damaged (checksum mismatch)
 :node_bad
@@ -344,6 +360,8 @@ exit /b 0
 
 rem ------------------------------------------------------------------
 :summary
+rem check mode installs nothing, so a 32-bit PC is flagged here
+if "%AL_TOOL%"=="check" if "%AL_NODE_ARCH%"=="x86" if not defined AL_ERR set "AL_ERR=E04"
 call :log "end base=%AL_R_BASE% net=%AL_R_NET% pack=%AL_R_PACK% node=%AL_R_NODE% tool=%AL_R_TOOL% path=%AL_R_PATH% err=%AL_ERR%"
 echo.
 echo  ======================== RESULT ========================
@@ -360,6 +378,7 @@ echo.
 if defined AL_ERR goto :summary_fail
 if "%AL_TOOL%"=="check" goto :summary_check_ok
 echo    All done.
+:summary_next
 echo.
 echo    Next:  open  %AL_LAB%  and double-click  start-%AL_TOOL%.cmd
 echo           (the folder opens now)
@@ -374,8 +393,16 @@ goto :bye
 :summary_fail
 echo    Error code: %AL_ERR%
 echo    How to fix: %AL_SITE%/help#%AL_ERR%
+if "%AL_R_NODE%"=="FAIL" if not "%AL_ERR%"=="E04" echo    Node.js   : %AL_SITE%/help#E04
 echo    Log file  : %AL_LOG%
 echo.
+rem only Node.js failed: the AI tool works, so the first sessions can go ahead
+if "%AL_ERR%"=="E04" if "%AL_R_TOOL:~0,2%"=="OK" goto :summary_node_only
+goto :bye
+:summary_node_only
+echo    %AL_TOOL_NAME% is ready, so you can start now.
+echo    Fix Node.js before the HWPX form practice: it needs Node.js.
+goto :summary_next
 :bye
 echo  Press any key to close this window.
 pause >nul
