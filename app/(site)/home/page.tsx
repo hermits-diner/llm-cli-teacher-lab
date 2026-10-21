@@ -156,6 +156,9 @@ export default function Home() {
         <li>
           <Link href="/canva">부록: Canva 연결해 슬라이드 만들기</Link> — MCP와 플러그인 맛보기
         </li>
+        <li>
+          <Link href="/mcp">부록: MCP로 바깥 서비스 연결하기</Link> — 연결·확인·끊기와 주의할 점
+        </li>
       </ul>
 
       <h2>어떤 도구를 쓸까요</h2>

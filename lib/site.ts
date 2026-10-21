@@ -59,7 +59,7 @@ export const PERIODS: { href: string; also?: string[]; label: string; title: str
     { href: "/mission-2", also: ["/slides"], label: "3교시", title: "한글 양식", time: "35분", icon: "document" },
     {
       href: "/wrap-up",
-      also: ["/gallery", "/files", "/commands", "/canva"],
+      also: ["/gallery", "/files", "/commands", "/canva", "/mcp"],
       label: "4교시",
       title: "나누고 마무리",
       time: "20분",
