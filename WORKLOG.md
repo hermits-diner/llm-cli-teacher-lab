@@ -404,7 +404,8 @@
 - 하지 않은 것 / 남은 것
   - 새 계정 실제 가입(휴대폰 인증 여부 등)은 하지 않았다.
   - 미션 1 심화(CLI 배포)를 Vercel CLI로 바꾸는 것은 아직 시험하지 않았다.
-  - 정리: 바탕 화면 `ai-lab-rehearsal` 폴더는 휴지통으로 보냈다. Vercel 프로젝트 `class-notice`, `llm-cli-rehearsal-root`는 되돌릴 수 없는 삭제라 사용자가 직접 지우기로 했다(Settings → Delete Project).
+  - 정리: 바탕 화면 `ai-lab-rehearsal` 폴더는 휴지통으로 보냈다. Vercel 프로젝트 `class-notice`, `llm-cli-rehearsal-root`는 되돌릴 수 없는 삭제라 사용자가 직접 지웠다(Settings → Delete Project).
+  - 삭제 확인: 대시보드 목록에서 사라졌고 긴 주소는 404 `DEPLOYMENT_NOT_FOUND`. 그런데 짧은 주소 두 개는 삭제 직후에도 200이었다. `X-Vercel-Cache: HIT`, `Age` 950~1100초, `icn1`(서울 엣지)이라 지우기 전 캐시가 남은 것이다. 쿼리 문자열을 붙여도 HIT였다. 지운 페이지가 한동안 더 보일 수 있다는 뜻이다.
 
 ### 19. 연수 페이지를 Vercel 기준으로 바꾸기 (18번 리허설 반영)
 
