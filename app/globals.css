@@ -725,8 +725,11 @@ kbd {
 .page-photo figcaption a {
   color: inherit;
 }
+/* While presenting, keep the photo to about a third of the screen so the
+   title, the lead and the photo share the period's first slide. */
 html[data-present] .page-photo img {
-  aspect-ratio: 16 / 4.5;
+  aspect-ratio: auto;
+  height: 32vh;
 }
 
 /* ------------------------------------------------------------------ agent-coding flow
@@ -1275,8 +1278,10 @@ html[data-present] .page-photo img {
   background: var(--highlighter);
   border-color: var(--ink);
 }
+/* Type grows with the screen so it reads from the back of the room: 118% on a
+   1280px laptop, about 134% at 1424px, capped at 150% on a 1920px projector. */
 html[data-present] {
-  font-size: 118%;
+  font-size: clamp(118%, 1.5vw, 150%);
 }
 /* The header is only chrome while presenting: P and the counter turn the mode off. */
 html[data-present] .site-header {
