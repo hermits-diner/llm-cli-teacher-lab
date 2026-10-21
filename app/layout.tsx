@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_KR } from "next/font/google";
+import { Gaegu, Hahmlet, Inter, Noto_Sans_KR } from "next/font/google";
 import { toolBootScript } from "@/components/ToolPicker";
 import { DEFAULT_TOOL } from "@/lib/site";
 import "./globals.css";
 
-const plex = IBM_Plex_Sans_KR({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-plex",
-});
+// Type roles (see the tokens at the top of globals.css):
+//   body    Inter for Latin and digits, Noto Sans KR for Hangul
+//   display Hahmlet, the serif of a printed school notice, for titles
+//   pen     Gaegu, a teacher's handwriting, for the few marginal labels
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const noto = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap", variable: "--font-noto" });
+const hahmlet = Hahmlet({ subsets: ["latin"], weight: ["600", "700"], display: "swap", variable: "--font-hahmlet" });
+const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", variable: "--font-gaegu" });
 
 export const metadata: Metadata = {
   title: { default: "교사를 위한 AI 에이전트 코딩", template: "%s | 교사를 위한 AI 에이전트 코딩" },
@@ -21,7 +23,12 @@ export const metadata: Metadata = {
 // and footer from app/(site)/layout.tsx.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" data-tool={DEFAULT_TOOL} className={plex.variable} suppressHydrationWarning>
+    <html
+      lang="ko"
+      data-tool={DEFAULT_TOOL}
+      className={`${inter.variable} ${noto.variable} ${hahmlet.variable} ${gaegu.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: toolBootScript }} />
       </head>

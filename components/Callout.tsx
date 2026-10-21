@@ -1,4 +1,5 @@
 const TITLES = { tip: "도움말", warn: "주의", check: "확인" } as const;
+const EMOJI = { tip: "💡", warn: "⚠️", check: "✅" } as const;
 
 export function Callout({
   kind = "tip",
@@ -11,7 +12,12 @@ export function Callout({
 }) {
   return (
     <aside className={`callout callout--${kind}`}>
-      <p className="callout__title">{title ?? TITLES[kind]}</p>
+      <p className="callout__title">
+        <span className="callout__emoji" aria-hidden="true">
+          {EMOJI[kind]}
+        </span>
+        {title ?? TITLES[kind]}
+      </p>
       <div className="callout__body">{children}</div>
     </aside>
   );
