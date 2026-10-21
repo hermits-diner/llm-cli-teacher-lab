@@ -52,7 +52,7 @@ Vercel 프로젝트의 환경변수로 동작을 조절합니다. 환경변수�
 | `GALLERY_ADMIN_KEY` | 강사용 숨김 키입니다. `/gallery?admin=1`에서 이 키를 입력하면 글마다 숨기기 버튼이 생깁니다 |
 | `GALLERY_CODE` | (선택) 당일 참여 코드입니다. 값을 넣으면 등록할 때 이 코드를 입력해야 합니다 |
 | `GALLERY_OPEN` | `false`로 두면 등록을 막고 목록만 보여 줍니다 |
-| `NEXT_PUBLIC_GALLERY_BACKUP_URL` | (선택) DB에 문제가 생겼을 때 안내할 예비 게시판(Padlet 등) 주소 |
+| `NEXT_PUBLIC_GALLERY_BACKUP_URL` | (선택) DB에 문제가 생겼을 때 안내할 예비 게시판 주소. 비워 두면 기본 예비 Padlet(`lib/site.ts`의 `GALLERY_BACKUP_URL`)을 씁니다 |
 
 테이블은 처음 한 번만 만듭니다.
 

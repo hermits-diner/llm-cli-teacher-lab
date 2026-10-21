@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GalleryBoard } from "@/components/GalleryBoard";
+import { GALLERY_BACKUP_URL } from "@/lib/site";
 
 export const metadata: Metadata = { title: "결과물 갤러리" };
 
@@ -15,7 +16,7 @@ export default function GalleryPage() {
         <p className="callout__title">닉네임만 적어 주세요</p>
         <p>이 목록은 연수 참여자 모두에게 보입니다. 실명, 학교 이름, 학생 정보는 적지 마세요.</p>
       </div>
-      <GalleryBoard backupUrl={process.env.NEXT_PUBLIC_GALLERY_BACKUP_URL} />
+      <GalleryBoard backupUrl={GALLERY_BACKUP_URL} />
     </>
   );
 }

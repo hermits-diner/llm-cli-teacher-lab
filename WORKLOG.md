@@ -252,3 +252,13 @@
 - 함정
   - `mdx-components.tsx`에 부품을 등록해도, 이미 떠 있는 dev 서버에는 반영되지 않는다("Expected component … to be defined"). 서버를 다시 띄워야 한다.
   - Chrome `--headless --screenshot`은 390px처럼 좁은 폭을 정확히 그리지 못한다. 폭 측정과 캡처는 puppeteer-core의 setViewport로 한다.
+
+### 13. 갤러리 예비 게시판(Padlet)
+
+- 사용자 Padlet 계정의 학교 작업공간 "부산동고등학교"에 보드를 만들었다: https://padlet.com/busandonggo/padlet-s024pf1ertgi2rh4hr4m
+  - 계정에서 보드를 만들 수 있는 작업공간이 이것 하나뿐이었다.
+  - 링크가 있으면 로그인 없이 쓸 수 있다(visitor writer). 웹·프로필 공개(isPublished)는 껐다.
+  - 글쓰기 칸: 제목은 닉네임(필수), 본문은 주소와 도구(필수), 첨부는 끔
+- Vercel 환경변수는 이 PC에서 바꿀 수 없었다(MCP는 다른 계정, CLI는 로그인 안 됨). 그래서 `lib/site.ts`의 `GALLERY_BACKUP_URL` 기본값으로 넣었다. `NEXT_PUBLIC_GALLERY_BACKUP_URL`을 설정하면 그 값이 우선한다.
+- 시험: `DATABASE_URL=`로 비우고 `next start` → API 503, 갤러리에 "예비 게시판" 링크가 위 Padlet으로 나왔다.
+- DB 위치(Neon MCP로 조회): Neon 조직 "Vercel: Hermit's Diner", 프로젝트 `llm-cli-gallery`(noisy-darkness-63955754), aws-ap-southeast-1, PG 18, Free. 로컬 `.env.local`에는 지금 DB 주소가 없다(OIDC 토큰만 있음).

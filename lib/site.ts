@@ -5,6 +5,11 @@ export const SITE_URL = config.siteUrl;
 export const VERIFIED_ON = config.verifiedOn;
 export const VERSIONS = config.versions;
 
+// Padlet board teachers post to when the gallery DB is down. Anyone with the
+// link can post without logging in; NEXT_PUBLIC_GALLERY_BACKUP_URL overrides it.
+export const GALLERY_BACKUP_URL =
+  process.env.NEXT_PUBLIC_GALLERY_BACKUP_URL || "https://padlet.com/busandonggo/padlet-s024pf1ertgi2rh4hr4m";
+
 export type ToolId = "agy" | "codex" | "claude";
 
 export const TOOLS: {
