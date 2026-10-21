@@ -717,7 +717,7 @@ kbd {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 6;
-  max-height: 20rem;
+  max-height: min(20rem, 35vh);
   object-fit: cover;
   border-radius: var(--radius-200);
   box-shadow: var(--shadow-card);
@@ -1053,11 +1053,14 @@ html[data-present] .page-photo img {
     align-self: start;
   }
 }
+/* The previews are 3:4; capping the pair's width keeps each card within
+   about three quarters of the screen height on a 720px laptop. */
 .results {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1.25rem;
   margin: 1.25rem 0;
+  max-width: calc(2 * 56vh + 1.25rem);
 }
 .result {
   margin: 0;
