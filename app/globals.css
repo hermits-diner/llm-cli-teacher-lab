@@ -1250,3 +1250,7 @@ html[data-present] .site-footer {
     transition: none;
   }
 }
+/* Result screenshots are tall; keep them to one slide while presenting. */
+html[data-present] .results {
+  grid-template-columns: repeat(2, minmax(0, 13rem));
+}

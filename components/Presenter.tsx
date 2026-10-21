@@ -8,9 +8,9 @@ import { PERIODS } from "@/lib/site";
 // When it is on, a page is cut into one slide per "##" heading (the part
 // before the first heading is slide 1), the type is larger, and ← / → move
 // between slides and then on to the next period's page. A section taller
-// than the screen is split further between its blocks, each step box of a
-// <Steps> list counting as its own block; the continuation slides repeat
-// the section heading, and step numbers carry on.
+// than the screen is split further between its blocks, down to the blocks
+// inside a step box; continuation slides repeat the section heading and the
+// step's title, and step numbers carry on.
 export const PRESENT_KEY = "ai-lab-present";
 const CHANGED = "ai-lab-present-changed";
 const GOTO = "ai-lab-present-goto";
@@ -42,31 +42,61 @@ function inField(e: KeyboardEvent) {
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
 }
 
-// A unit that is shown or hidden as a whole: a top-level child of <main>, or
-// one step box inside a top-level <ol class="steps">.
-type Block = { el: HTMLElement; list?: HTMLElement };
+// A unit that is shown or hidden as a whole, with the wrappers that must stay
+// visible around it. Top-level children of <main> are units, except that a
+// <Steps> list opens into the blocks of each step body (so one tall step box
+// can span slides, its title and number repeated) and a <section> opens into
+// its children.
+type Block = { el: HTMLElement; wraps: HTMLElement[] };
 
 const children = (el: Element) => Array.from(el.children) as HTMLElement[];
 const stepLists = (main: HTMLElement) => children(main).filter((el) => el.matches("ol.steps"));
+const bodyOf = (li: HTMLElement) => li.querySelector<HTMLElement>(":scope > .step__body");
 
-function showAll(main: HTMLElement) {
-  for (const el of children(main)) el.hidden = false;
-  for (const list of stepLists(main)) {
-    list.style.counterReset = "";
-    for (const li of children(list)) li.hidden = false;
+// The parts a wrapper is made of, one level down.
+function partsOf(wrap: HTMLElement): HTMLElement[] {
+  if (wrap.matches("ol.steps")) return children(wrap);
+  if (wrap.matches("ol.steps > li")) {
+    const body = bodyOf(wrap);
+    return body ? children(body) : [];
   }
+  return children(wrap);
 }
 
 function blocksOf(main: HTMLElement): Block[] {
   const blocks: Block[] = [];
   for (const el of children(main)) {
-    if (el.matches("ol.steps")) for (const li of children(el)) blocks.push({ el: li, list: el });
-    else blocks.push({ el });
+    if (el.matches("ol.steps")) {
+      for (const li of children(el)) {
+        const kids = partsOf(li);
+        if (kids.length) for (const k of kids) blocks.push({ el: k, wraps: [el, li] });
+        else blocks.push({ el: li, wraps: [el] });
+      }
+    } else if (el.tagName === "SECTION" && el.children.length) {
+      for (const k of children(el)) blocks.push({ el: k, wraps: [el] });
+    } else {
+      blocks.push({ el, wraps: [] });
+    }
   }
   return blocks;
 }
 
-// Height a block takes on screen, margins included (collapsing is ignored,
+// Every element paginate may hide: the blocks and their wrappers.
+function unitsOf(main: HTMLElement): HTMLElement[] {
+  const set = new Set<HTMLElement>(children(main));
+  for (const b of blocksOf(main)) {
+    set.add(b.el);
+    for (const w of b.wraps) set.add(w);
+  }
+  return [...set];
+}
+
+function showAll(main: HTMLElement) {
+  for (const el of unitsOf(main)) el.hidden = false;
+  for (const list of stepLists(main)) list.style.counterReset = "";
+}
+
+// Height an element takes on screen, margins included (collapsing is ignored,
 // which only errs towards splitting a little early).
 function heightOf(el: HTMLElement) {
   const cs = getComputedStyle(el);
@@ -74,31 +104,43 @@ function heightOf(el: HTMLElement) {
 }
 
 // Measure with everything visible, then pack each "##" section into as many
-// slides as the screen needs.
+// slides as the screen needs. A block costs its own height plus the frame of
+// every wrapper it opens (a step box's title bar and padding, say) that the
+// block before it on the slide did not already open.
 function paginate(main: HTMLElement): Block[][] {
   showAll(main);
   window.scrollTo(0, 0);
   const room = window.innerHeight - main.getBoundingClientRect().top - 80; // 80: page padding and the counter
+  const blocks = blocksOf(main);
+  const frame = new Map<HTMLElement, number>();
+  for (const b of blocks)
+    for (const w of b.wraps)
+      if (!frame.has(w)) frame.set(w, Math.max(0, heightOf(w) - partsOf(w).reduce((t, p) => t + heightOf(p), 0)));
+  const cost = (b: Block, prev?: Block) =>
+    heightOf(b.el) + b.wraps.filter((w) => !prev?.wraps.includes(w)).reduce((t, w) => t + (frame.get(w) ?? 0), 0);
+
   const sections: Block[][] = [[]];
-  for (const b of blocksOf(main)) {
-    if (b.el.tagName === "H2" && sections[sections.length - 1].length) sections.push([]);
+  for (const b of blocks) {
+    if (b.el.tagName === "H2" && b.el.parentElement === main && sections[sections.length - 1].length) sections.push([]);
     sections[sections.length - 1].push(b);
   }
   const slides: Block[][] = [];
-  for (const section of sections.filter((s) => s.length)) {
+  for (const section of sections.filter((x) => x.length)) {
     const head = section[0].el.tagName === "H2" ? section[0] : null;
     let slide: Block[] = [];
     let used = 0;
     for (const b of section) {
-      const h = heightOf(b.el);
+      const h = cost(b, slide[slide.length - 1]);
       const onlyHead = slide.length === 1 && slide[0] === head;
       if (slide.length && !onlyHead && used + h > room) {
         slides.push(slide);
         slide = head ? [head] : [];
         used = head ? heightOf(head.el) : 0;
+        used += cost(b, slide[slide.length - 1]);
+      } else {
+        used += h;
       }
       slide.push(b);
-      used += h;
     }
     slides.push(slide);
   }
@@ -106,11 +148,10 @@ function paginate(main: HTMLElement): Block[][] {
 }
 
 function show(main: HTMLElement, slide: Block[]) {
-  for (const el of children(main)) el.hidden = true;
-  for (const list of stepLists(main)) for (const li of children(list)) li.hidden = true;
+  for (const el of unitsOf(main)) el.hidden = true;
   for (const b of slide) {
     b.el.hidden = false;
-    if (b.list) b.list.hidden = false;
+    for (const w of b.wraps) w.hidden = false;
   }
   // Hidden step boxes do not advance the CSS counter, so start each list at
   // the number of the first box on this slide.
