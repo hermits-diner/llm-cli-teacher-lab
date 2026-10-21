@@ -137,7 +137,7 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
                 <span className="gallery__nick">{p.nickname}</span>
               </a>
               <span className="gallery__meta">
-                {toolName(p.tool)} · {timeAgo(p.created_at)}
+                {toolName(p.tool)}, {timeAgo(p.created_at)}
               </span>
               <span className="gallery__host">{p.origin.replace("https://", "")}</span>
               {admin && (

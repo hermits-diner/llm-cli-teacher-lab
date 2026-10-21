@@ -15,7 +15,7 @@
                         the teacher's own screen
    Type roles: body Geist + Noto Sans KR, display Gothic A1 (a heavy plain
    sans; no serif anywhere), label Geist Mono in small spaced capitals for
-   menus and section labels, pen Gaegu (handwriting) only for the cover and
+   menus and section labels (now plain body sans), pen Gaegu (handwriting) only for the cover and
    a few marginal notes. Surfaces are flat: hairline rules instead of card
    shadows and near-square corners, after websitesondisplay's restraint.
    ================================================================== */
@@ -92,7 +92,7 @@
   --font-body: var(--font-geist), var(--font-noto), "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   --font-display: var(--font-gothic), var(--font-noto), "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   --font-pen: var(--font-gaegu), var(--font-noto), "Malgun Gothic", cursive;
-  --font-label: var(--font-geist-mono), var(--font-noto), "Malgun Gothic", monospace;
+  --font-label: var(--font-body);
   --font-cmd: "Cascadia Mono", Consolas, "D2Coding", "Malgun Gothic", monospace;
 
   /* The site is used on desktop screens: pages run wide for cards, cmd
@@ -256,9 +256,8 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 .tool-picker__label,
 .theme-picker__label {
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-tertiary);
   margin-right: var(--space-100);
 }
@@ -334,9 +333,8 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
   align-items: center;
   gap: 0.35rem;
   font-family: var(--font-label);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-tertiary);
 }
 .timetable__icon {
@@ -555,9 +553,8 @@ kbd {
 }
 .prompt__title {
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 .prompt .copy-button:hover {
   background: color-mix(in srgb, var(--ballpoint) 10%, transparent);
@@ -789,9 +786,9 @@ html[data-present] .page-photo img {
   top: 0.45rem;
   left: 0.55rem;
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  font-weight: 700;
   line-height: 1;
   color: var(--text-tertiary);
 }
@@ -885,9 +882,8 @@ html[data-present] .page-photo img {
   cursor: pointer;
   list-style: none;
   font-family: var(--font-label);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 .more summary::-webkit-details-marker {
@@ -1271,8 +1267,7 @@ html[data-present] .page-photo img {
 .gallery__meta,
 .gallery__host {
   font-family: var(--font-label);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
+  font-size: 0.82rem;
   line-height: 1.5;
   color: var(--text-tertiary);
 }
@@ -1387,6 +1382,11 @@ html[data-present] .site-footer {
   border-top: 1px solid var(--border-default);
   color: var(--text-secondary);
   font-size: 0.85rem;
+}
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
 /* ------------------------------------------------------------------ cover
@@ -1550,9 +1550,11 @@ html[data-present] .site-footer {
   left: 0;
   right: 0;
   bottom: -1.9rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
   font-size: 0.85rem;
   color: var(--text-secondary);
-  text-align: center;
 }
 .cover__url {
   font-family: var(--font-cmd);

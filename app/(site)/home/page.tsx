@@ -151,7 +151,7 @@ export default function Home() {
           <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때
         </li>
         <li>
-          <Link href="/slides">선택 과제: 슬라이드 만들기</Link> — pptx 스킬을 설치해 PowerPoint 파일 만들기
+          <Link href="/slides">선택 과제: 슬라이드 만들기</Link> — 디자인 스킬을 설치해 보기 좋은 PowerPoint 파일 만들기
         </li>
         <li>
           <Link href="/canva">부록: Canva 연결해 슬라이드 만들기</Link> — MCP와 플러그인 맛보기

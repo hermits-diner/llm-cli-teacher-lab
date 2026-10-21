@@ -33,8 +33,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           {VERIFIED_ON}에 이 순서대로 직접 실행해 확인했습니다. Antigravity CLI {VERSIONS.agy}, Codex CLI{" "}
           {VERSIONS.codex}, Claude Code {VERSIONS.claude}. 도구는 자주 바뀌므로 화면이 조금 다를 수 있습니다.
         </p>
-        <p>
-          <Link href="/help">막혔을 때 보는 페이지</Link> · <Link href="/">표지로</Link>
+        <p className="site-footer__links">
+          <Link href="/help">막혔을 때 보는 페이지</Link>
+          <Link href="/">표지로</Link>
         </p>
       </footer>
     </>

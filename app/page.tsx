@@ -17,8 +17,8 @@ export default function Cover() {
     <main className="cover" aria-label="연수 표지">
       <CoverKeys href="/home" />
       <header className="cover__top">
-        <span className="cover__tag">교사 연수 · 90분 실습</span>
-        <span className="cover__tag cover__tag--tools">{TOOLS.map((t) => t.name).join(" · ")}</span>
+        <span className="cover__tag">90분 교사 연수 실습</span>
+        <span className="cover__tag cover__tag--tools">{TOOLS.map((t) => t.name).join(", ")}</span>
       </header>
       <div className="cover__body">
         <div className="cover__text">
@@ -35,7 +35,7 @@ export default function Cover() {
           </p>
           <div className="cover__actions">
             <Link className="button button--lg" href="/home">
-              들어가기 →
+              들어가기
             </Link>
             <Link className="button button--quiet button--lg" href="/intro">
               LLM CLI가 뭔가요?
@@ -44,7 +44,8 @@ export default function Cover() {
           <p className="cover__speaker">
             <span className="cover__speaker-name">강사 오정훈</span>
             <span>부산동고등학교 교육정보부장</span>
-            <span>2025~2026 부산시교육청 디지털역량강화 직무연수 강사 · 2025~2026 AI 프롬프트 엔지니어링 선도교사</span>
+            <span>2025~2026 부산시교육청 디지털역량강화 직무연수 강사</span>
+            <span>2025~2026 AI 프롬프트 엔지니어링 선도교사</span>
           </p>
         </div>
         <figure className="cover__art">
@@ -69,7 +70,12 @@ export default function Cover() {
             <span>휴대폰으로 열기</span>
           </div>
           <figcaption>
-            <Icon name="globe" /> 2교시 웹페이지 · <Icon name="document" /> 3교시 한글 양식
+            <span>
+              <Icon name="globe" /> 2교시 웹페이지
+            </span>
+            <span>
+              <Icon name="document" /> 3교시 한글 양식
+            </span>
           </figcaption>
         </figure>
       </div>

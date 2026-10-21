@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Gaegu, Geist, Geist_Mono, Gothic_A1, Noto_Sans_KR } from "next/font/google";
+import { Gaegu, Geist, Gothic_A1, Noto_Sans_KR } from "next/font/google";
 import { toolBootScript } from "@/components/ToolPicker";
 import { themeBootScript } from "@/components/ThemePicker";
 import { DEFAULT_TOOL } from "@/lib/site";
@@ -7,11 +7,10 @@ import "./globals.css";
 
 // Type roles (see the tokens at the top of globals.css):
 //   body    Geist for Latin and digits, Noto Sans KR for Hangul
-//   label   Geist Mono for menus and small labels (Hangul falls back to Noto)
+//   label   the body face at a small size; monospace is kept for commands only
 //   display Gothic A1 in heavy weights, a plain sans for titles (no serif)
 //   pen     Gaegu, a teacher's handwriting, for the few marginal labels
 const geist = Geist({ subsets: ["latin"], display: "swap", variable: "--font-geist" });
-const geistMono = Geist_Mono({ subsets: ["latin"], display: "swap", variable: "--font-geist-mono" });
 const noto = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap", variable: "--font-noto" });
 const gothic = Gothic_A1({ subsets: ["latin"], weight: ["700", "800"], display: "swap", variable: "--font-gothic" });
 const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", variable: "--font-gaegu" });
@@ -29,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="ko"
       data-tool={DEFAULT_TOOL}
-      className={`${geist.variable} ${geistMono.variable} ${noto.variable} ${gothic.variable} ${gaegu.variable}`}
+      className={`${geist.variable} ${noto.variable} ${gothic.variable} ${gaegu.variable}`}
       suppressHydrationWarning
     >
       <head>

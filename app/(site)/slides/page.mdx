@@ -4,20 +4,19 @@ export const metadata = { title: "선택 과제 슬라이드" };
 
 # 선택 과제: 슬라이드(.pptx) 만들기
 
-<p className="lead">pptx 스킬을 설치하고 PowerPoint에서 바로 고칠 수 있는 슬라이드를 만듭니다. 3교시를 일찍 끝냈거나 집에서 해 보세요. 20분.</p>
+<p className="lead">디자인 스킬을 설치하고, PowerPoint에서 바로 고칠 수 있는 보기 좋은 슬라이드를 만듭니다. 3교시를 일찍 끝냈거나 집에서 해 보세요. 20분.</p>
 
 <Callout kind="check" title="이번 과제로 남는 것">
 - 학부모 설명회 슬라이드 또는 수업 도입 슬라이드(중3·고2) `.pptx` (글자·색을 PowerPoint에서 그대로 고칠 수 있음)
-- 내 컴퓨터에 설치된 **pptx 스킬**
+- 내 컴퓨터에 설치된 **디자인 스킬(frontend-design)**
 </Callout>
 
-<More title="이번에 설치하는 스킬">
+<More title="왜 pptx 스킬이 아니라 디자인 스킬인가요">
 
-- [anthropics/skills 의 pptx](https://github.com/anthropics/skills/tree/main/skills/pptx): Claude를 만든 Anthropic이 공개한 슬라이드 스킬입니다. Claude 앱이 PowerPoint 파일을 만들 때 실제로 쓰는 요령서입니다.
-- **소스 공개, 오픈소스 아님** 입니다. 그래서 이 사이트가 나눠 주지 않고, 선생님이 원본에서 직접 설치합니다. 사용 조건은 Anthropic 이용약관을 따릅니다.
-- 슬라이드는 Node.js(pptxgenjs)로 만들고, 검사는 Python으로 합니다. 둘 다 설치 프로그램이 미리 깔아 두었습니다.
-- 결과를 그림으로 바꿔 검사하는 단계는 LibreOffice가 필요합니다. 이 과제에서는 **설치하지 않고 건너뜁니다.** 결과는 선생님이 PowerPoint에서 직접 봅니다.
-- Claude Code는 claude.ai 계정에 따라 pptx 스킬이 이미 보일 수 있습니다. 그래도 아래처럼 설치하면 됩니다.
+- 세 AI는 스킬 없이도 PowerPoint 파일을 만들 줄 압니다. 이 사이트를 만들며 pptx 전용 스킬이 있을 때와 없을 때를 비교했더니, 둘 다 열리는 파일이 나왔고 모양도 비슷했습니다.
+- 차이를 만드는 것은 **디자인 감각** 입니다. 그래서 글꼴·색·배치를 가르치는 디자인 스킬을 설치합니다.
+- [anthropics/skills 의 frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design): Claude를 만든 Anthropic이 공개한 디자인 스킬입니다. Apache-2.0 라이선스로 자유롭게 쓸 수 있습니다. 웹 화면을 예로 들지만 원칙(분명한 디자인 방향, 개성 있는 글꼴과 색, 흔한 AI 디자인 피하기)은 슬라이드에도 그대로 쓰입니다.
+- 슬라이드 파일은 AI가 Node.js(pptxgenjs)로 만듭니다. 설치 프로그램이 Node.js를 미리 깔아 두었습니다.
 
 </More>
 
@@ -26,13 +25,13 @@ export const metadata = { title: "선택 과제 슬라이드" };
 <Step id="slides-install" title="스킬 설치해 달라고 부탁하기">
 
 <ForTool tool="agy">
-<Prompt>{prompts.install.pptx.agy}</Prompt>
+<Prompt>{prompts.install.design.agy}</Prompt>
 </ForTool>
 <ForTool tool="codex">
-<Prompt>{prompts.install.pptx.codex}</Prompt>
+<Prompt>{prompts.install.design.codex}</Prompt>
 </ForTool>
 <ForTool tool="claude">
-<Prompt>{prompts.install.pptx.claude}</Prompt>
+<Prompt>{prompts.install.design.claude}</Prompt>
 </ForTool>
 
 **1분 안팎** 걸립니다. 끝나면 검은 창을 닫고 `start-…cmd` 로 **AI를 다시 켭니다.**
@@ -92,7 +91,8 @@ PowerPoint에서 파일을 닫은 뒤 부탁합니다. 열려 있으면 저장�
 
 <More title="막혔을 때">
 
-- "pptx 스킬이 없다"고 하면 AI를 다시 켜세요. 그래도 없으면 [막혔어요](/help#skills) 를 보세요.
+- "frontend-design 스킬이 없다"고 하면 AI를 다시 켜세요. 그래도 없으면 [막혔어요](/help#skills) 를 보세요.
+- PowerPoint가 "파일을 열 수 없다"고 하면 AI에게 "PowerPoint에서 열리지 않아. tools/pptx-check.py 로 검사하고 고쳐 줘" 라고 말하세요.
 - `npm` 이나 `pip` 설치가 실패하면 학교망이 막은 것일 수 있습니다. 휴대폰 핫스팟으로 바꿔 다시 부탁하세요.
 - Canva로 슬라이드를 만드는 방법은 [부록: Canva 연결해 슬라이드 만들기](/canva) 에 있습니다.
 

@@ -38,11 +38,13 @@
 - 다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo-m3.txt` → `worksheet-m3-result.hwpx`
 
 ## 선택 과제 — 슬라이드(.pptx) 만들기
-- 선생님이 설치한 **pptx 스킬**을 씁니다. 결과물은 `slides/` 폴더에 만듭니다.
-- `pptxgenjs` 가 없으면 `slides/` 폴더 안에서 `npm install pptxgenjs` 로 설치합니다.
+- 결과물은 `slides/` 폴더에 PowerPoint 파일(`.pptx`)로 만듭니다. `slides/` 폴더 안에서 `npm install pptxgenjs` 로 설치한 pptxgenjs로 만듭니다.
+- 선생님이 설치한 **frontend-design 스킬**의 디자인 원칙(분명한 디자인 방향, 글꼴·색·배치, 흔한 AI 디자인 피하기)을 슬라이드에 적용합니다. 웹 화면을 예로 든 스킬이지만, 결과물은 웹페이지가 아니라 pptx입니다.
 - 글꼴은 `맑은 고딕` 처럼 Windows에 있는 한글 글꼴을 씁니다.
+- 교실 화면용입니다. 한 슬라이드에는 제목과 핵심 3~4줄만 넣고, 본문 글자는 **20pt 이상**, 제목은 32pt 이상으로 씁니다. 내용이 많으면 슬라이드를 나누지 말고 문장을 줄입니다.
+- 제목은 **한 줄(16자 안팎)** 로 짧게 쓰고, 제목 상자는 슬라이드 너비에 가깝게 잡습니다.
+- 글자가 상자 밖으로 넘치거나 다른 글자와 **겹치지 않게** 상자를 넉넉히 잡습니다. `fit: 'shrink'` 로 글자를 줄여 맞추지 않습니다.
 - 도형과 선의 `w`·`h` 에 **음수를 쓰지 않습니다.** PowerPoint가 파일 전체를 손상된 것으로 보고 열지 않습니다. 오른쪽 위로 올라가는 선은 `h` 를 양수로 두고 `flipV: true` 를, 왼쪽으로 가는 선은 `flipH: true` 를 씁니다.
-- 만든 뒤 두 가지를 검사합니다. LibreOffice로 그림을 만들어 검사하는 단계는 건너뜁니다.
-  1. 스킬의 `scripts/office/validate.py`
-  2. `python tools/pptx-check.py slides/(만든 파일).pptx` 의 `"count"` 가 **0** 이어야 합니다. 0이 아니면 만든 스크립트를 고쳐 다시 만듭니다.
+- 만든 뒤 `python tools/pptx-check.py slides/(만든 파일).pptx` 의 `"count"` 가 **0** 인지 확인합니다. 0이 아니면 만든 스크립트를 고쳐 다시 만듭니다.
+- 시험 삼아 만든 파일은 지우고, 부탁받은 파일만 남깁니다.
 - 선생님이 PowerPoint(또는 한컴오피스)에서 직접 열어 확인합니다.
