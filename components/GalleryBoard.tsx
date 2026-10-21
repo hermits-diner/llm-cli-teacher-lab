@@ -120,13 +120,26 @@ export function GalleryBoard({ backupUrl }: { backupUrl?: string }) {
         <ul className="gallery">
           {posts.map((p) => (
             <li key={p.id} className="gallery__item">
+              {/* A live, shrunken view of the page. Sandboxed without same-origin so a
+                  posted page cannot reach this site's storage; not focusable or clickable,
+                  the card's link below covers it. */}
+              <div className="gallery__thumb" aria-hidden="true">
+                <iframe
+                  src={p.origin}
+                  title={`${p.nickname} 페이지 미리보기`}
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerPolicy="no-referrer"
+                  tabIndex={-1}
+                />
+              </div>
               <a href={p.origin} target="_blank" rel="noopener noreferrer nofollow ugc" className="gallery__link">
                 <span className="gallery__nick">{p.nickname}</span>
-                <span className="gallery__host">{p.origin.replace("https://", "")}</span>
               </a>
               <span className="gallery__meta">
-                {toolName(p.tool)}, {timeAgo(p.created_at)}
+                {toolName(p.tool)} · {timeAgo(p.created_at)}
               </span>
+              <span className="gallery__host">{p.origin.replace("https://", "")}</span>
               {admin && (
                 <button type="button" className="gallery__hide" onClick={() => hide(p.id)}>
                   숨기기

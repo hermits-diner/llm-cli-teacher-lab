@@ -262,3 +262,13 @@
 - Vercel 환경변수는 이 PC에서 바꿀 수 없었다(MCP는 다른 계정, CLI는 로그인 안 됨). 그래서 `lib/site.ts`의 `GALLERY_BACKUP_URL` 기본값으로 넣었다. `NEXT_PUBLIC_GALLERY_BACKUP_URL`을 설정하면 그 값이 우선한다.
 - 시험: `DATABASE_URL=`로 비우고 `next start` → API 503, 갤러리에 "예비 게시판" 링크가 위 Padlet으로 나왔다.
 - DB 위치(Neon MCP로 조회): Neon 조직 "Vercel: Hermit's Diner", 프로젝트 `llm-cli-gallery`(noisy-darkness-63955754), aws-ap-southeast-1, PG 18, Free. 로컬 `.env.local`에는 지금 DB 주소가 없다(OIDC 토큰만 있음).
+
+### 14. websitesondisplay 참고: 톤 정리와 갤러리 미리보기 격자
+
+- 참고 사이트는 `ondisplay.website`다(사용자가 적은 `ondsiplay.website`는 열리지 않았다). 특징은 따뜻한 검정(#16140D)과 회색 글자, Geist·Geist Mono, 그림자 없음, 머리카락 선, 썸네일 4열 격자.
+- 사용자가 "톤 정리 + 갤러리 격자"를 골랐다.
+  - 글꼴: 본문 영문 Inter → Geist. `--font-label`(Geist Mono, 대문자, 자간)을 메뉴와 레이블에 쓴다. 손글씨(Gaegu)는 표지와 메모 몇 곳에만 남겼다.
+  - `--shadow-card: none`, 모서리 2~4px. 표지 학습지의 `--shadow-paper`는 유지한다.
+  - 야간 테마를 남색에서 따뜻한 검정으로 바꿨다.
+- 갤러리: 카드마다 iframe 미리보기를 넣었다(400% 크기로 그린 뒤 0.25배로 축소, `sandbox="allow-scripts"`, pointer-events 없음). 카드 전체를 링크로 만들려고 `::after`로 늘렸다. 목록은 본문 폭을 벗어나 76rem까지 넓어진다.
+- 시험: puppeteer로 `/api/gallery` 응답을 가로채 예시 글 5개를 넣었다. 운영 DB에는 쓰지 않았다. 주간·야간·칠판, 390px에서 확인했다.
