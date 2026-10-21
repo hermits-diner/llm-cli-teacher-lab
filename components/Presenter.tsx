@@ -1,13 +1,16 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PERIODS } from "@/lib/site";
 
 // Presentation mode: the site stands in for slides on the classroom screen.
 // When it is on, a page is cut into one slide per "##" heading (the part
 // before the first heading is slide 1), the type is larger, and ← / → move
-// between slides and then on to the next period's page.
+// between slides and then on to the next period's page. A section taller
+// than the screen is split further between its blocks, each step box of a
+// <Steps> list counting as its own block; the continuation slides repeat
+// the section heading, and step numbers carry on.
 export const PRESENT_KEY = "ai-lab-present";
 const CHANGED = "ai-lab-present-changed";
 const GOTO = "ai-lab-present-goto";
@@ -39,14 +42,82 @@ function inField(e: KeyboardEvent) {
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
 }
 
-// Top-level blocks of <main>, grouped into slides at each <h2>.
-function slidesOf(main: HTMLElement): HTMLElement[][] {
-  const groups: HTMLElement[][] = [[]];
-  for (const el of Array.from(main.children) as HTMLElement[]) {
-    if (el.tagName === "H2" && groups[groups.length - 1].length) groups.push([]);
-    groups[groups.length - 1].push(el);
+// A unit that is shown or hidden as a whole: a top-level child of <main>, or
+// one step box inside a top-level <ol class="steps">.
+type Block = { el: HTMLElement; list?: HTMLElement };
+
+const children = (el: Element) => Array.from(el.children) as HTMLElement[];
+const stepLists = (main: HTMLElement) => children(main).filter((el) => el.matches("ol.steps"));
+
+function showAll(main: HTMLElement) {
+  for (const el of children(main)) el.hidden = false;
+  for (const list of stepLists(main)) {
+    list.style.counterReset = "";
+    for (const li of children(list)) li.hidden = false;
   }
-  return groups.filter((g) => g.length);
+}
+
+function blocksOf(main: HTMLElement): Block[] {
+  const blocks: Block[] = [];
+  for (const el of children(main)) {
+    if (el.matches("ol.steps")) for (const li of children(el)) blocks.push({ el: li, list: el });
+    else blocks.push({ el });
+  }
+  return blocks;
+}
+
+// Height a block takes on screen, margins included (collapsing is ignored,
+// which only errs towards splitting a little early).
+function heightOf(el: HTMLElement) {
+  const cs = getComputedStyle(el);
+  return el.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom);
+}
+
+// Measure with everything visible, then pack each "##" section into as many
+// slides as the screen needs.
+function paginate(main: HTMLElement): Block[][] {
+  showAll(main);
+  window.scrollTo(0, 0);
+  const room = window.innerHeight - main.getBoundingClientRect().top - 80; // 80: page padding and the counter
+  const sections: Block[][] = [[]];
+  for (const b of blocksOf(main)) {
+    if (b.el.tagName === "H2" && sections[sections.length - 1].length) sections.push([]);
+    sections[sections.length - 1].push(b);
+  }
+  const slides: Block[][] = [];
+  for (const section of sections.filter((s) => s.length)) {
+    const head = section[0].el.tagName === "H2" ? section[0] : null;
+    let slide: Block[] = [];
+    let used = 0;
+    for (const b of section) {
+      const h = heightOf(b.el);
+      const onlyHead = slide.length === 1 && slide[0] === head;
+      if (slide.length && !onlyHead && used + h > room) {
+        slides.push(slide);
+        slide = head ? [head] : [];
+        used = head ? heightOf(head.el) : 0;
+      }
+      slide.push(b);
+      used += h;
+    }
+    slides.push(slide);
+  }
+  return slides;
+}
+
+function show(main: HTMLElement, slide: Block[]) {
+  for (const el of children(main)) el.hidden = true;
+  for (const list of stepLists(main)) for (const li of children(list)) li.hidden = true;
+  for (const b of slide) {
+    b.el.hidden = false;
+    if (b.list) b.list.hidden = false;
+  }
+  // Hidden step boxes do not advance the CSS counter, so start each list at
+  // the number of the first box on this slide.
+  for (const list of stepLists(main)) {
+    const first = children(list).findIndex((li) => !li.hidden);
+    list.style.counterReset = first > 0 ? `step ${first}` : "";
+  }
 }
 
 export function PresentToggle() {
@@ -70,27 +141,37 @@ export function Presenter() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [total, setTotal] = useState(0);
+  const slides = useRef<Block[][]>([]);
+  const at = useRef(0);
 
   const apply = useCallback((i: number) => {
     const main = document.getElementById("main");
-    if (!main) return;
-    const slides = slidesOf(main);
-    const at = Math.min(Math.max(i, 0), slides.length - 1);
-    slides.forEach((g, n) => g.forEach((el) => (el.hidden = n !== at)));
-    setIndex(at);
-    setTotal(slides.length);
+    if (!main || !slides.current.length) return;
+    const n = Math.min(Math.max(i, 0), slides.current.length - 1);
+    show(main, slides.current[n]);
+    at.current = n;
+    setIndex(n);
+    setTotal(slides.current.length);
     window.scrollTo(0, 0);
   }, []);
 
-  const clear = useCallback(() => {
-    const main = document.getElementById("main");
-    if (main) for (const el of Array.from(main.children) as HTMLElement[]) el.hidden = false;
-  }, []);
+  // Cut the page into slides, keeping the reader on `i`.
+  const cut = useCallback(
+    (i: number) => {
+      const main = document.getElementById("main");
+      if (!main) return;
+      slides.current = paginate(main);
+      apply(i);
+    },
+    [apply],
+  );
 
-  // (Re)cut the page on every route change while presenting; show everything otherwise.
+  // (Re)cut on every route change while presenting; show everything otherwise.
   useEffect(() => {
+    const main = document.getElementById("main");
     if (!on) {
-      clear();
+      if (main) showAll(main);
+      slides.current = [];
       return;
     }
     let start = 0;
@@ -98,8 +179,19 @@ export function Presenter() {
       if (sessionStorage.getItem(GOTO) === "last") start = 9999;
       sessionStorage.removeItem(GOTO);
     } catch {}
-    apply(start);
-  }, [on, pathname, apply, clear]);
+    cut(start);
+    // Web fonts and images change heights after the first measurement.
+    let alive = true;
+    const recut = () => alive && cut(at.current);
+    document.fonts?.ready.then(recut);
+    window.addEventListener("load", recut);
+    window.addEventListener("resize", recut);
+    return () => {
+      alive = false;
+      window.removeEventListener("load", recut);
+      window.removeEventListener("resize", recut);
+    };
+  }, [on, pathname, cut]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
