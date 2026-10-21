@@ -907,6 +907,83 @@ kbd {
   cursor: pointer;
 }
 
+/* ------------------------------------------------------------------ presentation mode
+   The site stands in for slides (see components/Presenter.tsx): larger
+   type, one "##" section at a time, a counter bottom-right. */
+.present-toggle {
+  font: inherit;
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--text-default);
+  background: var(--bg-default);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  padding: 0.28rem 0.9rem;
+  cursor: pointer;
+}
+.present-toggle:hover {
+  background: var(--bg-secondary);
+}
+.present-toggle[aria-pressed="true"] {
+  background: var(--highlighter);
+  border-color: var(--ink);
+}
+html[data-present] {
+  font-size: 128%;
+}
+html[data-present] .page {
+  max-width: 60rem;
+  padding-top: 1.5rem;
+}
+html[data-present] .page p,
+html[data-present] .page li {
+  max-width: 46rem;
+}
+html[data-present] .page h2 {
+  margin-top: 0.25rem;
+  padding-top: 0;
+  border-top: 0;
+  font-size: var(--text-page);
+}
+html[data-present] .site-footer {
+  display: none;
+}
+.present-bar {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.5rem 0.45rem 1rem;
+  background: var(--ink);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-card);
+}
+.present-bar__count {
+  font-family: var(--font-cmd);
+  font-weight: 700;
+}
+.present-bar__hint {
+  opacity: 0.8;
+}
+.present-bar__close {
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text-on-brand);
+  background: rgba(255, 255, 255, 0.14);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.7rem;
+  cursor: pointer;
+}
+.present-bar__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
 /* ------------------------------------------------------------------ footer */
 .site-footer {
   max-width: var(--measure);

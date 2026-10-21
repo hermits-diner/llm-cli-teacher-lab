@@ -6,8 +6,9 @@ import { DEFAULT_TOOL, TOOLS, type ToolId } from "@/lib/site";
 export const TOOL_KEY = "ai-lab-tool";
 const CHANGED = "ai-lab-tool-changed";
 
-// Runs in <head> before first paint so tool-specific blocks never flash.
-export const toolBootScript = `try{var t=localStorage.getItem("${TOOL_KEY}");if(t==="agy"||t==="codex"||t==="claude")document.documentElement.dataset.tool=t}catch(e){}`;
+// Runs in <head> before first paint so tool-specific blocks never flash, and so
+// presentation mode (see Presenter) is on from the first frame.
+export const toolBootScript = `try{var d=document.documentElement,t=localStorage.getItem("${TOOL_KEY}");if(t==="agy"||t==="codex"||t==="claude")d.dataset.tool=t;if(localStorage.getItem("ai-lab-present")==="1")d.dataset.present="1"}catch(e){}`;
 
 function setTool(id: ToolId) {
   document.documentElement.dataset.tool = id;

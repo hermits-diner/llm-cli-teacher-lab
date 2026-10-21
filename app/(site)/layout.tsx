@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Presenter, PresentToggle } from "@/components/Presenter";
 import { Timetable } from "@/components/Timetable";
 import { ToolPicker } from "@/components/ToolPicker";
 import { VERIFIED_ON, VERSIONS } from "@/lib/site";
@@ -17,12 +18,14 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Link href="/help" className="help-link">
           막혔어요
         </Link>
+        <PresentToggle />
         <ToolPicker />
       </header>
       <Timetable />
       <main id="main" className="page">
         {children}
       </main>
+      <Presenter />
       <footer className="site-footer">
         <p>
           {VERIFIED_ON}에 이 순서대로 직접 실행해 확인했습니다. Antigravity CLI {VERSIONS.agy}, Codex CLI{" "}
