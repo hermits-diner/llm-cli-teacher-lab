@@ -1,0 +1,218 @@
+import { VERIFIED_ON, VERSIONS } from "@/lib/site";
+
+export const metadata = { title: "직접 설치하기 (cmd)" };
+
+# LLM CLI 직접 설치하기 (cmd)
+
+<p className="lead">설치 프로그램(setup.bat)이 안 될 때, 또는 도구 하나만 따로 설치·업데이트·삭제할 때 쓰는 명령입니다. 모두 **명령 프롬프트(cmd)** 에서 합니다.</p>
+
+<Callout kind="warn" title="cmd 창인지 먼저 확인하세요">
+<kbd>Windows</kbd> 키 → `cmd` 입력 → **명령 프롬프트**. 검은 창에 `C:\Users\(내 이름)>` 처럼 보이면 맞습니다. 앞에 `PS` 가 붙어 있으면 PowerShell이라 아래 명령 중 일부가 동작하지 않습니다. 명령은 한 줄을 **통째로** 복사해 붙여넣고 <kbd>Enter</kbd> 를 누릅니다. 일부만 붙여넣으면 설치 파일의 내용이 글자로 쏟아지기만 합니다.
+</Callout>
+
+이 명령들은 각 회사의 공식 설치 명령 그대로이며, {VERIFIED_ON}에 공식 문서와 설치된 프로그램(Antigravity CLI {VERSIONS.agy}, Codex CLI {VERSIONS.codex}, Claude Code {VERSIONS.claude})으로 확인했습니다. [연수 전 준비](/prepare) 의 설치 프로그램은 같은 명령을 실행하면서 실습 폴더와 Node.js, PATH 등록까지 함께 해 주므로, 가능하면 설치 프로그램을 먼저 쓰세요.
+
+## 공통으로 알아 둘 것
+
+- **관리자 권한이 필요 없습니다.** 세 도구 모두 내 계정 폴더 안에 설치됩니다.
+- **Windows 10(1809) 이상** 이면 됩니다. Windows 11을 권장합니다. 32비트 Windows는 안 됩니다.
+- **설치가 끝나면 새 cmd 창을 엽니다.** 설치 전에 열어 둔 창은 새 프로그램을 모릅니다.
+- **Node.js와 Git은 필요 없습니다.** 실습 폴더의 한글 양식 도구만 Node.js를 쓰고, 그것은 설치 프로그램이 따로 준비합니다.
+- **Gemini CLI는 설치하지 마세요.** 2026년 6월 18일부터 개인·무료 사용자에게는 서비스가 중단되었고, 후속 도구가 Antigravity CLI입니다.
+
+| | Antigravity CLI | Codex CLI | Claude Code |
+| --- | --- | --- | --- |
+| 필요한 계정 | 개인 Gmail (만 18세 이상) | ChatGPT Plus 이상 | Claude Pro 이상 |
+| 설치되는 곳 | `%LOCALAPPDATA%\agy\bin` | `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin` | `%USERPROFILE%\.local\bin` |
+| 버전 확인 | `agy --version` | `codex --version` | `claude --version` |
+| 업데이트 | 자동. 수동은 `agy update` | `codex update` | 자동. 수동은 `claude update` |
+| 로그인 | `agy` 첫 실행 때 | `codex` 첫 실행 때 또는 `codex login` | `claude` 첫 실행 때 또는 `claude auth login` |
+| 로그아웃 | 대화창에서 `/logout` | `codex logout` | `claude auth logout` |
+
+## Antigravity CLI (agy)
+
+**설치**
+
+```cmd
+curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+이미 설치되어 있으면 "already installed" 라는 안내와 함께 그냥 끝납니다. 정상입니다.
+
+**확인** — 새 cmd 창을 열고 입력합니다. `1.4.3` 처럼 버전이 나오면 성공입니다.
+
+```cmd
+agy --version
+```
+
+**첫 실행과 로그인**
+
+```cmd
+agy
+```
+
+1. 로그인 방법에서 **Google OAuth** 를 고릅니다.
+2. 브라우저가 열리면 **개인 Gmail** 로 로그인하고 허용합니다. 학교에서 받은 Google Workspace 계정은 막힐 수 있습니다.
+3. 브라우저에 코드가 보이면 복사해 검은 창에 붙여넣습니다.
+4. 화면 테마, 약관 동의, "이 폴더를 신뢰하나요?" 에 차례로 답합니다.
+
+만 18세 미만 계정은 쓸 수 없습니다. "Eligibility check failed" 가 나오면 나이 인증이 안 된 계정, Workspace 계정, 지원하지 않는 지역 중 하나입니다.
+
+**업데이트** — 보통은 뒤에서 자동으로 됩니다. 바로 하고 싶으면:
+
+```cmd
+agy update
+```
+
+**삭제** — 공식 삭제 명령은 없습니다. 설치 프로그램이 안내하는 위치의 파일을 지우면 됩니다. 두 번째 줄은 설정과 로그인 정보까지 지웁니다.
+
+```cmd
+del "%LOCALAPPDATA%\agy\bin\agy.exe"
+```
+
+```cmd
+rmdir /s /q "%USERPROFILE%\.gemini\antigravity-cli"
+```
+
+## Codex CLI
+
+**설치** — Codex의 공식 Windows 설치 프로그램은 PowerShell 스크립트 하나뿐입니다. 아래 한 줄은 **cmd에서** PowerShell을 불러 그 스크립트를 실행하는 공식 명령이므로, PowerShell 창을 따로 열 필요가 없습니다.
+
+```cmd
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+```
+
+끝날 때 "Start Codex now? [y/N]" 라고 물으면 <kbd>N</kbd> 을 눌러도 됩니다. 설치는 이미 끝났습니다.
+
+학교 보안 정책으로 PowerShell이 막힌 컴퓨터(설치 프로그램 오류 `E07`)에서는 Codex를 설치할 수 없습니다. Antigravity CLI나 Claude Code를 고르세요.
+
+**확인** — 새 cmd 창에서:
+
+```cmd
+codex --version
+```
+
+**첫 실행과 로그인**
+
+```cmd
+codex
+```
+
+1. **Sign in with ChatGPT** 를 고릅니다.
+2. 브라우저가 열리면 ChatGPT 계정으로 로그인하고 허용합니다. **Plus 이상** 유료 요금제가 필요합니다.
+
+대화창에 들어가지 않고 로그인만 하려면 `codex login`, 로그아웃은 `codex logout` 입니다.
+
+**업데이트**
+
+```cmd
+codex update
+```
+
+안 되면 위의 설치 명령을 다시 실행해도 최신 버전으로 바뀝니다.
+
+**삭제** — 공식 삭제 명령은 없습니다. 아래 두 폴더를 지우면 됩니다. 두 번째는 설정과 로그인 정보까지 지웁니다.
+
+```cmd
+rmdir /s /q "%LOCALAPPDATA%\Programs\OpenAI\Codex"
+```
+
+```cmd
+rmdir /s /q "%USERPROFILE%\.codex"
+```
+
+## Claude Code
+
+**설치**
+
+```cmd
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+"Installation complete!" 가 나오면 끝입니다. 설치 프로그램(setup.bat)은 같은 명령에 `stable` 을 붙여 안정 버전을 설치합니다. 직접 할 때도 그렇게 하고 싶으면 `install.cmd stable` 로 바꿔 쓰면 됩니다.
+
+**확인** — 새 cmd 창에서:
+
+```cmd
+claude --version
+```
+
+설치 상태를 자세히 점검하려면 `claude doctor` 를 실행합니다.
+
+**첫 실행과 로그인**
+
+```cmd
+claude
+```
+
+1. 브라우저가 열리면 Claude 계정으로 로그인하고 허용합니다. **Pro 이상** 이 필요하며, 무료 요금제로는 쓸 수 없습니다.
+2. 브라우저에 코드가 보이면 복사해 검은 창의 "Paste code here" 자리에 붙여넣습니다. "Login successful" 이 나오면 끝입니다.
+
+대화창에 들어가지 않고 로그인만 하려면 `claude auth login`, 로그아웃은 `claude auth logout` 입니다.
+
+**업데이트** — 보통은 뒤에서 자동으로 됩니다. 바로 하고 싶으면:
+
+```cmd
+claude update
+```
+
+**삭제** — 공식 문서는 PowerShell 명령으로 안내합니다. 아래는 같은 파일을 cmd에서 지우는 명령입니다. 세 번째와 네 번째 줄은 설정과 로그인 정보까지 지웁니다.
+
+```cmd
+del "%USERPROFILE%\.local\bin\claude.exe"
+```
+
+```cmd
+rmdir /s /q "%USERPROFILE%\.local\share\claude"
+```
+
+```cmd
+rmdir /s /q "%USERPROFILE%\.claude"
+```
+
+```cmd
+del "%USERPROFILE%\.claude.json"
+```
+
+## 다른 설치 방법 (참고)
+
+보통은 위의 명령으로 충분합니다. 다른 방법이 익숙한 분을 위해 공식 문서에 있는 것만 적어 둡니다.
+
+| 방법 | Antigravity CLI | Codex CLI | Claude Code |
+| --- | --- | --- | --- |
+| WinGet | 없음 | 공식 지원 없음 | `winget install Anthropic.ClaudeCode` (자동 업데이트 안 됨) |
+| npm (Node.js 22 이상 필요) | 없음 | `npm install -g @openai/codex` | `npm install -g @anthropic-ai/claude-code` |
+
+학교 PC에는 WinGet이 없는 경우가 있습니다. 이 사이트는 WinGet과 npm 방법을 시험하지 않았습니다.
+
+## 안 될 때
+
+**"The token '&&' is not a valid statement separator"** — PowerShell에 붙여넣었습니다. 창을 닫고 cmd를 여세요.
+
+**"'irm'은(는) 내부 또는 외부 명령 … 이 아닙니다"** — cmd에 PowerShell 전용 명령을 넣었습니다. 이 페이지의 명령은 모두 cmd용이므로, 다른 곳에서 복사한 명령일 가능성이 큽니다.
+
+**"'agy'(또는 codex, claude)은(는) 내부 또는 외부 명령 … 이 아닙니다"** — 설치는 됐지만 이 창이 모르는 상태입니다. 새 cmd 창을 여세요. 그래도 안 되면 전체 경로로 실행해 보세요.
+
+```cmd
+"%LOCALAPPDATA%\agy\bin\agy.exe" --version
+```
+
+```cmd
+"%LOCALAPPDATA%\Programs\OpenAI\Codex\bin\codex.exe" --version
+```
+
+```cmd
+"%USERPROFILE%\.local\bin\claude.exe" --version
+```
+
+전체 경로로는 되는데 이름만으로는 안 되면 PATH에 등록되지 않은 것입니다. [연수 전 준비](/prepare) 의 설치 프로그램을 한 번 더 실행하면 PATH 등록만 추가로 해 줍니다.
+
+**`< was unexpected at this time`** 또는 **`curl: (22) … 403`** — 설치 파일 대신 차단 안내 페이지를 받았습니다. 학교망이 다운로드 주소를 막는 경우입니다. 휴대폰 핫스팟으로 바꿔 다시 하세요.
+
+**"The process cannot access the file"** — 백신 프로그램이 내려받는 파일을 검사하는 중입니다. 잠시 뒤 다시 실행하세요.
+
+더 많은 오류는 [막혔어요](/help) 페이지에 있습니다.
+
+<Callout kind="check" title="설치가 끝났으면">
+바탕화면 `ai-lab` 폴더의 `start-…cmd` 로 실습을 시작합니다. 실습 폴더가 없으면 [연수 전 준비](/prepare) 의 설치 프로그램으로 받거나, [실습 폴더 zip](/ai-lab.zip) 을 직접 받아 바탕화면에 `ai-lab` 폴더를 만들고 그 안에 풀어 주세요.
+</Callout>

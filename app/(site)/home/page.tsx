@@ -91,42 +91,42 @@ export default function Home() {
           <tr>
             <td>연수 전</td>
             <td>
-              <Link href="/intro">LLM CLI 알아보기</Link>
+              <Link href="/intro">📖 LLM CLI 알아보기</Link>
             </td>
             <td>어떤 도구이고 어떻게 일하는지 (5분 읽기)</td>
           </tr>
           <tr>
             <td>연수 전</td>
             <td>
-              <Link href="/prepare">준비</Link>
+              <Link href="/prepare">🧰 준비</Link>
             </td>
             <td>계정 준비, 한 줄 설치, 로그인 (30분)</td>
           </tr>
           <tr>
             <td>0–15분</td>
             <td>
-              <Link href="/start">1교시 첫 만남</Link>
+              <Link href="/start">👋 1교시 첫 만남</Link>
             </td>
             <td>AI에게 말 걸기, 허락 질문 읽는 법</td>
           </tr>
           <tr>
             <td>15–35분</td>
             <td>
-              <Link href="/mission-1">2교시 웹페이지</Link>
+              <Link href="/mission-1">🌐 2교시 웹페이지</Link>
             </td>
             <td>학급 안내 페이지 만들기, Netlify에 올리기</td>
           </tr>
           <tr>
             <td>35–70분</td>
             <td>
-              <Link href="/mission-2">3교시 가정통신문</Link>
+              <Link href="/mission-2">📄 3교시 가정통신문</Link>
             </td>
             <td>메모로 한글 양식 채우기</td>
           </tr>
           <tr>
             <td>70–90분</td>
             <td>
-              <Link href="/wrap-up">4교시 나누고 마무리</Link>
+              <Link href="/wrap-up">🎉 4교시 나누고 마무리</Link>
             </td>
             <td>결과물 갤러리, 업무에 쓰는 법 정리</td>
           </tr>
@@ -143,6 +143,9 @@ export default function Home() {
         </li>
         <li>
           <Link href="/commands">도구별 명령어와 사용 예시</Link> — 세 도구의 슬래시(/) 명령, 키, 모델
+        </li>
+        <li>
+          <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때 쓰는 도구별 설치·확인·업데이트 명령
         </li>
       </ul>
 
