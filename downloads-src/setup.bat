@@ -3,7 +3,7 @@ setlocal EnableExtensions DisableDelayedExpansion
 title AI Lab setup
 rem ==================================================================
 rem  AI Lab setup - AI agent coding for teachers (LLM CLI)
-rem  https://llm-cli-teacher-lab.vercel.app
+rem  https://cli-lab.vercel.app
 rem
 rem  Keep this file ASCII-only: cmd.exe reads batch files in the OEM
 rem  code page, so Korean text breaks the parser. Line endings are
@@ -12,7 +12,7 @@ rem  Paths are never used inside ( ) blocks: a ")" in a user name
 rem  would end the block early.
 rem ==================================================================
 
-set "AL_SITE=https://llm-cli-teacher-lab.vercel.app"
+set "AL_SITE=https://cli-lab.vercel.app"
 set "AL_LAB="
 set "AL_SELF=%~f0"
 rem test-only overrides (local server / throwaway folder). AI_LAB_NO_ENV=1

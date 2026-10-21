@@ -2,7 +2,7 @@
 
 중고등 교사(초보)를 위한 90분 실습 사이트입니다. 교사가 이 사이트를 순서대로 따라 하면 결과물 두 가지를 얻습니다. 하나는 Vercel에 올린 웹페이지이고, 다른 하나는 메모로 채운 가정통신문(.hwpx)입니다.
 
-- 사이트: https://llm-cli-teacher-lab.vercel.app
+- 사이트: https://cli-lab.vercel.app (예전 주소 https://llm-cli-teacher-lab.vercel.app 도 같은 사이트로 열립니다)
 - 도구: Antigravity CLI(`agy`), Codex CLI, Claude Code. 교사마다 하나를 고릅니다.
 - 설치는 cmd에서만 합니다. 한 줄 명령을 쓰거나 `setup.bat` 파일을 받아 실행합니다.
 - 작업 기록과 결정 이유: [WORKLOG.md](WORKLOG.md)

@@ -544,3 +544,18 @@
   - 사용자 환경변수 `PYTHONUTF8=1`은 이미 있었다. `HKCU\Environment` 키의 마지막 변경 시각이 2026-10-20 15:20이라, 이번 시험이 바꾼 것이 아니다.
   - 이 PC의 `~/.codex/config.toml` 기본 모델(`gpt-5.6-sol`)과 `verify-missions.mjs` 기본값(`gpt-6-luna`)은 지금 ChatGPT 계정에서 거부된다. 이 PC의 Codex 0.154.0이 쓸 수 있는 모델은 `gpt-5.6-terra`·`gpt-5.6-luna`였다(`codex debug models`). 시험은 `-m gpt-5.6-terra`로 했다. 교사의 새 설치는 개인 설정 파일이 없어 해당 없음.
   - `Stop`한 백그라운드 작업이라도 Windows에서는 자식 `node` 프로세스가 남을 수 있다. 다음에 같은 포트를 쓸 때는 포트 점유 프로세스부터 확인할 것.
+
+### 25. 짧은 주소 cli-lab.vercel.app
+
+- 요청: 웹 주소(`llm-cli-teacher-lab.vercel.app`)가 길다. 사용자가 후보 중 `cli-lab`을 골랐다.
+- 한 것
+  - 비어 있는 후보를 `curl`로 찾았다(`DEPLOYMENT_NOT_FOUND`): cli-lab, clilab, aicli, ssam-ai, edu-cli.
+  - Vercel 프로젝트 `llm-cli-teacher-lab`의 Settings → Domains → Add Existing으로 `cli-lab.vercel.app`을 Production에 연결했다(Valid Configuration).
+    - Vercel CLI는 토큰 만료라 쓰지 못했다.
+    - Vercel MCP는 같은 팀 ID로도 이 프로젝트를 찾지 못했다(404).
+    - 그래서 로그인된 Chrome 대시보드에서 연결했다.
+  - **예전 주소는 그대로 둔다.** 이미 나눠 준 setup.bat과 한 줄 설치 명령이 예전 주소로 `ai-lab.zip`을 받기 때문이다.
+  - 사이트 주소를 짧은 주소로 바꿨다: `site.config.json`(준비 페이지의 한 줄 설치 명령·표지 주소), setup.bat의 `AL_SITE`, README, 샌드박스 설정.
+  - 표지 QR(`public/images/site-qr.png`)을 `qrcode@1.5.4`로 같은 모양(180×180, 여백 0, 흑백)으로 다시 만들었다. `jsqr`로 해독해 `https://cli-lab.vercel.app`이 나오는 것을 확인했다.
+- 확인: 짧은 주소에서 `/`, `/prepare`, `/setup.bat`, `/ai-lab.zip` 모두 200.
+- 삽질: Git Bash의 `sed -i`가 setup.bat의 CRLF를 LF로 바꿨다(CR 586 → 0). `perl -pi -e 's/\r?\n/\r\n/'`로 되돌렸다. `.gitattributes`가 `*.bat eol=crlf`라 커밋에는 영향이 없지만, 작업본도 CRLF로 맞춰 둔다.
