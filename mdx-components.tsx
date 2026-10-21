@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { Callout } from "@/components/Callout";
 import { Cmd } from "@/components/Cmd";
 import { ForTool, ToolText } from "@/components/ForTool";
+import { More } from "@/components/More";
 import { Prompt } from "@/components/Prompt";
 import { Step, Steps } from "@/components/Steps";
 
@@ -31,6 +32,7 @@ const components: MDXComponents = {
   Callout,
   ForTool,
   ToolText,
+  More,
   Steps,
   Step,
   a: ({ href = "", children, ...rest }) =>

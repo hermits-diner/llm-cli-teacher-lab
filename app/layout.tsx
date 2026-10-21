@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Gaegu, Hahmlet, Inter, Noto_Sans_KR } from "next/font/google";
+import { Gaegu, Gothic_A1, Inter, Noto_Sans_KR } from "next/font/google";
 import { toolBootScript } from "@/components/ToolPicker";
 import { DEFAULT_TOOL } from "@/lib/site";
 import "./globals.css";
 
 // Type roles (see the tokens at the top of globals.css):
 //   body    Inter for Latin and digits, Noto Sans KR for Hangul
-//   display Hahmlet, the serif of a printed school notice, for titles
+//   display Gothic A1 in heavy weights, a plain sans for titles (no serif)
 //   pen     Gaegu, a teacher's handwriting, for the few marginal labels
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const noto = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap", variable: "--font-noto" });
-const hahmlet = Hahmlet({ subsets: ["latin"], weight: ["600", "700"], display: "swap", variable: "--font-hahmlet" });
+const gothic = Gothic_A1({ subsets: ["latin"], weight: ["700", "800"], display: "swap", variable: "--font-gothic" });
 const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", variable: "--font-gaegu" });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="ko"
       data-tool={DEFAULT_TOOL}
-      className={`${inter.variable} ${noto.variable} ${hahmlet.variable} ${gaegu.variable}`}
+      className={`${inter.variable} ${noto.variable} ${gothic.variable} ${gaegu.variable}`}
       suppressHydrationWarning
     >
       <head>

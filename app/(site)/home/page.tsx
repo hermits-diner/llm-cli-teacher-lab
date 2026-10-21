@@ -23,8 +23,7 @@ export default function Home() {
           AI가 파일을 만듭니다
         </h1>
         <p className="lead">
-          명령 프롬프트에서 AI에게 일을 시켜 보는 90분 실습입니다. 코딩은 몰라도 됩니다. 이 사이트를 순서대로
-          따라 하면 웹페이지 하나와 가정통신문 한 장이 남습니다.
+          코딩을 몰라도 됩니다. 순서대로 따라 하면 90분 뒤 웹페이지 하나와 가정통신문 한 장이 남습니다.
         </p>
 
         <figure className="demo" aria-label="실습 화면 예시">
@@ -107,14 +106,14 @@ export default function Home() {
             <td>
               <Link href="/start">👋 1교시 첫 만남</Link>
             </td>
-            <td>AI에게 말 걸기, 허락 질문 읽는 법</td>
+            <td>AI에게 말 걸기, 결재 요청 읽는 법</td>
           </tr>
           <tr>
             <td>15–35분</td>
             <td>
               <Link href="/mission-1">🌐 2교시 웹페이지</Link>
             </td>
-            <td>학급 안내 페이지 만들기, Netlify에 올리기</td>
+            <td>학급 안내 페이지 만들어 인터넷에 올리기</td>
           </tr>
           <tr>
             <td>35–70분</td>
@@ -128,7 +127,7 @@ export default function Home() {
             <td>
               <Link href="/wrap-up">🎉 4교시 나누고 마무리</Link>
             </td>
-            <td>결과물 갤러리, 업무에 쓰는 법 정리</td>
+            <td>갤러리 구경, 내일 쓸 곳 정하기</td>
           </tr>
         </tbody>
       </table>
@@ -136,21 +135,21 @@ export default function Home() {
       <h2>연수 뒤에도 보는 참고 자료</h2>
       <ul>
         <li>
-          <Link href="/intro">LLM CLI 알아보기</Link> — 어떤 도구이고 어떻게 일하는지
+          <Link href="/intro">LLM CLI 알아보기</Link> — 5분 개요
         </li>
         <li>
-          <Link href="/files">만들 수 있는 파일과 부탁 예시</Link> — 수업·업무에 쓰는 파일 형식별 부탁 문장
+          <Link href="/files">만들 수 있는 파일과 부탁 예시</Link> — 수업·업무용 부탁 문장 모음
         </li>
         <li>
-          <Link href="/commands">도구별 명령어와 사용 예시</Link> — 세 도구의 슬래시(/) 명령, 키, 모델
+          <Link href="/commands">도구별 명령어와 사용 예시</Link> — 도구 안에서 쓰는 명령과 AI 두뇌(모델)
         </li>
         <li>
-          <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때 쓰는 도구별 설치·확인·업데이트 명령
+          <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때
         </li>
       </ul>
 
       <h2>어떤 도구를 쓸까요</h2>
-      <p>셋 다 하는 일은 같습니다. 이미 쓰고 있는 구독을 따라 고르세요. 고른 도구에 맞춰 사이트의 모든 설명이 바뀝니다.</p>
+      <p>쓰는 법은 셋 다 같습니다. 이미 쓰는 구독에 맞춰 고르세요.</p>
       <ul className="tools">
         {TOOLS.map((t) => (
           <li key={t.id} className="tool">

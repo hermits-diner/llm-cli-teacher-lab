@@ -13,8 +13,8 @@
      redpen / stamp     cautions, and the red "확인" stamp on done steps
      cmd-*              Windows cmd (Campbell scheme), so blocks match
                         the teacher's own screen
-   Type roles: body Inter + Noto Sans KR, display Hahmlet (the serif of a
-   printed notice), pen Gaegu (handwriting, for a few marginal labels).
+   Type roles: body Inter + Noto Sans KR, display Gothic A1 (a heavy plain
+   sans; no serif anywhere), pen Gaegu (handwriting, for a few labels).
    ================================================================== */
 :root {
   /* primitives */
@@ -85,7 +85,7 @@
 
   /* type roles */
   --font-body: var(--font-inter), var(--font-noto), "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-  --font-display: var(--font-hahmlet), var(--font-noto), "Batang", "Apple SD Gothic Neo", serif;
+  --font-display: var(--font-gothic), var(--font-noto), "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   --font-pen: var(--font-gaegu), var(--font-noto), "Malgun Gothic", cursive;
   --font-cmd: "Cascadia Mono", Consolas, "D2Coding", "Malgun Gothic", monospace;
   --font-emoji: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
@@ -607,6 +607,55 @@ kbd {
   color: var(--ok);
 }
 
+/* ------------------------------------------------------------------ more (folded detail) */
+.more {
+  margin: var(--space-400) 0;
+  border-top: 1px dashed var(--border-strong);
+  border-bottom: 1px dashed var(--border-strong);
+}
+.more summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.1rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-pen);
+  font-size: 1.1rem;
+  color: var(--text-brand);
+}
+.more summary::-webkit-details-marker {
+  display: none;
+}
+.more summary::before {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+.more[open] summary::before {
+  content: "−";
+}
+.more summary:hover {
+  color: var(--ballpoint-deep);
+}
+.more__body {
+  padding: 0 0 var(--space-400);
+  font-size: 0.97rem;
+}
+.more__body > :first-child {
+  margin-top: 0;
+}
+.more__body > :last-child {
+  margin-bottom: 0;
+}
+
 /* ------------------------------------------------------------------ buttons */
 .button {
   display: inline-flex;
@@ -1040,9 +1089,9 @@ html[data-present] .site-footer {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 7.2vw, 5.4rem);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 .cover__kicker {
   display: block;
