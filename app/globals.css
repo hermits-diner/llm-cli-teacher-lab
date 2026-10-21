@@ -241,7 +241,7 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
   align-items: center;
   gap: 0.3rem;
   font-family: var(--font-pen);
-  font-size: 0.98rem;
+  font-size: 1.08rem;
   color: var(--text-brand);
 }
 .timetable__emoji {
@@ -978,11 +978,16 @@ kbd {
   border-color: var(--ink);
 }
 html[data-present] {
-  font-size: 128%;
+  font-size: 118%;
+}
+/* The header is only chrome while presenting: P and the counter turn the mode off. */
+html[data-present] .site-header {
+  display: none;
 }
 html[data-present] .page {
   max-width: 60rem;
-  padding-top: 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 4.5rem;
 }
 html[data-present] .page p,
 html[data-present] .page li {
@@ -1083,12 +1088,12 @@ html[data-present] .site-footer {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: center;
-  padding: clamp(1.5rem, 5vh, 4rem) 0;
+  padding: clamp(1rem, 3vh, 3rem) 0;
 }
 .cover__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 7.2vw, 5.4rem);
+  font-size: clamp(2.4rem, min(7.2vw, 10.5vh), 5.4rem);
   line-height: 1.1;
   letter-spacing: -0.04em;
   font-weight: 800;
@@ -1120,7 +1125,7 @@ html[data-present] .site-footer {
   }
 }
 .cover__sub {
-  margin: 1.5rem 0 0;
+  margin: clamp(0.75rem, 2.2vh, 1.5rem) 0 0;
   max-width: 30em;
   font-size: clamp(1.05rem, 2vw, 1.35rem);
   line-height: 1.6;
@@ -1130,12 +1135,12 @@ html[data-present] .site-footer {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-300);
-  margin-top: 2rem;
+  margin-top: clamp(1rem, 3vh, 2rem);
 }
 .cover__speaker {
   display: grid;
   gap: 0.1rem;
-  margin: 2.5rem 0 0;
+  margin: clamp(1.25rem, 3.5vh, 2.5rem) 0 0;
   padding-left: 0.9rem;
   border-left: 3px solid var(--highlighter);
   font-size: clamp(0.92rem, 1.5vw, 1.05rem);
