@@ -12,7 +12,7 @@ const plex = IBM_Plex_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: { default: "LLM CLI 교사 연수", template: "%s | LLM CLI 교사 연수" },
+  title: { default: "교사를 위한 AI 에이전트 코딩", template: "%s | 교사를 위한 AI 에이전트 코딩" },
   description: "명령창에서 AI에게 일을 시켜 보는 90분 실습. 따라 하면 웹페이지와 가정통신문이 완성됩니다.",
 };
 

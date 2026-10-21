@@ -2,7 +2,7 @@
 setlocal EnableExtensions DisableDelayedExpansion
 title AI Lab setup
 rem ==================================================================
-rem  AI Lab setup - LLM CLI teacher workshop
+rem  AI Lab setup - AI agent coding for teachers (LLM CLI)
 rem  https://llm-cli-teacher-lab.vercel.app
 rem
 rem  Keep this file ASCII-only: cmd.exe reads batch files in the OEM
@@ -61,7 +61,7 @@ rem ------------------------------------------------------------------
 cls
 echo.
 echo  ======================================================
-echo    AI Lab setup  -  LLM CLI teacher workshop
+echo    AI Lab setup  -  AI agent coding for teachers (LLM CLI)
 echo  ======================================================
 echo.
 echo    Which AI tool will you use?

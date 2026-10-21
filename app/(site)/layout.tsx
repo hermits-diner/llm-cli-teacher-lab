@@ -12,7 +12,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </a>
       <header className="site-header">
         <Link href="/home" className="site-title">
-          LLM CLI 교사 연수
+          교사를 위한 AI 에이전트 코딩
         </Link>
         <Link href="/help" className="help-link">
           막혔어요
