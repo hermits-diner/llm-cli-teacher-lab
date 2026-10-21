@@ -10,7 +10,7 @@ LLM CLI 기반 수업자료제작 및 업무활용 — 실습 폴더 (바탕화�
   mission1\site\     미션 1: AI가 웹페이지(index.html)를 만들 곳
   mission2\          미션 2: 한글 양식(.hwpx)과 메모(.txt)
   samples\           완성 예시 (막혔을 때 보세요)
-                       samples\mission1\  이 폴더를 Netlify에 올려 볼 수 있습니다
+                       samples\mission1\  이 폴더를 Vercel에 올려 볼 수 있습니다
                        samples\mission2\notice-sample.hwpx  가정통신문 완성본
   tools\             양식 채우기 도구 (지우지 마세요)
   AGENTS.md          AI가 읽는 지침 (세 도구 공통)

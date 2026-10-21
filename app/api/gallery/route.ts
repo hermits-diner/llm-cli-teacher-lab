@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSql } from "@/lib/db";
-import { TOOL_IDS, checkPublic, cleanNickname, netlifyOrigin, sameSecret, type GalleryPost } from "@/lib/gallery";
+import { TOOL_IDS, checkPublic, cleanNickname, sameSecret, vercelOrigin, type GalleryPost } from "@/lib/gallery";
 
 const fail = (status: number, message: string) => NextResponse.json({ ok: false, message }, { status });
 
@@ -40,13 +40,15 @@ export async function POST(req: NextRequest) {
   }
   const nickname = cleanNickname(body.nickname);
   if (!nickname) return fail(400, "닉네임을 1~20자로 적어 주세요.");
-  const origin = netlifyOrigin(body.url);
-  if (!origin) return fail(400, "https://이름.netlify.app 형태의 Netlify 주소만 올릴 수 있습니다.");
+  const origin = vercelOrigin(body.url);
+  if (!origin) return fail(400, "https://이름.vercel.app 형태의 Vercel 주소만 올릴 수 있습니다.");
   const tool = TOOL_IDS.find((t) => t === body.tool);
   if (!tool) return fail(400, "도구를 골라 주세요.");
 
   const status = await checkPublic(origin);
-  if (status === "private") return fail(400, "사이트가 아직 비공개입니다. Netlify에서 Make public 을 눌러 주세요.");
+  if (status === "private") {
+    return fail(400, "다른 사람은 열 수 없는 주소입니다. Vercel 프로젝트 화면의 Visit 버튼으로 연 짧은 주소를 올려 주세요.");
+  }
   if (status === "missing") return fail(400, "그 주소에 사이트가 없습니다. 주소를 다시 확인하세요.");
   if (status === "unreachable") return fail(400, "사이트에 접속할 수 없습니다. 주소를 다시 확인하세요.");
 

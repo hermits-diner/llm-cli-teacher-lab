@@ -194,7 +194,7 @@ function GalleryForm({ codeRequired, onPosted }: { codeRequired: boolean; onPost
       </label>
       <label>
         내 페이지 주소
-        <input name="url" required inputMode="url" placeholder="https://our-class.netlify.app" autoComplete="off" />
+        <input name="url" required inputMode="url" placeholder="https://our-class.vercel.app" autoComplete="off" />
       </label>
       <label>
         쓴 도구

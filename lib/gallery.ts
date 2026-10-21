@@ -23,8 +23,8 @@ export function cleanNickname(raw: unknown): string | null {
   return length >= 1 && length <= 20 ? name : null;
 }
 
-// Only https://<name>.netlify.app is accepted; returns the origin to store.
-export function netlifyOrigin(raw: unknown): string | null {
+// Only https://<name>.vercel.app is accepted; returns the origin to store.
+export function vercelOrigin(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
   let text = raw.trim();
   if (!/^[a-z]+:\/\//i.test(text)) text = `https://${text}`;
@@ -36,15 +36,19 @@ export function netlifyOrigin(raw: unknown): string | null {
   }
   if (url.protocol !== "https:" || url.username || url.password || url.port) return null;
   const host = url.hostname.toLowerCase();
-  if (!/^[a-z0-9-]+\.netlify\.app$/.test(host)) return null;
+  if (!/^[a-z0-9-]+\.vercel\.app$/.test(host)) return null;
   return `https://${host}`;
 }
 
-// The page must be reachable and public; Netlify answers 401/403 for private sites.
+// The page must be reachable and public. A protected deployment URL (the long
+// one at the top of the project page) redirects visitors to vercel.com to log in.
 export async function checkPublic(origin: string): Promise<"ok" | "private" | "missing" | "unreachable"> {
   try {
     const res = await fetch(origin, { method: "HEAD", redirect: "manual", signal: AbortSignal.timeout(3000) });
     if (res.status === 401 || res.status === 403) return "private";
+    if (res.status >= 300 && res.status < 400 && /^https:\/\/vercel\.com\//.test(res.headers.get("location") ?? "")) {
+      return "private";
+    }
     if (res.status === 404) return "missing";
     return res.status < 400 ? "ok" : "unreachable";
   } catch {

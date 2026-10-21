@@ -174,7 +174,7 @@ if "%AL_TOOL%"=="check" call :net "https://chatgpt.com"
 if "%AL_TOOL%"=="check" call :net "https://releases.openai.com"
 if "%AL_TOOL%"=="check" call :net "https://github.com"
 if "%AL_TOOL%"=="check" call :net "https://antigravity.google"
-call :net "https://app.netlify.com"
+call :net "https://vercel.com"
 if "%AL_TOOL%"=="codex" call :check_ps
 if "%AL_TOOL%"=="check" call :check_ps
 if defined AL_NET_FAIL goto :net_bad

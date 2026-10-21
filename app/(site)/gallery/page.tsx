@@ -9,7 +9,7 @@ export default function GalleryPage() {
     <>
       <h1>결과물 갤러리</h1>
       <p className="lead">
-        2교시에 Netlify에 올린 웹페이지 주소를 올려 주세요. 다른 선생님들의 페이지를 휴대폰으로 열어 구경할 수
+        2교시에 Vercel에 올린 웹페이지 주소를 올려 주세요. 다른 선생님들의 페이지를 휴대폰으로 열어 구경할 수
         있습니다. 목록은 10초마다 새로 고쳐집니다.
       </p>
       <div className="callout callout--warn">

@@ -63,7 +63,7 @@ export default function Home() {
             sizes="(min-width: 1024px) 45vw, 100vw"
           />
           <figcaption>
-            <strong>2교시</strong> 학급 안내 웹페이지. Netlify에 올려 주소로 공유합니다.
+            <strong>2교시</strong> 학급 안내 웹페이지. Vercel에 올려 주소로 공유합니다.
           </figcaption>
         </figure>
         <figure className="result">

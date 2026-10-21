@@ -362,3 +362,69 @@
   - 32비트 Windows에 세 AI 도구가 설치되는지는 확인하지 않았다. 안 되면 E05로 나온다.
   - 이 PC에는 agy가 이미 설치되어 있어, 설치 프로그램은 "already installed"로 끝났다. 새 PC에서 agy를 설치하는 경로는 이번에 바꾸지 않았고 다시 시험하지도 않았다.
   - Node.js 없이 3교시를 대신하는 방법(예: 완성 예시 사용)은 이번에 만들지 않았다.
+
+## 2026-10-22
+
+### 18. 배포처를 Netlify에서 Vercel로 바꾸기: 결정과 Vercel Drop 리허설
+
+- 결정 (사용자)
+  - 2교시 배포를 Netlify Drop에서 Vercel Drop(vercel.com/drop, 2026-06 출시)으로 바꾼다.
+  - 이유
+    - 계정 하나로 마무리의 "GitHub 연결 → 자동 게시"까지 이어진다. 지금은 Netlify(2교시)와 Vercel(마무리) 두 계정이 필요하다.
+    - Netlify의 비공개 시작(2026-07-28 이후 가입 계정)과 Make public 단계가 없어진다.
+    - 무료 배포 횟수: Netlify 월 20번 안팎, Vercel Hobby 하루 100번.
+    - 연수 사이트가 이미 vercel.app이라 학교망에서 열어야 할 도메인이 하나 준다.
+  - 근거: https://vercel.com/docs/drop , https://vercel.com/kb/guide/vercel-drop-vs-netlify-drop , https://vercel.com/docs/deployment-protection
+- 리허설 방법
+  - hermit-s-diner 팀(Hobby)에 로그인된 Chrome으로 `practice-pack/samples/mission1/index.html`을 올렸다.
+  - 공개 여부는 로그인 없는 curl로 확인했다.
+- 리허설 결과
+  - 첫 배포: 파일 선택 → 팀·프로젝트 이름 → Deploy. 약 10초.
+  - 이름 기본값은 `<title>`에서 한글을 뺀 값이다. 샘플은 "2학년 3반 ..." → `2-3`.
+  - 한글 이름은 입력 즉시 막힌다: "A Project name can only contain up to 100 lowercase letters, digits, and the characters '.', '_', and '-'."
+  - 이미 쓰인 주소는 경고 없이 단어가 붙는다. `class-notice`(남의 사이트, 200) → `class-notice-theta.vercel.app`.
+  - 성공 화면에는 주소가 글자로 없다. 미리보기 그림(짧은 주소 링크)과 "Continue to Project"만 있다.
+  - 짧은 주소(Domains) `class-notice-theta.vercel.app` → 200, 한글 정상.
+  - 긴 주소(Deployment) `class-notice-9ullp14jx-hermit-s-diner.vercel.app` → 302 `vercel.com/sso-api`(로그인). 프로젝트 화면에서 긴 주소가 짧은 주소보다 **위**에 있다.
+  - Visit 버튼은 짧은 주소로 간다.
+  - 다시 올리기: 프로젝트 화면에 폴더를 끌어다 놓으면 "Deploy a new production version of class-notice" 오버레이가 뜨고, 같은 짧은 주소가 갱신된다. 배포 기록 2건, 새 프로젝트 없음. Vercel 비교 글의 "드롭할 때마다 새 프로젝트"는 vercel.com/drop·/new에 놓을 때의 이야기다.
+  - `index.html`이 없어도 된다. `우리반-안내.html` 하나만 올리면 Root (/) 칸에 자동 선택되고 "No index.html found, so this page will load at your site's root."가 뜬다. `/` 200, `/우리반-안내.html` → 308 → `/우리반-안내` 200, `/index.html` 308.
+  - 가입 방법: Google, GitHub, ChatGPT, Apple, 이메일.
+- 연수 페이지에 반영할 것
+  - 프로젝트 이름은 영문 소문자·숫자·하이픈으로 직접 짓게 한다. 기본값(`2-3`)은 서로 겹친다.
+  - 공유 주소는 "Visit 버튼으로 열린 주소"로 안내한다. 긴 주소는 로그인 창이 뜬다는 항목을 막혔어요에 넣는다.
+  - 갤러리 검사를 `.vercel.app`으로 바꾸고, 302 → `vercel.com/sso-api`도 "공유용 짧은 주소가 아니다"로 안내한다.
+  - 마무리 예시 `class-notice.vercel.app`은 남의 사이트이므로 바꾼다.
+- 삽질
+  - 자바스크립트로 만든 drop 이벤트(DataTransfer + File)는 오버레이까지만 뜨고 업로드되지 않는다. 실제 파일 시스템 항목이 필요한 것으로 보인다. 다시 올리기는 사용자가 직접 끌어다 놓아 시험했다.
+  - `AppData\Local\Temp` 아래 폴더를 끌어다 놓으면 Chrome이 "시스템 파일이 포함되어 있어 열 수 없다"며 막는다. `바탕 화면\ai-lab-rehearsal\mission1\site`로 옮겨 다시 하니 됐다. 선생님들의 `바탕 화면\ai-lab\mission1\site`도 같은 조건이다.
+  - Chrome 확장의 file_upload는 이 세션 작업 폴더 안의 파일만 받는다(임시 폴더·바탕 화면 거부). 프로젝트 안 임시 폴더에 복사해 시험하고 지웠다.
+  - Vercel MCP는 다른 팀에 연결되어 있어 hermit-s-diner 프로젝트가 보이지 않았다. 대시보드로 확인했다.
+  - 가입 화면을 Playwright로 보던 중, 누르지 않았는데 Google 로그인 화면으로 넘어갔다. 아무것도 입력하지 않았다.
+- 하지 않은 것 / 남은 것
+  - 새 계정 실제 가입(휴대폰 인증 여부 등)은 하지 않았다.
+  - 미션 1 심화(CLI 배포)를 Vercel CLI로 바꾸는 것은 아직 시험하지 않았다.
+  - 정리: 바탕 화면 `ai-lab-rehearsal` 폴더는 휴지통으로 보냈다. Vercel 프로젝트 `class-notice`, `llm-cli-rehearsal-root`는 되돌릴 수 없는 삭제라 사용자가 직접 지우기로 했다(Settings → Delete Project).
+
+### 19. 연수 페이지를 Vercel 기준으로 바꾸기 (18번 리허설 반영)
+
+- 바꾼 것
+  - 2교시(`mission-1`): 배포 단계를 Vercel Drop 다섯 단계로 바꿨다. 이름 규칙(영문 소문자·숫자·하이픈), 축하 화면의 미리보기 그림으로 주소 열기, "공유할 주소는 짧은 주소" 경고, 접기(이름 겹침·다시 올리기·index.html 아님·Hobby 하루 100번·비상업)를 넣었다.
+  - 2교시 "집에서 해 보기"(netlify-cli로 AI가 배포)는 사용자 결정으로 뺐다. Vercel CLI 로그인 흐름을 시험하지 않았기 때문이다.
+  - 준비(`prepare`): "Netlify 가입하기" → "Vercel 가입하기"(`#prep-vercel`). 공개 설정 접기는 지웠다.
+  - 막혔어요(`help`): Netlify 두 항목을 지우고 Vercel 네 항목을 넣었다. 긴 주소 로그인 화면, 이름 칸 빨간색, 시스템 파일 때문에 못 엶, 다시 올렸더니 주소가 하나 더 생김.
+  - 마무리(`wrap-up`): 다음 단계를 "2교시 프로젝트에 Connect Git으로 저장소 연결, 주소 그대로"로 줄였다. Netlify와의 횟수 비교 문장과 남의 사이트인 `class-notice.vercel.app` 예시를 지웠다.
+  - 갤러리: `netlifyOrigin` → `vercelOrigin`(`https://이름.vercel.app`만 받음). `checkPublic`은 3xx이면서 `Location`이 `https://vercel.com/`으로 시작하면 `private`으로 판정한다. 안내 문구는 "Visit 버튼으로 연 짧은 주소를 올려 주세요".
+  - 그 밖의 문구: home, gallery, files, README, practice-pack `README.txt`·`_AGENTS.md`. setup.bat 연결 점검은 `app.netlify.com` → `vercel.com`(HEAD 200 확인).
+- 왜 이렇게 했나
+  - 긴 주소를 형식(`-<9자>-<팀>.vercel.app`)으로 거르지 않고 실제 응답으로 판정했다. 프로젝트 이름에 하이픈이 많으면 형식만으로는 잘못 거를 수 있다.
+  - 막혔어요의 시스템 폴더 항목은 확인한 경우(임시 폴더 막힘, 바탕 화면 아래 폴더는 됨)만 적었다. 압축 파일 안에서 끌어다 놓는 경우 등은 시험하지 않아 넣지 않았다.
+- 확인
+  - Node 24로 `lib/gallery.ts`를 직접 불러 실제 주소로 시험했다. 짧은 주소 `ok`, 긴 주소 `private`(302 → vercel.com/sso-api), 없는 주소 `missing`, netlify·`http://`·`evil.vercel.app.example.com`·사용자 정보·포트 → 거부.
+  - `npm run typecheck` 통과, `npm run build` 통과. `public/setup.bat`은 "CRLF, ASCII" 검사를 통과했다. setup.bat 작업본도 CR 415 = LF 415.
+  - `next start`로 mission-1·prepare·help·wrap-up·gallery·home·files 모두 200, Netlify 문구 없음. 2교시 배포 단계 화면을 캡처해 확인했다.
+- 남은 것
+  - 첫 로딩 한 번에 React 418(하이드레이션 불일치) 콘솔 오류가 났다. 같은 페이지를 다시 열거나 브라우저를 새로 띄우면 재현되지 않았고, 수정 전 운영 사이트에서도 나지 않았다. 원인은 확정하지 못했다. 배포 후 운영에서 한 번 더 본다.
+  - 홈 결과 카드 `result-web.png`(학급 안내 페이지 자체)와 2교시 사진 `photos/mission-1.jpg`(휴대폰·노트북)에는 Netlify 화면이 없어 그대로 둔다.
+  - Connect Git(마무리 다음 단계)은 문서 기준이고 실제로 시험하지 않았다.
+  - 커밋·배포는 하지 않았다.
