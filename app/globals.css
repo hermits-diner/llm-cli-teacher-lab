@@ -143,7 +143,7 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 }
 .timetable__row {
   display: grid;
-  grid-template-columns: repeat(5, minmax(7rem, 1fr));
+  grid-template-columns: repeat(6, minmax(7rem, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;

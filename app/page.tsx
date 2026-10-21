@@ -43,6 +43,9 @@ export default function Home() {
           <Link className="button button--quiet" href="/start">
             이미 설치했어요
           </Link>
+          <Link className="button button--quiet" href="/intro">
+            LLM CLI가 뭔가요?
+          </Link>
         </div>
       </section>
 
@@ -82,6 +85,13 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>연수 전</td>
+            <td>
+              <Link href="/intro">LLM CLI 알아보기</Link>
+            </td>
+            <td>어떤 도구이고 어떻게 일하는지 (5분 읽기)</td>
+          </tr>
           <tr>
             <td>연수 전</td>
             <td>

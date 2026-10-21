@@ -41,6 +41,7 @@ export const DEFAULT_TOOL: ToolId = "agy";
 // The 90-minute session, in order. Shown as the timetable strip on every page.
 // `also` lists other routes that belong to the same period.
 export const PERIODS: { href: string; also?: string[]; label: string; title: string; time: string }[] = [
+  { href: "/intro", label: "미리 읽기", title: "LLM CLI란", time: "5분" },
   { href: "/prepare", label: "연수 전", title: "준비", time: "30분" },
   { href: "/start", label: "1교시", title: "첫 만남", time: "10분" },
   { href: "/mission-1", label: "2교시", title: "웹페이지", time: "20분" },
