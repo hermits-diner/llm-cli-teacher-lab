@@ -1,0 +1,369 @@
+import { VERIFIED_ON, VERSIONS } from "@/lib/site";
+
+export const metadata = { title: "도구별 명령어와 사용 예시" };
+
+# 도구별 명령어와 사용 예시
+
+<p className="lead">세 도구의 대화창 안에서 쓰는 명령, 키, 입력 기호를 모았습니다. 위에서 **내 도구** 를 고르면 그 도구의 자세한 표가 보입니다.</p>
+
+<Callout title="확인한 버전">
+{VERIFIED_ON}에 Antigravity CLI {VERSIONS.agy}, Codex CLI {VERSIONS.codex}, Claude Code {VERSIONS.claude} 기준으로 공식 문서와 설치된 프로그램을 대조해 확인했습니다. 도구는 자주 바뀌므로 화면이 조금 다를 수 있습니다. 확실하지 않으면 도구 안에서 `/help` 를 치거나(Codex는 빈 입력칸에서 <kbd>?</kbd>), AI에게 "지금 쓸 수 있는 명령을 알려 줘" 라고 물어보세요.
+</Callout>
+
+## 세 도구 한눈에 비교
+
+입력칸에 `/` 로 시작하는 글을 치면 **명령** 이고, 그냥 글을 치면 **AI에게 하는 부탁** 입니다. 세 도구는 쓰는 법이 거의 같습니다.
+
+| 하고 싶은 일 | Antigravity CLI | Codex CLI | Claude Code |
+| --- | --- | --- | --- |
+| 도움말 보기 | `/help` | 없음. 빈 입력칸에서 <kbd>?</kbd> | `/help` |
+| 새 대화 시작 | `/clear` | `/new` | `/clear` |
+| 이전 대화 이어가기 | `/resume` | `/resume` | `/resume` |
+| 사용량·한도 보기 | `/usage` | `/usage` | `/usage` |
+| 상태(모델·계정) 보기 | `/config` | `/status` | `/status` |
+| 허락 규칙 바꾸기 | `/permissions` | `/permissions` | `/permissions` |
+| 모델 바꾸기 | `/model` | `/model` | `/model` |
+| 계획 먼저 세우기 | `/plan` | `/plan` | `/plan` |
+| 바뀐 내용 보기 | `/diff` | `/diff` | `/diff` |
+| 이전 시점으로 되돌리기 | `/rewind` | 없음. 말로 부탁 | `/rewind` |
+| 긴 대화 요약하기 | `/compact` | `/compact` | `/compact` |
+| 지침 파일 만들기 | 없음. 말로 부탁 | `/init` → `AGENTS.md` | `/init` → `CLAUDE.md` |
+| 마지막 답 복사 | `/copy` | `/copy` | `/copy` |
+| 끝내기 | `/exit` | `/quit` | `/exit` |
+| 작업 모드 바꾸기 | <kbd>Shift</kbd>+<kbd>Tab</kbd> | <kbd>Shift</kbd>+<kbd>Tab</kbd> | <kbd>Shift</kbd>+<kbd>Tab</kbd> |
+| 진행 중 멈추기 | <kbd>Esc</kbd> | <kbd>Esc</kbd> | <kbd>Esc</kbd> |
+| 입력칸에서 줄 바꾸기 | <kbd>Shift</kbd>+<kbd>Enter</kbd> | <kbd>Ctrl</kbd>+<kbd>J</kbd> | <kbd>Shift</kbd>+<kbd>Enter</kbd> |
+| 파일 지정하기 | `@파일` | `@파일` | `@파일` |
+| 명령 바로 실행 | `!명령` | `!명령` | `!명령` |
+| AI가 읽는 지침 파일 | `AGENTS.md`, `GEMINI.md` | `AGENTS.md` | `CLAUDE.md` (없으면 `AGENTS.md`) |
+
+실습 폴더에는 `AGENTS.md` 와 `CLAUDE.md` 가 둘 다 들어 있어, 세 도구가 같은 규칙을 읽습니다.
+
+## 쓰는 모델
+
+모델은 AI의 '두뇌'입니다. 도구마다 기본 모델이 정해져 있고, `/model` 로 바꿀 수 있습니다. 연수에서는 **기본 모델 그대로** 쓰면 됩니다. 아래는 {VERIFIED_ON} 기준 각 회사의 공식 문서에서 확인한 내용입니다.
+
+| | Antigravity CLI | Codex CLI | Claude Code |
+| --- | --- | --- | --- |
+| 기본 모델 | Gemini 3.8 Flash | GPT-6.1 Sol | Claude Opus 5.5 |
+| 더 고를 수 있는 모델 | Gemini 4 Argon, Claude Opus 5.5·Sonnet 5.5 (유료 Pro·Ultra) | GPT-6 Astra, GPT-6 Sol, GPT-6 Luna (요금제에 따라 다름) | Sonnet 5.5, Haiku 5.5, Fable 5.1 |
+| 무료·기본 요금제에서 | 개인 Gmail 무료: Gemini 3.8 Flash. 2026년 11월 2일까지는 Claude 4.6 계열과 GPT-OSS도 고를 수 있음 | ChatGPT Plus: GPT-6.1 Sol과 GPT-6 Luna 중심. 무료 요금제는 Codex CLI를 쓸 수 없음 | Claude Pro: Opus·Sonnet·Haiku 5.5. Fable 5.1은 별도 사용 크레딧 필요(Max 요금제는 주간 한도의 50%까지 포함) |
+| 바꾸는 법 | `/model` (다음에도 유지), `/effort` 로 생각 깊이 | `/model` 에서 모델과 생각 깊이(추론 강도) 함께 선택 | `/model` (기본값으로 저장) |
+
+- **Antigravity CLI**: 문서는 모든 요금제의 핵심 모델을 Gemini 3.8 Flash로 안내합니다. CLI의 기본값을 따로 적은 문서는 없어서, 처음 켤 때 `/model` 로 무엇이 선택되어 있는지 한 번 확인해 보세요. Gemini 4 Argon(2026년 10월 13일 출시)은 유료 Google AI Pro·Ultra에서만 고를 수 있습니다.
+- **Codex CLI**: 2026년 9월 29일부터 GPT-6.1 Sol이 기본입니다. 예전 GPT-5.x 모델은 차례로 은퇴하고 있어 목록에서 사라질 수 있습니다.
+- **Claude Code**: 2.1.280 버전부터 요금제와 관계없이 Opus 5.5가 기본입니다. Fable 5.1은 기본값이 아니므로 직접 고를 때만 쓰이며, Pro 요금제에서는 사용 크레딧이 없으면 고를 수 없습니다.
+
+<Callout kind="warn" title="모델 이름은 자주 바뀝니다">
+위 표는 확인한 날짜 기준입니다. `/model` 목록에 다른 이름이 보이면 그 도구가 업데이트된 것입니다. 기본값을 그대로 쓰면 문제없습니다.
+</Callout>
+
+## 내 도구 자세히
+
+<ForTool tool="agy">
+
+### Antigravity CLI 명령
+
+| 명령 | 하는 일 |
+| --- | --- |
+| `/help` | 명령과 단축키 도움말. <kbd>Tab</kbd> 으로 일반·명령·단축키 탭을 오갑니다 |
+| `/clear` (= `/new`) | 대화를 지우고 새로 시작 |
+| `/resume` | 이전 대화 목록에서 골라 이어가기 |
+| `/usage` (= `/quota`) | 모델 사용 한도 보기 |
+| `/permissions` | 도구 권한 규칙 관리 |
+| `/model` | 모델 고르기. 다음에 켤 때도 유지됩니다 |
+| `/plan` | 바로 실행하지 않고 계획을 먼저 세우는 모드 |
+| `/diff` | 바뀐 내용 보기 |
+| `/rewind` (= `/undo`) | 이전 메시지 시점으로 대화와 파일 되돌리기 |
+| `/compact` | 대화를 요약해 기억 공간 확보 |
+| `/context` | 기억 공간을 얼마나 썼는지 보기 |
+| `/artifact` | AI가 만든 계획·결과물 검토 창 열기 |
+| `/copy` | 마지막 답을 클립보드에 복사 |
+| `/config` (= `/settings`) | 설정 화면 |
+| `/exit` (= `/quit`) | 끝내기 |
+
+지침 파일 만들기 명령(`/init`)은 없습니다. 지침은 `AGENTS.md` 를 직접 고치거나 AI에게 고쳐 달라고 부탁합니다.
+
+### 키와 입력 기호
+
+| 키·기호 | 하는 일 |
+| --- | --- |
+| <kbd>Esc</kbd> | 진행 중인 답변 멈추기. 자동완성 목록이 열려 있으면 목록만 닫히므로 한 번 더 누릅니다 |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | 한 번은 작업 취소, 두 번은 끝내기 |
+| <kbd>Shift</kbd>+<kbd>Tab</kbd> | 작업 모드 순환: 기본 → 수정 자동 허락 → 계획만 |
+| <kbd>Shift</kbd>+<kbd>Enter</kbd> 또는 <kbd>Ctrl</kbd>+<kbd>J</kbd> | 입력칸에서 줄 바꾸기 |
+| <kbd>↑</kbd> <kbd>↓</kbd> | 이전에 입력한 글 불러오기 |
+| <kbd>Ctrl</kbd>+<kbd>O</kbd> | AI가 실행한 도구의 자세한 내용 펼치기 |
+| <kbd>Ctrl</kbd>+<kbd>R</kbd> | 결과물 검토 창 열기 (`/artifact` 와 같음) |
+| `@` | 파일 경로 제안 창. 예: `@mission2/notice-memo.txt` |
+| `!` | 셸 모드 켜기·끄기. Windows에서는 PowerShell 명령을 실행합니다. 다시 `!` 를 치거나 <kbd>Esc</kbd> 로 나옵니다 |
+| 허락 질문에서 <kbd>y</kbd> / <kbd>n</kbd> | 허락 / 거절 |
+
+### 읽는 지침 파일
+
+작업 폴더의 `AGENTS.md`, `GEMINI.md`, `.agents/rules/*.md` 를 모두 읽어 합칩니다. 전체 공통 규칙은 `~/.gemini/AGENTS.md` 에 둡니다.
+
+### 사용 예시
+
+**시작할 때 한도 확인**
+
+```prompt
+/usage
+```
+
+**파일을 지정해 부탁** — `@` 를 치면 파일 목록이 나옵니다. 고른 뒤 이어서 부탁을 씁니다.
+
+```prompt
+@mission2/notice-memo.txt 를 읽고, 학부모님께 보낼 세 문장 안내문으로 요약해 줘.
+```
+
+**계획을 먼저 보고 실행** — 큰 일을 맡길 때 씁니다.
+
+```prompt
+/plan
+```
+
+```prompt
+mission1/site/index.html 에 '이번 주 급식' 표를 추가하려고 해. 어디를 어떻게 바꿀지 계획만 먼저 보여 줘.
+```
+
+계획이 마음에 들면 <kbd>Shift</kbd>+<kbd>Tab</kbd> 으로 기본 모드로 돌아가 "그대로 진행해 줘" 라고 합니다.
+
+**잘못 바뀐 파일 되돌리기**
+
+```prompt
+/rewind
+```
+
+목록에서 되돌아갈 시점을 고릅니다. 대화와 파일이 그때 상태로 돌아갑니다.
+
+**명령 바로 실행** — 설치 상태 같은 것을 AI를 거치지 않고 바로 확인합니다.
+
+```prompt
+!node --version
+```
+
+**나만의 규칙 추가**
+
+```prompt
+AGENTS.md 맨 아래에 '우리 학교 문서 규칙' 항목을 만들고 이렇게 적어 줘: 학교 이름은 가상중학교, 날짜는 '2026. 11. 12.(목)' 형식, 문장은 학부모님께 드리는 공손한 말투.
+```
+
+**대화가 길어져 느려질 때**
+
+```prompt
+/compact 지금까지 만든 파일 이름과 아직 남은 할 일만 남겨 줘
+```
+
+</ForTool>
+
+<ForTool tool="codex">
+
+### Codex CLI 명령
+
+| 명령 | 하는 일 |
+| --- | --- |
+| `/new` | 새 대화 시작 |
+| `/clear` | 화면을 지우고 새 대화 시작 |
+| `/resume` | 저장된 대화 이어가기 |
+| `/status` | 현재 설정, 모델, 토큰 사용량 |
+| `/usage` | 계정 사용량 보기 |
+| `/permissions` | Codex에 허락할 범위 고르기: 읽기만, 매번 묻기(권장), 자동 허락, 전체 허락 |
+| `/model` | 모델과 생각하는 깊이(추론 강도) 고르기 |
+| `/init` | `AGENTS.md` 만들기. 이미 있으면 바꾸지 않습니다 |
+| `/plan` | 계획 모드로 전환 |
+| `/diff` | 바뀐 내용 보기 |
+| `/review` | 내가 바꾼 내용을 검토해 문제 찾기 |
+| `/compact` | 대화를 요약해 기억 공간 확보 |
+| `/mention` | 파일 지정하기 (`@` 와 같음) |
+| `/copy` | 마지막 답을 클립보드에 복사 |
+| `/export` | 대화를 글 파일로 내보내기 |
+| `/logout` | 로그아웃 |
+| `/quit` (= `/exit`) | 끝내기 |
+
+`/help` 는 없습니다. 입력칸이 비어 있을 때 <kbd>?</kbd> 를 누르면 단축키 안내가 나오고, `/` 만 치면 명령 목록이 뜹니다.
+
+### 키와 입력 기호
+
+| 키·기호 | 하는 일 |
+| --- | --- |
+| <kbd>Esc</kbd> | 진행 중인 작업 멈추기 |
+| <kbd>Esc</kbd> <kbd>Esc</kbd> | 입력칸이 비어 있을 때 마지막 부탁을 고쳐서 다시 보내기 |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | 작업 중이면 멈추기, 아니면 끝내기(한 번 더 눌러 확인) |
+| <kbd>Shift</kbd>+<kbd>Tab</kbd> | 기본 모드 ↔ 계획 모드. 허락 범위는 바뀌지 않으므로 `/permissions` 로 바꿉니다 |
+| <kbd>Ctrl</kbd>+<kbd>J</kbd> | 입력칸에서 줄 바꾸기 (Windows Terminal에서는 <kbd>Shift</kbd>+<kbd>Enter</kbd> 도 됩니다) |
+| <kbd>↑</kbd> <kbd>↓</kbd> | 이전에 입력한 글 불러오기 |
+| <kbd>Ctrl</kbd>+<kbd>T</kbd> | 대화 기록 보기 |
+| <kbd>Tab</kbd> (작업 중) | 다음 부탁을 미리 써서 줄 세우기 |
+| `@` | 파일 지정. 예: `@mission2/notice-memo.txt` |
+| `!` | 뒤에 쓴 명령을 바로 실행 |
+| `$` | 스킬(미리 만든 작업 묶음) 부르기 |
+
+### 읽는 지침 파일
+
+작업 폴더의 `AGENTS.md` 를 읽습니다(폴더마다 하나, 기본 32KB까지). 전체 공통 규칙은 `~/.codex/AGENTS.md` 에 둡니다. `CLAUDE.md` 는 읽지 않습니다.
+
+### 사용 예시
+
+**시작할 때 상태 확인**
+
+```prompt
+/status
+```
+
+**허락 범위를 '매번 묻기'로** — 처음에는 이 설정이 안전합니다.
+
+```prompt
+/permissions
+```
+
+목록에서 **Ask for approval** 을 고릅니다.
+
+**파일을 지정해 부탁**
+
+```prompt
+@mission2/notice-memo.txt 를 읽고, 학부모님께 보낼 세 문장 안내문으로 요약해 줘.
+```
+
+**계획을 먼저 보고 실행**
+
+```prompt
+/plan
+```
+
+```prompt
+mission1/site/index.html 에 '이번 주 급식' 표를 추가하려고 해. 어디를 어떻게 바꿀지 계획만 먼저 보여 줘.
+```
+
+계획이 마음에 들면 <kbd>Shift</kbd>+<kbd>Tab</kbd> 으로 기본 모드로 돌아가 "그대로 진행해 줘" 라고 합니다.
+
+**잘못 바뀐 파일 되돌리기** — 되돌리기 명령이 없으므로 말로 부탁하고 `/diff` 로 확인합니다.
+
+```prompt
+방금 index.html 에 바꾼 내용을 모두 원래대로 돌려 줘. 돌린 뒤 /diff 로 확인할 수 있게 해 줘.
+```
+
+**내가 고친 파일 검토 받기**
+
+```prompt
+/review
+```
+
+**명령 바로 실행**
+
+```prompt
+!node --version
+```
+
+**나만의 규칙 추가** — 실습 폴더에는 `AGENTS.md` 가 이미 있어 `/init` 은 바꾸지 않습니다. 말로 부탁합니다.
+
+```prompt
+AGENTS.md 맨 아래에 '우리 학교 문서 규칙' 항목을 만들고 이렇게 적어 줘: 학교 이름은 가상중학교, 날짜는 '2026. 11. 12.(목)' 형식, 문장은 학부모님께 드리는 공손한 말투.
+```
+
+**대화가 길어져 느려질 때**
+
+```prompt
+/compact
+```
+
+</ForTool>
+
+<ForTool tool="claude">
+
+### Claude Code 명령
+
+| 명령 | 하는 일 |
+| --- | --- |
+| `/help` | 도움말과 명령 목록 |
+| `/clear` | 새 대화 시작. 이전 대화는 `/resume` 으로 다시 열 수 있습니다 |
+| `/resume` | 이전 대화 이어가기 |
+| `/usage` | 요금제 사용 한도와 비용 |
+| `/status` | 버전, 모델, 계정, 연결 상태 |
+| `/permissions` | 허용·확인·거부 규칙 관리 |
+| `/model` | 모델 고르기 |
+| `/init` | `CLAUDE.md` 만들기. 이미 있으면 덮어쓰지 않고 고칠 점을 제안합니다 |
+| `/memory` | 지침 파일 열어 고치기 |
+| `/plan` | 계획 모드로 들어가기 |
+| `/diff` | 작업 폴더에서 바뀐 내용 보기 |
+| `/rewind` (= `/undo`) | 대화나 파일을 이전 시점으로 되돌리기 |
+| `/compact` | 대화를 요약해 기억 공간 확보 |
+| `/context` | 기억 공간을 얼마나 썼는지 보기 |
+| `/copy` | 마지막 답을 클립보드에 복사 |
+| `/export` | 대화를 글 파일로 내보내기 |
+| `/config` | 설정 화면(화면 색, 모델 등) |
+| `/exit` (= `/quit`) | 끝내기 |
+
+### 키와 입력 기호
+
+| 키·기호 | 하는 일 |
+| --- | --- |
+| <kbd>Esc</kbd> | 진행 중인 답변 멈추기. 그때까지 한 작업은 남습니다 |
+| <kbd>Esc</kbd> <kbd>Esc</kbd> | 입력칸에 글이 있으면 지우기, 비어 있으면 되돌리기 메뉴 열기 |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | 작업 중이면 멈추기. 아니면 한 번은 입력 지우기, 두 번은 끝내기 |
+| <kbd>Shift</kbd>+<kbd>Tab</kbd> | 작업 모드 순환: 자동 → 매번 묻기 → 수정 자동 허락 → 계획만. 안 되는 창에서는 <kbd>Alt</kbd>+<kbd>M</kbd> |
+| <kbd>Shift</kbd>+<kbd>Enter</kbd> 또는 <kbd>Ctrl</kbd>+<kbd>J</kbd> | 입력칸에서 줄 바꾸기 |
+| <kbd>↑</kbd> <kbd>↓</kbd> | 이전에 입력한 글 불러오기. <kbd>Ctrl</kbd>+<kbd>R</kbd> 은 기록 검색 |
+| <kbd>Ctrl</kbd>+<kbd>O</kbd> | 진행 기록 자세히 보기 |
+| <kbd>Alt</kbd>+<kbd>V</kbd> | 복사한 그림 붙여넣기 |
+| 빈 입력칸에서 <kbd>?</kbd> | 단축키 도움말 |
+| `@` | 파일 경로 자동완성. 예: `@mission2/notice-memo.txt` |
+| `!` | 뒤에 쓴 명령을 바로 실행. 경로는 Windows에서도 슬래시(`/`)로 씁니다 |
+
+### 읽는 지침 파일
+
+작업 폴더의 `CLAUDE.md` 를 읽습니다. `CLAUDE.md` 가 없으면 `AGENTS.md` 를 대신 읽습니다. 실습 폴더의 `CLAUDE.md` 는 `@AGENTS.md` 한 줄로 `AGENTS.md` 를 불러오므로 두 파일이 함께 적용됩니다. 전체 공통 규칙은 `~/.claude/CLAUDE.md` 에 둡니다.
+
+### 사용 예시
+
+**시작할 때 상태 확인**
+
+```prompt
+/status
+```
+
+**파일을 지정해 부탁** — `@` 를 치면 파일 목록이 나옵니다.
+
+```prompt
+@mission2/notice-memo.txt 를 읽고, 학부모님께 보낼 세 문장 안내문으로 요약해 줘.
+```
+
+**계획을 먼저 보고 실행**
+
+```prompt
+/plan mission1/site/index.html 에 '이번 주 급식' 표를 추가하려고 해. 어디를 어떻게 바꿀지 계획만 먼저 보여 줘.
+```
+
+계획이 마음에 들면 <kbd>Shift</kbd>+<kbd>Tab</kbd> 으로 모드를 바꾸고 "그대로 진행해 줘" 라고 합니다.
+
+**잘못 바뀐 파일 되돌리기**
+
+```prompt
+/rewind
+```
+
+목록에서 되돌아갈 시점을 고릅니다. 대화만, 파일만, 또는 둘 다 되돌릴 수 있습니다.
+
+**명령 바로 실행**
+
+```prompt
+!node --version
+```
+
+**나만의 규칙 추가** — `/memory` 로 직접 고치거나 말로 부탁합니다.
+
+```prompt
+AGENTS.md 맨 아래에 '우리 학교 문서 규칙' 항목을 만들고 이렇게 적어 줘: 학교 이름은 가상중학교, 날짜는 '2026. 11. 12.(목)' 형식, 문장은 학부모님께 드리는 공손한 말투.
+```
+
+**대화가 길어져 느려질 때**
+
+```prompt
+/compact 지금까지 만든 파일 이름과 아직 남은 할 일만 남겨 줘
+```
+
+</ForTool>
+
+<Callout kind="check" title="함께 보면 좋은 페이지">
+무엇을 만들 수 있는지는 [만들 수 있는 파일과 부탁 예시](/files) 에, 허락 질문을 읽는 법은 [1교시](/start) 에 있습니다.
+</Callout>

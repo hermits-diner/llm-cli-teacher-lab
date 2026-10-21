@@ -130,6 +130,19 @@ export default function Home() {
         </tbody>
       </table>
 
+      <h2>연수 뒤에도 보는 참고 자료</h2>
+      <ul>
+        <li>
+          <Link href="/intro">LLM CLI 알아보기</Link> — 어떤 도구이고 어떻게 일하는지
+        </li>
+        <li>
+          <Link href="/files">만들 수 있는 파일과 부탁 예시</Link> — 수업·업무에 쓰는 파일 형식별 부탁 문장
+        </li>
+        <li>
+          <Link href="/commands">도구별 명령어와 사용 예시</Link> — 세 도구의 슬래시(/) 명령, 키, 모델
+        </li>
+      </ul>
+
       <h2>어떤 도구를 쓸까요</h2>
       <p>셋 다 하는 일은 같습니다. 이미 쓰고 있는 구독을 따라 고르세요. 고른 도구에 맞춰 사이트의 모든 설명이 바뀝니다.</p>
       <ul className="tools">
@@ -142,6 +155,8 @@ export default function Home() {
               <dd>{t.account}</dd>
               <dt>비용</dt>
               <dd>{t.cost}</dd>
+              <dt>기본 모델</dt>
+              <dd>{t.model}</dd>
             </dl>
             <ChooseToolButton id={t.id} />
           </li>
