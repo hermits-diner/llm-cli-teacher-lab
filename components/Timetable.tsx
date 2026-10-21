@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PERIODS } from "@/lib/site";
+import { Icon } from "@/components/Icon";
 
 // The session as a school timetable. The current period is the one being taught.
 export function Timetable() {
@@ -20,9 +21,7 @@ export function Timetable() {
           >
             <Link href={p.href} aria-current={i === current ? "page" : undefined}>
               <span className="timetable__label">
-                <span className="timetable__emoji" aria-hidden="true">
-                  {p.emoji}
-                </span>
+                <Icon name={p.icon} className="timetable__icon" />
                 {p.label}
               </span>
               <span className="timetable__name">{p.title}</span>

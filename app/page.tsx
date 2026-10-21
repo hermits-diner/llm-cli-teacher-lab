@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CoverKeys } from "@/components/CoverKeys";
 import { SITE_URL, TOOLS } from "@/lib/site";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: { absolute: "교사를 위한 AI 에이전트 코딩 (LLM CLI 활용)" } };
 
@@ -62,7 +63,9 @@ export default function Cover() {
             height={780}
             priority
           />
-          <figcaption>🌐 2교시 학급 안내 웹페이지 · 📄 3교시 가정통신문</figcaption>
+          <figcaption>
+            <Icon name="globe" /> 2교시 학급 안내 웹페이지 · <Icon name="document" /> 3교시 가정통신문
+          </figcaption>
         </figure>
       </div>
       <footer className="cover__foot">

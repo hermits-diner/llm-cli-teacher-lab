@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChooseToolButton } from "@/components/ToolPicker";
 import { TOOLS } from "@/lib/site";
+import { Icon } from "@/components/Icon";
 import prompts from "@/content/prompts.json";
 
 export const metadata: Metadata = { title: "연수 안내" };
@@ -90,42 +91,42 @@ export default function Home() {
           <tr>
             <td>연수 전</td>
             <td>
-              <Link href="/intro">📖 LLM CLI 알아보기</Link>
+              <Link href="/intro"><Icon name="book" /> LLM CLI 알아보기</Link>
             </td>
             <td>어떤 도구이고 어떻게 일하는지 (5분 읽기)</td>
           </tr>
           <tr>
             <td>연수 전</td>
             <td>
-              <Link href="/prepare">🧰 준비</Link>
+              <Link href="/prepare"><Icon name="toolbox" /> 준비</Link>
             </td>
             <td>계정 준비, 한 줄 설치, 로그인 (30분)</td>
           </tr>
           <tr>
             <td>0–15분</td>
             <td>
-              <Link href="/start">👋 1교시 첫 만남</Link>
+              <Link href="/start"><Icon name="hello" /> 1교시 첫 만남</Link>
             </td>
             <td>AI에게 말 걸기, AI가 일하는 모습 지켜보기</td>
           </tr>
           <tr>
             <td>15–35분</td>
             <td>
-              <Link href="/mission-1">🌐 2교시 웹페이지</Link>
+              <Link href="/mission-1"><Icon name="globe" /> 2교시 웹페이지</Link>
             </td>
             <td>학급 안내 페이지 만들어 인터넷에 올리기</td>
           </tr>
           <tr>
             <td>35–70분</td>
             <td>
-              <Link href="/mission-2">📄 3교시 가정통신문</Link>
+              <Link href="/mission-2"><Icon name="document" /> 3교시 가정통신문</Link>
             </td>
             <td>메모로 한글 양식 채우기</td>
           </tr>
           <tr>
             <td>70–90분</td>
             <td>
-              <Link href="/wrap-up">🎉 4교시 나누고 마무리</Link>
+              <Link href="/wrap-up"><Icon name="party" /> 4교시 나누고 마무리</Link>
             </td>
             <td>갤러리 구경, 내일 쓸 곳 정하기</td>
           </tr>

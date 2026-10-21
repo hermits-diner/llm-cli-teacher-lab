@@ -1,4 +1,5 @@
 import config from "@/site.config.json";
+import type { IconName } from "@/components/Icon";
 
 export const SITE_URL = config.siteUrl;
 export const VERIFIED_ON = config.verifiedOn;
@@ -44,19 +45,19 @@ export const DEFAULT_TOOL: ToolId = "agy";
 
 // The 90-minute session, in order. Shown as the timetable strip on every page.
 // `also` lists other routes that belong to the same period.
-export const PERIODS: { href: string; also?: string[]; label: string; title: string; time: string; emoji: string }[] =
+export const PERIODS: { href: string; also?: string[]; label: string; title: string; time: string; icon: IconName }[] =
   [
-    { href: "/intro", label: "미리 읽기", title: "LLM CLI란", time: "5분", emoji: "📖" },
-    { href: "/prepare", also: ["/install"], label: "연수 전", title: "준비", time: "30분", emoji: "🧰" },
-    { href: "/start", label: "1교시", title: "첫 만남", time: "10분", emoji: "👋" },
-    { href: "/mission-1", label: "2교시", title: "웹페이지", time: "20분", emoji: "🌐" },
-    { href: "/mission-2", label: "3교시", title: "가정통신문", time: "35분", emoji: "📄" },
+    { href: "/intro", label: "미리 읽기", title: "LLM CLI란", time: "5분", icon: "book" },
+    { href: "/prepare", also: ["/install"], label: "연수 전", title: "준비", time: "30분", icon: "toolbox" },
+    { href: "/start", label: "1교시", title: "첫 만남", time: "10분", icon: "hello" },
+    { href: "/mission-1", label: "2교시", title: "웹페이지", time: "20분", icon: "globe" },
+    { href: "/mission-2", label: "3교시", title: "가정통신문", time: "35분", icon: "document" },
     {
       href: "/wrap-up",
       also: ["/gallery", "/files", "/commands"],
       label: "4교시",
       title: "나누고 마무리",
       time: "20분",
-      emoji: "🎉",
+      icon: "party",
     },
   ];

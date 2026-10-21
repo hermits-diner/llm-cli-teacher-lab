@@ -88,7 +88,6 @@
   --font-display: var(--font-gothic), var(--font-noto), "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   --font-pen: var(--font-gaegu), var(--font-noto), "Malgun Gothic", cursive;
   --font-cmd: "Cascadia Mono", Consolas, "D2Coding", "Malgun Gothic", monospace;
-  --font-emoji: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 
   --measure: 44rem;
   --shadow-card: 0 1px 2px rgba(21, 32, 43, 0.05), 0 10px 28px -18px rgba(21, 32, 43, 0.3);
@@ -96,6 +95,13 @@
 }
 
 /* ------------------------------------------------------------------ base */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+}
 html {
   background: var(--bg-secondary);
   color: var(--text-default);
@@ -244,9 +250,9 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
   font-size: 1.08rem;
   color: var(--text-brand);
 }
-.timetable__emoji {
-  font-family: var(--font-emoji);
-  font-size: 0.9rem;
+.timetable__icon {
+  width: 1rem;
+  height: 1rem;
 }
 .timetable__name {
   font-weight: 700;
@@ -580,9 +586,9 @@ kbd {
   font-weight: 700;
   font-size: 0.92rem;
 }
-.callout__emoji {
-  font-family: var(--font-emoji);
-  font-size: 1rem;
+.callout__icon {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 .callout__body > :first-child {
   margin-top: 0;
