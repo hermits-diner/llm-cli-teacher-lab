@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Copyright } from "@/components/Copyright";
 import { CoverKeys } from "@/components/CoverKeys";
 import { SITE_URL, TOOLS } from "@/lib/site";
 import { Icon } from "@/components/Icon";
@@ -81,6 +82,7 @@ export default function Cover() {
       </div>
       <footer className="cover__foot">
         <span className="cover__url">{host}</span>
+        <Copyright className="cover__copyright" />
         <span className="cover__hint">
           <kbd>Enter</kbd> 또는 <kbd>→</kbd> 키를 눌러도 들어갑니다
         </span>

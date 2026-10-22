@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Copyright } from "@/components/Copyright";
 import { Presenter, PresentToggle } from "@/components/Presenter";
 import { Timetable } from "@/components/Timetable";
 import { ToolPicker } from "@/components/ToolPicker";
@@ -42,6 +43,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <Link href="/help">막혔을 때 보는 페이지</Link>
           <Link href="/">표지로</Link>
         </p>
+        <Copyright />
       </footer>
     </>
   );

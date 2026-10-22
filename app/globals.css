@@ -1653,6 +1653,18 @@ html[data-present] .site-footer {
   flex-wrap: wrap;
   gap: 1.25rem;
 }
+.copyright {
+  margin: var(--space-400) 0 0;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+.copyright a {
+  color: inherit;
+}
+/* On the cover it sits between the address and the key hint, on their line. */
+.cover__copyright {
+  margin: 0;
+}
 
 /* ------------------------------------------------------------------ cover
    The title slide at "/": full screen, no header or timetable. The two
