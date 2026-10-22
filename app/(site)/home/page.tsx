@@ -130,7 +130,7 @@ export default function Home() {
             <td>
               <Link href="/wrap-up"><Icon name="party" /> 나누고 마무리</Link>
             </td>
-            <td>갤러리 구경, 내일 쓸 곳 정하기</td>
+            <td>갤러리 구경</td>
           </tr>
         </tbody>
       </table>
