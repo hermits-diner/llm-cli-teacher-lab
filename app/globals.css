@@ -280,6 +280,13 @@ html[data-tool="codex"] [data-for-tool]:not([data-for-tool~="codex"]),
 html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
   display: none;
 }
+html[data-level="middle"] [data-for-level]:not([data-for-level="middle"]),
+html[data-level="high"] [data-for-level]:not([data-for-level="high"]) {
+  display: none;
+}
+.level-picker {
+  margin: var(--space-400) 0;
+}
 
 /* ------------------------------------------------------------------ header */
 .site-header {
@@ -300,8 +307,26 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
   text-decoration: none;
   letter-spacing: -0.01em;
 }
-.help-link {
+.header-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
   margin-right: auto;
+}
+.prompts-link {
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--ballpoint);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--ballpoint) 45%, transparent);
+  background: var(--bg-brand-soft);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.8rem;
+}
+.prompts-link:hover {
+  background: color-mix(in srgb, var(--ballpoint) 14%, var(--bg-default));
+}
+.help-link {
   font-size: var(--text-small);
   font-weight: 700;
   color: var(--redpen);
@@ -374,7 +399,7 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 }
 .timetable__row {
   display: grid;
-  grid-template-columns: repeat(6, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(7, minmax(7.5rem, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -623,6 +648,65 @@ kbd {
   font-size: 1.05rem;
   line-height: 1.7;
   white-space: pre-wrap;
+}
+
+/* ------------------------------------------------------------------ prompt library */
+.library__filters {
+  display: grid;
+  gap: var(--space-200);
+  margin: var(--space-600) 0 var(--space-300);
+  padding: var(--space-400);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-200);
+  background: var(--bg-secondary);
+}
+.library__count {
+  margin-left: 0.35rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.library__search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+.library__search input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: inherit;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: var(--bg-default);
+  color: var(--text-default);
+}
+.library__total {
+  color: var(--text-secondary);
+  font-size: var(--text-small);
+}
+.library__item {
+  margin: var(--space-400) 0 var(--space-600);
+}
+.library__item h3 {
+  margin-bottom: 0.25rem;
+}
+.library__pain {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.library__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+}
+.library__tags span {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  padding: 0.05rem 0.55rem;
+  color: var(--text-secondary);
 }
 
 /* ------------------------------------------------------------------ steps */

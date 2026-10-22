@@ -16,9 +16,14 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Link href="/home" className="site-title">
           LLM CLI 기반 수업자료제작 및 업무활용
         </Link>
-        <Link href="/help" className="help-link">
-          막혔어요
-        </Link>
+        <nav className="header-links" aria-label="참고 페이지">
+          <Link href="/prompts" className="prompts-link">
+            프롬프트 모음
+          </Link>
+          <Link href="/help" className="help-link">
+            막혔어요
+          </Link>
+        </nav>
         <ThemePicker />
         <PresentToggle />
         <ToolPicker />

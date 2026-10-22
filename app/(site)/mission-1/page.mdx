@@ -8,6 +8,8 @@ export const metadata = { title: "웹앱 제작" };
 
 <PagePhoto id="mission-1" />
 
+<LevelPicker />
+
 <Callout kind="check" title="이번 시간에 남는 것">
 누구나 열 수 있는 내 웹페이지 주소 `https://(내가 정한 이름).vercel.app`
 </Callout>
@@ -16,9 +18,11 @@ export const metadata = { title: "웹앱 제작" };
 
 <Step id="m1-make" title="만들어 달라고 부탁하기">
 
-첫 만남에서 켜 둔 AI 창에 붙여넣습니다. 창을 닫았다면 [다시 켜세요](/start#start-run). 아래 셋 가운데 **하나** 를 고릅니다.
+첫 만남에서 켜 둔 AI 창에 붙여넣습니다. 창을 닫았다면 [다시 켜세요](/start#start-run). 아래 둘 가운데 **하나** 를 고릅니다.
 
-**업무** 우리 반 안내 페이지
+<ForLevel level="middle">
+
+**업무** 우리 반 안내 페이지 (시간표, 준비물 체크리스트)
 
 <Prompt>{prompts.m1}</Prompt>
 
@@ -26,9 +30,18 @@ export const metadata = { title: "웹앱 제작" };
 
 <Prompt>{prompts.m1quizM3}</Prompt>
 
+</ForLevel>
+<ForLevel level="high">
+
+**업무** 고2 우리 반 안내 페이지 (수행평가 일정표, 진로 상담 신청)
+
+<Prompt>{prompts.m1H}</Prompt>
+
 **수업 · 고2** 영어 문법 '관계대명사 what과 that' 퀴즈
 
 <Prompt>{prompts.m1quizH2}</Prompt>
+
+</ForLevel>
 
 AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다. 퀴즈는 과목·학년·단원만 바꾸면 내 수업용이 됩니다. 문제와 정답은 AI가 틀릴 수 있으니 **반드시 직접 풀어 확인** 하세요.
 
@@ -95,5 +108,5 @@ AI가 하는 일을 지켜봅니다. **1~5분** 걸립니다. 퀴즈는 과목·
 </More>
 
 <Callout kind="check" title="다음 시간">
-[나누고 마무리](/wrap-up)
+[슬라이드 제작](/slides)
 </Callout>

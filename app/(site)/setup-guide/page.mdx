@@ -1,0 +1,227 @@
+export const metadata = { title: "일반 설치 안내" };
+
+# 일반 설치 안내
+
+<p className="lead">설치 프로그램(setup.bat)이 한 번에 해 주는 일을, 각 회사의 공식 설치 프로그램으로 하나씩 직접 하는 방법입니다. 개인 노트북이나 연수 뒤 내 업무 컴퓨터에 제대로 설치해 두고 싶을 때 씁니다.</p>
+
+<Callout kind="warn" title="학교 컴퓨터라면 설치 프로그램이 더 쉽습니다">
+일반 설치 프로그램 중에는 **관리자 권한**(UAC 창)이 필요한 것이 있습니다. 학교에서 관리하는 컴퓨터는 이 권한이 막혀 있는 경우가 많습니다. [준비](/prepare) 의 설치 프로그램은 관리자 권한 없이 내 계정 폴더에만 설치합니다.
+</Callout>
+
+## 무엇을 설치하나요
+
+| 프로그램 | 하는 일 | 언제 필요한가 |
+| --- | --- | --- |
+| AI 도구 (agy·codex·claude 가운데 하나) | 검은 창에서 일하는 AI | 처음부터 |
+| Node.js | 스킬 설치 명령(`npx`)과 슬라이드 만들기(pptxgenjs) | 문서 작업, 슬라이드 제작 |
+| Git | 스킬을 GitHub에서 받아 오기 | 문서 작업, 슬라이드 제작 |
+| Python | hwpx 스킬, 실습 폴더의 검사 도구 | 문서 작업 |
+| 실습 폴더 `ai-lab` | 연수용 양식·메모·실행 파일 | 연수 |
+
+AI 도구만 있으면 첫 만남과 웹앱 제작은 할 수 있습니다. 나머지 셋은 문서 작업 전까지 깔면 됩니다.
+
+명령은 모두 **명령 프롬프트(cmd)** 에 붙여넣습니다. 하나를 설치할 때마다 **새 cmd 창** 을 열어야 그 프로그램을 알아봅니다.
+
+<Steps>
+
+<Step id="sg-pack" title="실습 폴더 받기">
+
+[실습 폴더 zip](/ai-lab.zip) 을 받아, 바탕화면에 `ai-lab` 폴더를 만들고 그 안에 압축을 풉니다. `ai-lab` 바로 안에 `AGENTS.md` 와 `start-…cmd` 가 보이면 맞습니다. 연수가 아니라 내 업무에만 쓸 거라면 건너뜁니다.
+
+</Step>
+
+<Step id="sg-node" title="Node.js 설치하기">
+
+[nodejs.org](https://nodejs.org/) 에서 **LTS** (오래 지원하는 안정 버전) 의 Windows 설치 파일(`.msi`)을 받아 실행합니다. 화면은 모두 **Next** 로 넘기면 됩니다.
+
+- 중간의 **Tools for Native Modules** 화면은 체크하지 않고 넘어갑니다. 체크하면 Visual Studio Build Tools와 Chocolatey까지 깔립니다.
+- 마지막에 관리자 권한(UAC) 창이 뜨면 **예** 를 누릅니다. 이 설치 파일은 `C:\Program Files` 에 설치하므로 관리자 권한이 필요합니다.
+
+새 cmd 창에서 확인합니다. 버전이 나오면 성공입니다. 스킬 설치 명령은 Node.js **22.20 이상** 이 필요합니다.
+
+```cmd
+node -v
+```
+
+<More title="관리자 권한이 없을 때: 압축 파일로 내 계정에 설치">
+
+설치 프로그램(setup.bat)이 하는 방법입니다. 아래 두 줄을 차례로 붙여넣습니다. 첫 줄은 공식 압축 파일을 받아 `내 계정 폴더\AppData\Local\Programs\node` 에 풀고, 둘째 줄은 그 폴더를 내 계정의 PATH 끝에 덧붙입니다. 주소의 버전(`v24.22.1`)은 2026년 10월 22일 기준 LTS입니다. [nodejs.org/dist](https://nodejs.org/dist/) 에서 최신 LTS 번호로 바꿔 써도 됩니다.
+
+```cmd
+curl -fL -o "%TEMP%\node.zip" https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip && tar -xf "%TEMP%\node.zip" -C "%LOCALAPPDATA%\Programs" && ren "%LOCALAPPDATA%\Programs\node-v24.22.1-win-x64" node
+```
+
+```cmd
+powershell -NoProfile -Command "$d=$env:LOCALAPPDATA+'\Programs\node'; $p=[string][Environment]::GetEnvironmentVariable('Path','User'); if (($p -split ';') -notcontains $d) { if ($p) { $p=$p.TrimEnd(';')+';' }; [Environment]::SetEnvironmentVariable('Path', $p+$d, 'User') }"
+```
+
+</More>
+
+</Step>
+
+<Step id="sg-git" title="Git 설치하기">
+
+[git-scm.com/install/windows](https://git-scm.com/install/windows) 에서 **Git for Windows** 64-bit 설치 파일을 받아 실행합니다. 처음 보는 선택지가 많지만 기본값 그대로 **Next** 를 누르면 됩니다. 하나만 바꾸면 편합니다.
+
+- **Choosing the default editor** 화면에서 **Use Notepad as Git's default editor** (메모장)를 고릅니다. 기본값인 Vim은 처음 쓰는 사람이 빠져나오기 어렵습니다.
+
+관리자 권한이 없는 계정에서도 설치할 수 있으며, 이때는 내 계정 폴더에 설치됩니다. 확인:
+
+```cmd
+git --version
+```
+
+Claude Code는 Git이 있으면 Git에 들어 있는 Bash로 명령을 실행하고, 없으면 PowerShell을 씁니다. 공식 문서는 Git 설치를 권장합니다.
+
+</Step>
+
+<Step id="sg-python" title="Python 설치하기">
+
+[python.org 의 Python 3.14 내려받기](https://www.python.org/downloads/windows/) 에서 **Windows installer (64-bit)** (`python-3.14.…-amd64.exe`)를 받아 실행합니다. 첫 화면에서 두 가지를 확인합니다.
+
+1. 아래쪽 **Add python.exe to PATH** 를 **체크** 합니다. 빠뜨리면 `python` 명령을 찾지 못합니다.
+2. **Use admin privileges when installing py.exe** 는 체크를 **뺍니다**. 그러면 관리자 권한 없이 설치됩니다.
+
+그다음 **Install Now** 를 누릅니다. 내 계정 폴더(`AppData\Local\Programs\Python\Python314`)에 설치되며, 연수용 실행 파일(`start-…cmd`)도 이 폴더를 찾습니다. 마지막 화면에 **Disable path length limit** 가 보이면 눌러도 되고 그냥 닫아도 됩니다.
+
+```cmd
+python --version
+```
+
+`Python 3.14.…` 가 나오면 성공입니다. 이 사이트의 스킬은 3.14로 시험했습니다.
+
+<More title="python.org가 권하는 'Python install manager'는요?">
+
+Python은 3.16부터 위의 설치 파일을 없애고 **Python install manager** 로 바꿀 예정입니다. install manager로 설치해도 되지만, 기본으로 최신 버전(3.15)이 깔리므로 3.14가 필요하면 설치 뒤 `py install 3.14` 를 실행해야 합니다. 이 사이트는 3.15로는 시험하지 않았습니다.
+
+</More>
+
+</Step>
+
+<Step id="sg-tool" title="AI 도구 설치하기">
+
+위쪽 **내 도구** 에서 고른 도구의 공식 설치 명령입니다. 관리자 권한이 필요 없습니다. 확인·로그인·업데이트·삭제는 [직접 설치하기](/install) 에 모아 두었습니다.
+
+<ForTool tool="agy">
+
+```cmd
+curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+새 cmd 창에서 `agy --version` 으로 확인합니다. 개인 Gmail로 로그인합니다.
+
+</ForTool>
+<ForTool tool="codex">
+
+```cmd
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+```
+
+새 cmd 창에서 `codex --version` 으로 확인합니다. Node.js를 깔았다면 `npm install -g @openai/codex` 로도 설치할 수 있습니다.
+
+</ForTool>
+<ForTool tool="claude">
+
+```cmd
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+새 cmd 창에서 `claude --version` 으로 확인합니다. 설치 상태는 `claude doctor` 로 점검합니다.
+
+</ForTool>
+
+</Step>
+
+<Step id="sg-finish" title="마무리 설정 세 가지">
+
+설치 프로그램(setup.bat)이 함께 해 주는 설정입니다. 하나씩 붙여넣습니다.
+
+**1. Python이 한글·기호를 쓰다 멈추지 않게** — UTF-8 모드를 켭니다. 없으면 `cp949` 나 `UnicodeEncodeError` 오류가 날 수 있습니다.
+
+```cmd
+setx PYTHONUTF8 1
+```
+
+**2. `python3` 가 Microsoft Store를 열지 않게** — AI와 스킬은 `python3` 라고 입력할 때가 많은데, Windows에서는 이 이름이 Store 바로가기입니다. 진짜 `python3` 를 하나 만들어 둡니다.
+
+```cmd
+copy "%LOCALAPPDATA%\Programs\Python\Python314\python.exe" "%LOCALAPPDATA%\Programs\Python\Python314\python3.exe"
+```
+
+그래도 Store가 열리면 <kbd>Windows</kbd> 키 → `앱 실행 별칭` 검색 → **앱 실행 별칭 관리** 에서 **앱 설치 관리자** 의 `python.exe`, `python3.exe` 를 끕니다.
+
+<ForTool tool="agy">
+
+**3. Antigravity CLI가 스킬 폴더를 읽게** — 스킬 설치 명령(`npx skills add … -a antigravity-cli`)은 스킬을 `내 계정 폴더\.agents\skills` 에 넣습니다. Antigravity CLI가 이 폴더도 읽도록 설정 파일(`.gemini\config\skills.json`)에 등록합니다. 이미 있는 항목은 그대로 둡니다.
+
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$h=$env:USERPROFILE; $s=Join-Path $h '.agents\skills'; [void][IO.Directory]::CreateDirectory($s); $d=Join-Path $h '.gemini\config'; [void][IO.Directory]::CreateDirectory($d); $f=Join-Path $d 'skills.json'; $p=$s.Replace('\','/'); $j=New-Object PSObject; if (Test-Path $f) { $x=[IO.File]::ReadAllText($f); if ($x.Trim()) { $j=$x | ConvertFrom-Json } }; $e=@(); if ($j.PSObject.Properties['entries']) { $e=@($j.entries) }; if (-not ($e | Where-Object { [string]$_.path -ieq $p })) { $e += New-Object PSObject -Property @{ path=$p }; if ($j.PSObject.Properties['entries']) { $j.entries=$e } else { $j | Add-Member -NotePropertyName entries -NotePropertyValue $e }; [IO.File]::WriteAllText($f, ($j | ConvertTo-Json -Depth 10), (New-Object Text.UTF8Encoding $false)) }; 'OK'"
+```
+
+`OK` 가 나오면 됩니다.
+
+</ForTool>
+<ForTool tool={["codex", "claude"]}>
+
+**3. 스킬 폴더** — 따로 할 일이 없습니다. 스킬 설치 명령이 내 도구가 읽는 폴더(Codex CLI는 `.agents\skills`, Claude Code는 `.claude\skills`)에 바로 넣습니다.
+
+</ForTool>
+
+</Step>
+
+<Step id="sg-check" title="한꺼번에 확인하기">
+
+**새 cmd 창** 을 열고 한 줄씩 넣어 봅니다. 모두 버전이 나오면 끝입니다.
+
+```cmd
+node -v
+```
+
+```cmd
+npm -v
+```
+
+```cmd
+git --version
+```
+
+```cmd
+python --version
+```
+
+```cmd
+python3 --version
+```
+
+`python3 --version` 에서 Store가 열리거나 아무것도 안 나오면 위의 마무리 설정 2를 다시 보세요. `where python` 을 입력했을 때 맨 윗줄이 `…\Python314\python.exe` 여야 합니다.
+
+</Step>
+
+</Steps>
+
+<More title="winget으로 한 번에 설치하기 (선택)">
+
+Windows 11과 최근 Windows 10에는 프로그램 설치 명령 **winget** 이 들어 있습니다(학교 PC에는 없을 수 있음). 공식 패키지 이름으로 한 줄씩 설치할 수 있습니다. Node.js와 Git은 관리자 권한 창이 뜰 수 있습니다.
+
+```cmd
+winget install OpenJS.NodeJS.LTS
+```
+
+```cmd
+winget install --id Git.Git -e --source winget
+```
+
+```cmd
+winget install Python.Python.3.14
+```
+
+Git 공식 사이트는 winget 패키지가 Git for Windows 팀이 직접 관리하는 것이 아니라 최신 버전보다 늦을 수 있다고 안내합니다. Claude Code는 `winget install Anthropic.ClaudeCode` 로도 설치되지만, 이 방법은 자동 업데이트가 되지 않습니다. 이 사이트는 winget 방법을 시험하지 않았습니다.
+
+</More>
+
+## 다 깔았으면
+
+- 연수라면 `ai-lab` 폴더의 `start-…cmd` 로 시작합니다. 연수용 자동 승인으로 켜집니다([자동 승인으로 켜기](/install#auto)).
+- 내 업무 폴더에서는 그 폴더의 주소 표시줄에 `cmd` 를 입력해 창을 열고, `agy`·`codex`·`claude` 만 입력해 켭니다. AI가 일하기 전에 허락을 묻습니다.
+- 스킬은 [문서 작업](/mission-2#m2-install) 과 [슬라이드 제작](/slides) 에서 AI에게 부탁해 설치합니다.
+- 오류가 나면 [막혔어요](/help) 를 보세요.

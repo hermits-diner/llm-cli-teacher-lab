@@ -4,11 +4,12 @@
 //   node scripts/verify-missions.mjs [--tools claude,codex,agy] [--missions m1,m2,m2xM3] [--runs 1] [--out <dir>]
 //
 // Each run gets its own throwaway folder; see `command` for the unattended permission modes.
-// m2 and m2x* need the hwpx skill installed globally first, as teachers do in period 3.
+// m2* needs the hwpx skill and slides* the frontend-design skill installed globally first,
+// as teachers do in class. Missions ending in H are the high-school set.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import { unzipSync } from "fflate";
 
@@ -43,7 +44,11 @@ const command = {
       "--permission-mode",
       "acceptEdits",
       "--allowedTools",
-      "Read,Write,Edit,Glob,Grep,Skill,Bash(node:*),Bash(python:*),Bash(python3:*)",
+      // Claude Code on Windows may run commands through its PowerShell tool instead of Bash
+      [
+        "Read,Write,Edit,Glob,Grep,Skill",
+        ...["node", "npm", "python", "python3"].flatMap((c) => [`Bash(${c}:*)`, `PowerShell(${c}:*)`]),
+      ].join(","),
       "--output-format",
       "json",
     ],
@@ -89,16 +94,33 @@ function quizChecks(dir, keyword) {
   return problems;
 }
 
-function worksheetChecks(dir, before, name, keywords) {
+// form: the blank form the prompt names; it must come through untouched.
+function formChecks(dir, before, form, name, keywords) {
   const f = path.join(dir, "mission2", name);
   if (!fs.existsSync(f)) return [`${name} 없음`];
   const problems = [];
+  if (fs.readFileSync(f).subarray(0, 2).toString() !== "PK") problems.push("ZIP 아님");
   const text = hwpxText(dir, `mission2/${name}`);
   if (text.includes("{{")) problems.push("빈 칸 남음");
   for (const k of keywords) if (!text.includes(k)) problems.push(`'${k}' 없음`);
-  if (sha(path.join(dir, "mission2/worksheet-form.hwpx")) !== before.worksheet) problems.push("원본 양식이 바뀜");
+  if (sha(path.join(dir, "mission2", form)) !== before[form]) problems.push("원본 양식이 바뀜");
   return problems;
 }
+
+// The pptx must exist and pass the pack's own negative-size check (count 0).
+function slideChecks(dir, name) {
+  const f = path.join(dir, "slides", name);
+  if (!fs.existsSync(f)) return [`${name} 없음`];
+  const r = spawnSync("python", [path.join(dir, "tools/pptx-check.py"), f], { encoding: "utf8", env: { ...process.env, PYTHONUTF8: "1" } });
+  try {
+    const { count } = JSON.parse(r.stdout);
+    return count === 0 ? [] : [`pptx-check ${count}건`];
+  } catch {
+    return [`pptx-check 실행 실패: ${r.stdout}${r.stderr}`.trim()];
+  }
+}
+
+const FORMS = ["notice-form.hwpx", "notice-form-h.hwpx", "worksheet-form.hwpx", "worksheet-form-h.hwpx"];
 
 const checks = {
   m1(dir) {
@@ -111,33 +133,31 @@ const checks = {
     if (/<(script|link)[^>]+(src|href)=["']https?:/i.test(html)) problems.push("외부 리소스 사용");
     return problems;
   },
+  m1H: (dir) => quizChecks(dir, "수행평가"),
   m1quizM3: (dir) => quizChecks(dir, "이차방정식"),
   m1quizH2: (dir) => quizChecks(dir, "what"),
   m2(dir, before) {
-    const f = path.join(dir, "mission2/notice-result.hwpx");
-    if (!fs.existsSync(f)) return ["notice-result.hwpx 없음"];
-    const problems = [];
-    if (fs.readFileSync(f).subarray(0, 2).toString() !== "PK") problems.push("ZIP 아님");
-    const text = hwpxText(dir, "mission2/notice-result.hwpx");
-    if (text.includes("{{")) problems.push("빈 칸 남음");
-    for (const k of ["미래과학관", "12일", "5일"]) if (!text.includes(k)) problems.push(`'${k}' 없음`);
+    const problems = formChecks(dir, before, "notice-form.hwpx", "notice-result.hwpx", ["미래과학관", "12일", "5일"]);
     // a sentence that only exists in samples/ - the agent should write its own text
-    if (text.includes("다양한 직업 세계를 직접 보고 느끼며")) problems.push("완성 예시 문장을 복사함");
-    if (sha(path.join(dir, "mission2/notice-form.hwpx")) !== before.notice) problems.push("원본 양식이 바뀜");
+    const done = fs.existsSync(path.join(dir, "mission2/notice-result.hwpx"));
+    if (done && hwpxText(dir, "mission2/notice-result.hwpx").includes("다양한 직업 세계를 직접 보고 느끼며"))
+      problems.push("완성 예시 문장을 복사함");
     return problems;
   },
-  m2xM3: (dir, before) => worksheetChecks(dir, before, "worksheet-m3-result.hwpx", ["국어", "주장", "근거"]),
-  m2xH2: (dir, before) => worksheetChecks(dir, before, "worksheet-h2-result.hwpx", ["문학", "비유", "상징"]),
+  m2H: (dir, before) => formChecks(dir, before, "notice-form-h.hwpx", "notice-h-result.hwpx", ["가상대학교", "19일", "10일"]),
+  m2xM3: (dir, before) => formChecks(dir, before, "worksheet-form.hwpx", "worksheet-m3-result.hwpx", ["국어", "주장", "근거"]),
+  m2xH2: (dir, before) => formChecks(dir, before, "worksheet-form-h.hwpx", "worksheet-h2-result.hwpx", ["문학", "비유", "상징"]),
+  slides: (dir) => slideChecks(dir, "parents-ai.pptx"),
+  slidesH: (dir) => slideChecks(dir, "parents-credit.pptx"),
+  slidesM3: (dir) => slideChecks(dir, "class-rights.pptx"),
+  slidesH2: (dir) => slideChecks(dir, "class-dataviz.pptx"),
 };
 
 function runOne(tool, mission, n) {
   const dir = path.join(outRoot, `${tool}-${mission}-${n}`);
   fs.mkdirSync(dir, { recursive: true });
   extractPack(dir);
-  const before = {
-    notice: sha(path.join(dir, "mission2/notice-form.hwpx")),
-    worksheet: sha(path.join(dir, "mission2/worksheet-form.hwpx")),
-  };
+  const before = Object.fromEntries(FORMS.map((f) => [f, sha(path.join(dir, "mission2", f))]));
   const env = { ...process.env };
   for (const k of Object.keys(env)) if (k === "CLAUDECODE" || k.startsWith("CLAUDE_CODE_")) delete env[k];
   const [bin, args] = command[tool](prompts[mission]);

@@ -24,7 +24,7 @@ export default function Home() {
           AI가 파일을 만듭니다
         </h1>
         <p className="lead">
-          코딩을 몰라도 됩니다. 순서대로 따라 하면 한글 문서 한 장과 웹앱 하나가 남습니다. 실습마다
+          코딩을 몰라도 됩니다. 순서대로 따라 하면 한글 문서 한 장, 웹앱 하나, 슬라이드 한 벌이 남습니다. 실습마다
           업무용(학급 안내·가정통신문)과 수업용(퀴즈·활동지) 가운데 골라서 합니다.
         </p>
 
@@ -122,6 +122,12 @@ export default function Home() {
           </tr>
           <tr>
             <td>
+              <Link href="/slides"><Icon name="slides" /> 슬라이드 제작</Link>
+            </td>
+            <td>디자인 스킬 설치하고 학부모 설명회 또는 수업 도입 슬라이드 만들기</td>
+          </tr>
+          <tr>
+            <td>
               <Link href="/wrap-up"><Icon name="party" /> 나누고 마무리</Link>
             </td>
             <td>갤러리 구경, 내일 쓸 곳 정하기</td>
@@ -131,6 +137,9 @@ export default function Home() {
 
       <h2>연수 뒤에도 보는 참고 자료</h2>
       <ul>
+        <li>
+          <Link href="/prompts">수업·업무 프롬프트 모음</Link> — 학교급·교과·업무별로 바로 붙여넣는 부탁 문장
+        </li>
         <li>
           <Link href="/intro">LLM CLI 알아보기</Link> — 도구 개요
         </li>
@@ -144,7 +153,7 @@ export default function Home() {
           <Link href="/install">직접 설치하기 (cmd)</Link> — 설치 프로그램이 안 될 때
         </li>
         <li>
-          <Link href="/slides">선택 과제: 슬라이드 만들기</Link> — 디자인 스킬을 설치해 보기 좋은 PowerPoint 파일 만들기
+          <Link href="/setup-guide">일반 설치 안내</Link> — Node.js·Python·Git과 AI 도구를 공식 설치 프로그램으로 깔기
         </li>
         <li>
           <Link href="/canva">부록: Canva 연결해 슬라이드 만들기</Link> — MCP와 플러그인 맛보기

@@ -27,8 +27,9 @@ function run(script, payload) {
 
 // Paragraph 0 also carries the section definition and ignores apply_text_style size in
 // the rhwp renderer, so each form starts with a small info line and the title comes second.
-for (const name of ["notice", "worksheet"]) {
-  const def = fs.readFileSync(path.join(root, "docs/forms", `${name}-form.create.json`), "utf8");
+// -h: the high-school copies (가상고등학교); the rest is the middle-school set.
+for (const name of ["notice-form", "notice-form-h", "worksheet-form", "worksheet-form-h"]) {
+  const def = fs.readFileSync(path.join(root, "docs/forms", `${name}.create.json`), "utf8");
   run(path.join(engine, "create.js"), def);
   console.log(`built ${JSON.parse(def).path}`);
 }

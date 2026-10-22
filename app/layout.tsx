@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Gaegu, Geist, Gothic_A1, Noto_Sans_KR } from "next/font/google";
 import { toolBootScript } from "@/components/ToolPicker";
 import { themeBootScript } from "@/components/ThemePicker";
-import { DEFAULT_TOOL } from "@/lib/site";
+import { levelBootScript } from "@/components/LevelPicker";
+import { DEFAULT_LEVEL, DEFAULT_TOOL } from "@/lib/site";
 import "./globals.css";
 
 // Type roles (see the tokens at the top of globals.css):
@@ -17,7 +18,7 @@ const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", vari
 
 export const metadata: Metadata = {
   title: { default: "LLM CLI 기반 수업자료제작 및 업무활용", template: "%s | LLM CLI 기반 수업자료제작 및 업무활용" },
-  description: "명령창에서 AI에게 일을 시켜 보는 실습. 따라 하면 가정통신문과 웹앱이 완성됩니다.",
+  description: "명령창에서 AI에게 일을 시켜 보는 실습. 따라 하면 가정통신문, 웹앱, 슬라이드가 완성됩니다.",
 };
 
 // Only the document shell lives here. The cover (app/page.tsx) fills the whole
@@ -28,12 +29,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="ko"
       data-tool={DEFAULT_TOOL}
+      data-level={DEFAULT_LEVEL}
       className={`${geist.variable} ${noto.variable} ${gothic.variable} ${gaegu.variable}`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: toolBootScript }} />
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: levelBootScript }} />
       </head>
       <body>{children}</body>
     </html>

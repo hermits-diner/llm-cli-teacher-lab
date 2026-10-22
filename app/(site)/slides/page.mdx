@@ -1,13 +1,15 @@
 import prompts from "@/content/prompts.json";
 
-export const metadata = { title: "선택 과제 슬라이드" };
+export const metadata = { title: "슬라이드 제작" };
 
-# 선택 과제: 슬라이드(.pptx) 만들기
+# 슬라이드 제작
 
-<p className="lead">디자인 스킬을 설치하고, PowerPoint에서 바로 고칠 수 있는 보기 좋은 슬라이드를 만듭니다. 문서 작업을 일찍 끝냈거나 집에서 해 보세요.</p>
+<p className="lead">디자인 스킬을 설치하고, PowerPoint에서 바로 고칠 수 있는 보기 좋은 슬라이드를 만듭니다.</p>
 
-<Callout kind="check" title="이번 과제로 남는 것">
-- 학부모 설명회 슬라이드 또는 수업 도입 슬라이드(중3·고2) `.pptx` (글자·색을 PowerPoint에서 그대로 고칠 수 있음)
+<LevelPicker />
+
+<Callout kind="check" title="이번 시간에 남는 것">
+- 학부모 설명회 슬라이드 또는 수업 도입 슬라이드 `.pptx` (글자·색을 PowerPoint에서 그대로 고칠 수 있음)
 - 내 컴퓨터에 설치된 **디자인 스킬(frontend-design)**
 </Callout>
 
@@ -40,9 +42,11 @@ export const metadata = { title: "선택 과제 슬라이드" };
 
 <Step id="slides-make" title="만들어 달라고 부탁하기">
 
-아래 셋 가운데 **하나** 를 고릅니다.
+아래 둘 가운데 **하나** 를 고릅니다.
 
-**업무** 학부모 설명회 슬라이드
+<ForLevel level="middle">
+
+**업무** 학부모 설명회 '우리 반 생성형 AI 활용 수업 안내'
 
 <Prompt>{prompts.slides}</Prompt>
 
@@ -50,9 +54,18 @@ export const metadata = { title: "선택 과제 슬라이드" };
 
 <Prompt>{prompts.slidesM3}</Prompt>
 
+</ForLevel>
+<ForLevel level="high">
+
+**업무** 1학년 학부모 설명회 '고교학점제와 2학년 과목 선택 안내'
+
+<Prompt>{prompts.slidesH}</Prompt>
+
 **수업 · 고2** 정보 '데이터 시각화' 수업 도입 슬라이드
 
 <Prompt>{prompts.slidesH2}</Prompt>
+
+</ForLevel>
 
 처음에는 AI가 `slides` 폴더에 슬라이드 프로그램(pptxgenjs)을 설치하느라 조금 더 걸립니다. **3~6분** 기다립니다. 수업 슬라이드는 과목·학년·단원과 슬라이드 순서만 바꾸면 내 수업용이 됩니다.
 
@@ -64,7 +77,7 @@ AI가 LibreOffice나 그 밖의 프로그램을 설치하려 하면 <kbd>Esc</kb
 
 <Step id="slides-open" title="PowerPoint에서 열기">
 
-`ai-lab\slides` 에 생긴 `.pptx`(`parents-ai`, `class-rights`, `class-dataviz` 가운데 하나)를 더블클릭합니다. PowerPoint가 없으면 한컴오피스 한쇼나 Google 슬라이드(파일 업로드)로 열어도 됩니다.
+`ai-lab\slides` 에 생긴 `.pptx` 파일(부탁 문장에 적힌 이름)을 더블클릭합니다. PowerPoint가 없으면 한컴오피스 한쇼나 Google 슬라이드(파일 업로드)로 열어도 됩니다.
 
 - 글자가 상자 밖으로 넘치지 않는지
 - 날짜·이름 같은 내용이 가상인지, 수업 내용이 정확한지
@@ -79,7 +92,12 @@ PowerPoint에서 파일을 닫은 뒤 부탁합니다. 열려 있으면 저장�
 
 **업무** 를 골랐다면
 
+<ForLevel level="middle">
 <Prompt>{prompts.slidesEdit}</Prompt>
+</ForLevel>
+<ForLevel level="high">
+<Prompt>{prompts.slidesEditH}</Prompt>
+</ForLevel>
 
 **수업** 을 골랐다면
 
@@ -98,6 +116,6 @@ PowerPoint에서 파일을 닫은 뒤 부탁합니다. 열려 있으면 저장�
 
 </More>
 
-<Callout kind="check" title="돌아가기">
-[문서 작업](/mission-2) · [웹앱 제작](/mission-1)
+<Callout kind="check" title="다음 시간">
+[나누고 마무리](/wrap-up)
 </Callout>

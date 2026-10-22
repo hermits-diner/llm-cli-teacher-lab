@@ -41,6 +41,14 @@ const PATHS = {
       <path d="M9.5 11.5h6M9.5 15h6M9.5 8h2.5" />
     </>
   ),
+  // 슬라이드 제작: a screen on a stand
+  slides: (
+    <>
+      <rect x="3" y="4" width="18" height="12" rx="1.5" />
+      <path d="M12 16v4M8.5 20.5h7" />
+      <path d="M7 8.5h6M7 11.5h4" />
+    </>
+  ),
   // 나누고 마무리: a party popper
   party: (
     <>

@@ -3,7 +3,8 @@ import type { ReactElement } from "react";
 import { AgentFlow } from "@/components/AgentFlow";
 import { Callout } from "@/components/Callout";
 import { Cmd } from "@/components/Cmd";
-import { ForTool, ToolText } from "@/components/ForTool";
+import { ForLevel, ForTool, ToolText } from "@/components/ForTool";
+import { LevelPicker } from "@/components/LevelPicker";
 import { More } from "@/components/More";
 import { PagePhoto } from "@/components/PagePhoto";
 import { Prompt } from "@/components/Prompt";
@@ -37,6 +38,8 @@ const components: MDXComponents = {
   Prompt,
   Callout,
   ForTool,
+  ForLevel,
+  LevelPicker,
   ToolText,
   More,
   Steps,

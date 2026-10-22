@@ -31,7 +31,7 @@ export default function Cover() {
           </h1>
           <p className="cover__sub">
             검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 따라 하면 가정통신문이나 수업
-            활동지 한 장과, 학급 안내나 수업 퀴즈 웹앱 하나가 남습니다.
+            활동지 한 장, 학급 안내나 수업 퀴즈 웹앱 하나, 슬라이드 한 벌이 남습니다.
           </p>
           <div className="cover__actions">
             <Link className="button button--lg" href="/home">

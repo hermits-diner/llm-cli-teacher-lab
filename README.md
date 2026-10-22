@@ -74,6 +74,6 @@ node scripts/make-forms.mjs
 ## 라이선스와 출처
 
 - 실습 양식(.hwpx)은 [claw-hwp](https://github.com/DoHyun468/claw-hwp)(MIT)로 만들었습니다. 실습 폴더에는 엔진을 넣지 않습니다.
-- 3교시 hwpx 스킬([jkf87/hwpx-skill](https://github.com/jkf87/hwpx-skill))과 선택 과제 디자인 스킬([anthropics/skills](https://github.com/anthropics/skills)의 frontend-design, Apache-2.0)은 교사가 원본에서 직접 설치합니다. 이 저장소는 두 스킬을 재배포하지 않습니다.
+- 3교시 hwpx 스킬([jkf87/hwpx-skill](https://github.com/jkf87/hwpx-skill))과 슬라이드 제작 디자인 스킬([anthropics/skills](https://github.com/anthropics/skills)의 frontend-design, Apache-2.0)은 교사가 원본에서 직접 설치합니다. 이 저장소는 두 스킬을 재배포하지 않습니다.
 - 페이지 사진 6장은 [Unsplash](https://unsplash.com) 무료 라이선스 사진입니다. 작가와 원본 링크는 `components/PagePhoto.tsx`와 각 사진 아래에 있습니다.
 - 실습 자료의 학교·행사·인물은 모두 가상입니다.

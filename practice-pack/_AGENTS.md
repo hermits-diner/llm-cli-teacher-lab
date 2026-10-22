@@ -17,13 +17,7 @@
 - 운영체제는 Windows입니다. 명령의 경로는 슬래시(`/`)로 씁니다.
 - `samples/` 폴더는 선생님이 보는 완성 예시입니다. 작업할 때 열어 보거나 내용을 가져다 쓰지 않습니다. 항상 메모와 요청을 바탕으로 새로 씁니다.
 
-## 미션 1 — 웹페이지 만들기
-- 결과물은 `mission1/site/index.html` **한 파일**로 만듭니다. CSS와 JavaScript도 이 파일 안에 넣습니다.
-- 외부 라이브러리·외부 이미지 없이 이 파일 하나만으로 열려야 합니다(그대로 Vercel에 올립니다).
-- 휴대폰에서도 보기 좋게 만듭니다.
-- 연수 시간이 짧으므로 첫 버전은 **간결하게**(파일 전체 300줄 안팎) 만듭니다. 꾸밈은 선생님이 고쳐 달라고 할 때 더합니다.
-
-## 미션 2 — 한글(HWPX) 양식 채우기
+## 문서 작업 — 한글(HWPX) 양식 채우기
 선생님이 설치한 **hwpx 스킬**을 씁니다. 스킬이 보이지 않으면 설치부터 하라고 알려 줍니다. 양식의 `{{칸이름}}` 을 채울 때는 **반드시** 아래 순서를 따릅니다.
 
 1. 빈칸 목록 보기: `python tools/blanks.py mission2/notice-form.hwpx`
@@ -35,9 +29,18 @@
 6. 스킬의 `scripts/validate.py` 로 파일 구조를 검사합니다. 페이지를 그림으로 바꾸는 검사는 하지 않습니다. 선생님이 한글에서 직접 열어 확인합니다.
 
 - 원본 양식(`*-form.hwpx`)은 덮어쓰지 않습니다.
-- 다른 양식도 같습니다. 예: `worksheet-form.hwpx` + `worksheet-memo-m3.txt` → `worksheet-m3-result.hwpx`
+- 다른 양식도 같습니다. 위 명령의 파일 이름만 바꿉니다. `-h` 가 붙은 것은 고등학교용입니다.
+  - `notice-form-h.hwpx` + `notice-memo-h.txt` → `notice-h-result.hwpx`
+  - `worksheet-form.hwpx` + `worksheet-memo-m3.txt` → `worksheet-m3-result.hwpx`
+  - `worksheet-form-h.hwpx` + `worksheet-memo-h2.txt` → `worksheet-h2-result.hwpx`
 
-## 선택 과제 — 슬라이드(.pptx) 만들기
+## 웹앱 제작 — 웹페이지 만들기
+- 결과물은 `mission1/site/index.html` **한 파일**로 만듭니다. CSS와 JavaScript도 이 파일 안에 넣습니다.
+- 외부 라이브러리·외부 이미지 없이 이 파일 하나만으로 열려야 합니다(그대로 Vercel에 올립니다).
+- 휴대폰에서도 보기 좋게 만듭니다.
+- 연수 시간이 짧으므로 첫 버전은 **간결하게**(파일 전체 300줄 안팎) 만듭니다. 꾸밈은 선생님이 고쳐 달라고 할 때 더합니다.
+
+## 슬라이드 제작 — 슬라이드(.pptx) 만들기
 - 결과물은 `slides/` 폴더에 PowerPoint 파일(`.pptx`)로 만듭니다. `slides/` 폴더 안에서 `npm install pptxgenjs` 로 설치한 pptxgenjs로 만듭니다.
 - 선생님이 설치한 **frontend-design 스킬**의 디자인 원칙(분명한 디자인 방향, 글꼴·색·배치, 흔한 AI 디자인 피하기)을 슬라이드에 적용합니다. 웹 화면을 예로 든 스킬이지만, 결과물은 웹페이지가 아니라 pptx입니다.
 - 글꼴은 `맑은 고딕` 처럼 Windows에 있는 한글 글꼴을 씁니다.

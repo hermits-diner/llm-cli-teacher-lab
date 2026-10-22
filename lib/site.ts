@@ -48,15 +48,26 @@ export const TOOLS: {
 
 export const DEFAULT_TOOL: ToolId = "agy";
 
+// School level: each practice shows one 업무 and one 수업 example for the chosen level.
+export type LevelId = "middle" | "high";
+
+export const LEVELS: { id: LevelId; name: string }[] = [
+  { id: "middle", name: "중학교" },
+  { id: "high", name: "고등학교" },
+];
+
+export const DEFAULT_LEVEL: LevelId = "middle";
+
 // The 90-minute session, in order. Shown as the timetable strip on every page.
 // `also` lists other routes that belong to the same period.
 export const PERIODS: { href: string; also?: string[]; title: string; icon: IconName }[] =
   [
     { href: "/intro", title: "LLM CLI란", icon: "book" },
-    { href: "/prepare", also: ["/install"], title: "준비", icon: "toolbox" },
+    { href: "/prepare", also: ["/install", "/setup-guide"], title: "준비", icon: "toolbox" },
     { href: "/start", title: "첫 만남", icon: "hello" },
-    { href: "/mission-2", also: ["/slides"], title: "문서 작업", icon: "document" },
+    { href: "/mission-2", title: "문서 작업", icon: "document" },
     { href: "/mission-1", title: "웹앱 제작", icon: "globe" },
+    { href: "/slides", title: "슬라이드 제작", icon: "slides" },
     {
       href: "/wrap-up",
       also: ["/gallery", "/files", "/commands", "/canva", "/mcp"],
