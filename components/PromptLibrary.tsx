@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LEVEL_KEY } from "@/components/LevelPicker";
 import { Prompt } from "@/components/Prompt";
 
 export type LibraryItem = {
@@ -59,10 +60,13 @@ export function PromptLibrary({ items, groups }: { items: LibraryItem[]; groups:
   const [group, setGroup] = useState("all");
   const [query, setQuery] = useState("");
 
-  // Start from the school level chosen on the practice pages, if any.
+  // Start from the school level the teacher picked on a practice page. <html data-level>
+  // always holds a value (the default too), so read the stored choice instead.
   useEffect(() => {
-    const l = document.documentElement.dataset.level;
-    if (l === "middle" || l === "high") setLevel(l);
+    try {
+      const l = localStorage.getItem(LEVEL_KEY);
+      if (l === "middle" || l === "high") setLevel(l);
+    } catch {}
   }, []);
 
   const byLevel = items.filter((i) => level === "all" || i.level === "all" || i.level === level);

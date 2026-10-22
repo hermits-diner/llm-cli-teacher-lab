@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DEFAULT_LEVEL, LEVELS, type LevelId } from "@/lib/site";
 
-const LEVEL_KEY = "ai-lab-level";
+export const LEVEL_KEY = "ai-lab-level";
 const CHANGED = "ai-lab-level-changed";
 
 // Runs in <head> before first paint so level-specific blocks never flash.
