@@ -8,12 +8,15 @@ const THEMES = [
   { id: "day", name: "주간" },
   { id: "night", name: "야간" },
   { id: "chalk", name: "칠판" },
+  { id: "paper", name: "종이" },
+  { id: "ocean", name: "바다" },
+  { id: "contrast", name: "고대비" },
 ] as const;
 type Pref = (typeof THEMES)[number]["id"];
 
 // Runs in <head> before first paint, like toolBootScript. "auto" is resolved
 // here to day or night, so the CSS only ever sees a concrete html[data-theme].
-export const themeBootScript = `try{var d=document.documentElement,p=localStorage.getItem("${THEME_KEY}");if(p!=="day"&&p!=="night"&&p!=="chalk")p=matchMedia("(prefers-color-scheme: dark)").matches?"night":"day";d.dataset.theme=p}catch(e){}`;
+export const themeBootScript = `try{var d=document.documentElement,p=localStorage.getItem("${THEME_KEY}");if(["day","night","chalk","paper","ocean","contrast"].indexOf(p)<0)p=matchMedia("(prefers-color-scheme: dark)").matches?"night":"day";d.dataset.theme=p}catch(e){}`;
 
 const dark = () => window.matchMedia("(prefers-color-scheme: dark)");
 

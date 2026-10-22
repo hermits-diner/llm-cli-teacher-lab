@@ -8,6 +8,7 @@ import { More } from "@/components/More";
 import { PagePhoto } from "@/components/PagePhoto";
 import { Prompt } from "@/components/Prompt";
 import { Step, Steps } from "@/components/Steps";
+import { YouTube } from "@/components/YouTube";
 
 // ```cmd and ```prompt fences become the cmd window and the "AI에게 말하기" card, so page
 // text can contain {, }, < and > without MDX reading them as JSX.
@@ -31,6 +32,7 @@ const components: MDXComponents = {
   pre: Pre,
   AgentFlow,
   PagePhoto,
+  YouTube,
   Cmd,
   Prompt,
   Callout,

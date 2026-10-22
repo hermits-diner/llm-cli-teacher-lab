@@ -26,7 +26,7 @@
   --page-2: #e9edf2;
   --ink: #15202b;
   --ink-soft: #4a5565;
-  --ink-mute: #7b8694;
+  --ink-mute: #636d7b;
   --rule: #d8dee6;
   --rule-strong: #9aa6b5;
   --ballpoint: #2457c5;
@@ -116,7 +116,7 @@
   --page-2: #24221a;
   --ink: #f2f2f2;
   --ink-soft: #a6a6a6;
-  --ink-mute: #77746b;
+  --ink-mute: #908d83;
   --rule: #2e2c23;
   --rule-strong: #4a473d;
   --ballpoint: #9db8ff;
@@ -145,8 +145,75 @@
   --ok: #b5ecc4;
   --ink-hover: #ffffff;
 }
+/* Paper: warm sepia sheet and brown ink, gentle for long reading. */
+:root[data-theme="paper"] {
+  --paper: #fbf7ef;
+  --page: #f3ede1;
+  --page-2: #e8dfcf;
+  --ink: #2b2419;
+  --ink-soft: #574c3d;
+  --ink-mute: #76695a;
+  --rule: #ddd2bf;
+  --rule-strong: #a99b83;
+  --ballpoint: #2c56a8;
+  --ballpoint-deep: #1f428a;
+  --highlighter: #ffe27a;
+  --redpen: #a8321f;
+  --stamp: #c4402a;
+  --ok: #3b7337;
+  --ink-hover: #000000;
+}
+/* High contrast: pure black on white with deep accents, for bright rooms
+   and faded projectors. */
+:root[data-theme="contrast"] {
+  --paper: #ffffff;
+  --page: #ffffff;
+  --page-2: #ebebeb;
+  --ink: #000000;
+  --ink-soft: #1a1a1a;
+  --ink-mute: #383838;
+  --rule: #6b6b6b;
+  --rule-strong: #000000;
+  --ballpoint: #0030c2;
+  --ballpoint-deep: #001c78;
+  --highlighter: #ffe600;
+  --redpen: #b00000;
+  --stamp: #c40000;
+  --ok: #00632a;
+  --ink-hover: #000000;
+}
+:root[data-theme="paper"],
+:root[data-theme="contrast"] {
+  --ballpoint-soft: color-mix(in srgb, var(--ballpoint) 10%, var(--paper));
+  --highlighter-soft: color-mix(in srgb, var(--highlighter) 45%, var(--paper));
+  --redpen-soft: color-mix(in srgb, var(--redpen) 8%, var(--paper));
+  --redpen-line: color-mix(in srgb, var(--redpen) 30%, var(--paper));
+  --redpen-hover: color-mix(in srgb, var(--redpen) 16%, var(--paper));
+  --ok-soft: color-mix(in srgb, var(--ok) 10%, var(--paper));
+  --ok-line: color-mix(in srgb, var(--ok) 30%, var(--paper));
+  color-scheme: light;
+}
+/* Ocean: deep navy with sky-blue accents, a cooler dark than night. */
+:root[data-theme="ocean"] {
+  --paper: #10243a;
+  --page: #0b1b2b;
+  --page-2: #17304b;
+  --ink: #e8f1fa;
+  --ink-soft: #b3c6da;
+  --ink-mute: #8aa3be;
+  --rule: #1f3a57;
+  --rule-strong: #46678a;
+  --ballpoint: #7cc4ff;
+  --ballpoint-deep: #b0dcff;
+  --highlighter: rgba(255, 214, 90, 0.3);
+  --redpen: #ff9a8a;
+  --stamp: #ff7a68;
+  --ok: #6fe0b0;
+  --ink-hover: #ffffff;
+}
 :root[data-theme="night"],
-:root[data-theme="chalk"] {
+:root[data-theme="chalk"],
+:root[data-theme="ocean"] {
   --ballpoint-soft: color-mix(in srgb, var(--ballpoint) 14%, var(--paper));
   --highlighter-soft: color-mix(in srgb, var(--highlighter) 40%, transparent);
   --redpen-soft: color-mix(in srgb, var(--redpen) 12%, var(--paper));
@@ -733,6 +800,83 @@ kbd {
 html[data-present] .page-photo img {
   aspect-ratio: auto;
   height: 32vh;
+}
+
+/* ------------------------------------------------------------------ video
+   A click-to-play YouTube box (components/YouTube.tsx): a 16:9 frame that
+   shows the thumbnail and a play mark until pressed. */
+.video {
+  margin: 1.25rem 0;
+}
+.video__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000000;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-200);
+}
+.video__frame iframe,
+.video__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video__poster {
+  padding: 0;
+  cursor: pointer;
+  background: #000000;
+}
+.video__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+.video__poster:hover img,
+.video__poster:focus-visible img {
+  opacity: 1;
+}
+.video__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4.5rem;
+  height: 3.2rem;
+  transform: translate(-50%, -50%);
+  border-radius: 0.8rem;
+  background: rgba(0, 0, 0, 0.72);
+}
+.video__play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.65rem 0 0.65rem 1.1rem;
+  border-color: transparent transparent transparent #ffffff;
+}
+.video__poster:hover .video__play {
+  background: #ff0033;
+}
+.video figcaption {
+  margin-top: 0.45rem;
+  font-size: var(--text-small);
+  line-height: 1.5;
+}
+.video__meta {
+  color: var(--text-tertiary);
+}
+/* While presenting, keep the whole 16:9 frame on screen under the heading. */
+html[data-present] .video__frame {
+  max-width: min(100%, calc((100vh - 19rem) * 16 / 9));
+  margin-inline: auto;
+}
+html[data-present] .video figcaption {
+  text-align: center;
 }
 
 /* ------------------------------------------------------------------ agent-coding flow
