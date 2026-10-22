@@ -661,7 +661,7 @@
   - Claude Code(권한 수정 뒤): `m1H` 189초, `m2H` 통과(다른 Claude 시험과 겹쳐 8분 제한에 걸렸으나 결과 파일은 검사 통과), `m2xM3` 207초, `m2xH2` 142초, `slidesH` 371초. **모두 통과**.
   - agy `notice-h-result.hwpx` 본문을 열어 날짜·시간·장소·회신서가 메모와 맞는 것을 확인했다.
   - 시험 뒤 원상 복구: 전역 `hwpx`·`frontend-design` 스킬(`~/.agents/skills`, `~/.claude/skills`)과 `~/.agents/.skill-lock.json`을 지웠다. 시험 전 상태(`.agents/skills` 비어 있음, `.claude/skills`는 `synced`만, lock 없음)와 같다. Python은 세션 임시 폴더의 venv만 썼다.
-- 하지 않은 것: Codex는 사용 한도(11월 20일까지)로 시험하지 않았다. 고등학교 가정통신문 완성 예시(`samples`)는 만들지 않았다(중학교 예시만 있음).
+- 하지 않은 것: Codex는 시험하지 않았다. 처음에는 26번의 "사용 한도 초과(11월 20일)"를 이유로 들었지만, 그것은 다른 PC 계정의 기록이었다. 이 PC의 Codex CLI(0.163.0)는 **무료 요금제 ChatGPT 계정**(`auth.json`의 `chatgpt_plan_type: free`, 2026-10-22 로그인)으로 로그인되어 있고, 여기서는 한 번도 실행해 보지 않았다. 고등학교 가정통신문 완성 예시(`samples`)는 만들지 않았다(중학교 예시만 있음).
 
 ### 31. 일반 설치 안내 페이지 `/setup-guide`
 
