@@ -17,7 +17,7 @@ const gaegu = Gaegu({ subsets: ["latin"], weight: ["700"], display: "swap", vari
 
 export const metadata: Metadata = {
   title: { default: "LLM CLI 기반 수업자료제작 및 업무활용", template: "%s | LLM CLI 기반 수업자료제작 및 업무활용" },
-  description: "명령창에서 AI에게 일을 시켜 보는 90분 실습. 따라 하면 웹페이지와 가정통신문이 완성됩니다.",
+  description: "명령창에서 AI에게 일을 시켜 보는 실습. 따라 하면 가정통신문과 웹앱이 완성됩니다.",
 };
 
 // Only the document shell lives here. The cover (app/page.tsx) fills the whole

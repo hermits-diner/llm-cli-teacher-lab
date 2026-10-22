@@ -94,6 +94,7 @@ function unitsOf(main: HTMLElement): HTMLElement[] {
 function showAll(main: HTMLElement) {
   for (const el of unitsOf(main)) el.hidden = false;
   for (const list of stepLists(main)) list.style.counterReset = "";
+  main.style.zoom = "";
 }
 
 // Height an element takes on screen, margins included (collapsing is ignored,
@@ -159,6 +160,20 @@ function show(main: HTMLElement, slide: Block[]) {
     const first = children(list).findIndex((li) => !li.hidden);
     list.style.counterReset = first > 0 ? `step ${first}` : "";
   }
+  fit(main);
+}
+
+// A block taller than the screen on its own (a big table, a card grid) cannot
+// be split further, so shrink just that slide until it fits; slides that
+// already fit keep the full presentation type.
+function fit(main: HTMLElement) {
+  main.style.zoom = "";
+  window.scrollTo(0, 0);
+  const top = main.getBoundingClientRect().top;
+  const room = window.innerHeight - top - 80; // same allowance as paginate
+  const bottom = Math.max(top, ...children(main).filter((el) => !el.hidden).map((el) => el.getBoundingClientRect().bottom));
+  const need = bottom - top;
+  if (need > room) main.style.zoom = String(Math.max(0.55, room / need));
 }
 
 export function PresentToggle() {
@@ -273,7 +288,7 @@ export function Presenter() {
         {index + 1} / {total}
       </span>
       <span className="present-bar__hint" aria-hidden="true">
-        {next ? `→ ${nextPeriod ? `${nextPeriod.label} ${nextPeriod.title}` : "다음"}` : "← →"}
+        {next ? `→ ${nextPeriod ? nextPeriod.title : "다음"}` : "← →"}
       </span>
       <button type="button" className="present-bar__close" onClick={() => setPresent(false)}>
         끄기

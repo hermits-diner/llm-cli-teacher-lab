@@ -17,7 +17,7 @@ export default function Cover() {
     <main className="cover" aria-label="연수 표지">
       <CoverKeys href="/home" />
       <header className="cover__top">
-        <span className="cover__tag">90분 교사 연수 실습</span>
+        <span className="cover__tag">교사 연수 실습</span>
         <span className="cover__tag cover__tag--tools">{TOOLS.map((t) => t.name).join(", ")}</span>
       </header>
       <div className="cover__body">
@@ -30,8 +30,8 @@ export default function Cover() {
             <br />및 업무활용
           </h1>
           <p className="cover__sub">
-            검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 90분 뒤에는 학급 안내나 수업 퀴즈
-            웹페이지 하나와, 가정통신문이나 수업 활동지 한 장이 남습니다.
+            검은 창에 한 문장을 쓰면 AI가 파일을 만듭니다. 코딩은 몰라도 됩니다. 따라 하면 가정통신문이나 수업
+            활동지 한 장과, 학급 안내나 수업 퀴즈 웹앱 하나가 남습니다.
           </p>
           <div className="cover__actions">
             <Link className="button button--lg" href="/home">
@@ -71,10 +71,10 @@ export default function Cover() {
           </div>
           <figcaption>
             <span>
-              <Icon name="globe" /> 2교시 웹페이지
+              <Icon name="document" /> 문서 작업
             </span>
             <span>
-              <Icon name="document" /> 3교시 한글 양식
+              <Icon name="globe" /> 웹앱 제작
             </span>
           </figcaption>
         </figure>

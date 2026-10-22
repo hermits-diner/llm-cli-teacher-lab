@@ -2,7 +2,7 @@
 // round ends, and the colour of the text around them (currentColor).
 // They replace colour emoji, which render differently on every OS.
 const PATHS = {
-  // 미리 읽기: an open book
+  // LLM CLI란: an open book
   book: (
     <>
       <path d="M12 6.6C9.6 4.9 6.2 4.5 3 5.4v13.1c3.2-.9 6.6-.5 9 1.2 2.4-1.7 5.8-2.1 9-1.2V5.4c-3.2-.9-6.6-.5-9 1.2Z" />
@@ -18,14 +18,14 @@ const PATHS = {
       <path d="M9.5 11.5v3M14.5 11.5v3" />
     </>
   ),
-  // 1교시: a speech bubble, saying hello to the AI
+  // 첫 만남: a speech bubble, saying hello to the AI
   hello: (
     <>
       <path d="M5 4.5h14c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2h-7.5L7 20v-3.5H5c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2Z" />
       <path d="M8 10.5h.01M12 10.5h.01M16 10.5h.01" />
     </>
   ),
-  // 2교시: a globe, for a page on the web
+  // 웹앱 제작: a globe, for a page on the web
   globe: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -33,7 +33,7 @@ const PATHS = {
       <path d="M12 3c-2.4 2.5-3.6 5.5-3.6 9s1.2 6.5 3.6 9c2.4-2.5 3.6-5.5 3.6-9S14.4 5.5 12 3Z" />
     </>
   ),
-  // 3교시: a printed notice with a folded corner
+  // 문서 작업: a printed notice with a folded corner
   document: (
     <>
       <path d="M6.5 3h7.5l4.5 4.5V21h-12Z" />
@@ -41,7 +41,7 @@ const PATHS = {
       <path d="M9.5 11.5h6M9.5 15h6M9.5 8h2.5" />
     </>
   ),
-  // 4교시: a party popper
+  // 나누고 마무리: a party popper
   party: (
     <>
       <path d="M3.5 20.5 8.2 8.8l7 7Z" />

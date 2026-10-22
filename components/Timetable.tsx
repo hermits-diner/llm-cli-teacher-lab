@@ -20,12 +20,10 @@ export function Timetable() {
             data-state={i === current ? "now" : current !== -1 && i < current ? "past" : undefined}
           >
             <Link href={p.href} aria-current={i === current ? "page" : undefined}>
-              <span className="timetable__label">
+              <span className="timetable__name">
                 <Icon name={p.icon} className="timetable__icon" />
-                {p.label}
+                {p.title}
               </span>
-              <span className="timetable__name">{p.title}</span>
-              <span className="timetable__time">{p.time}</span>
             </Link>
           </li>
         ))}

@@ -395,30 +395,22 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 .timetable__cell a:hover {
   background: var(--bg-secondary);
 }
-.timetable__label {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-label);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-tertiary);
-}
 .timetable__icon {
+  flex: none;
   width: 1rem;
   height: 1rem;
+  color: var(--text-tertiary);
 }
 .timetable__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 700;
-}
-.timetable__time {
-  font-size: 0.78rem;
-  color: var(--text-tertiary);
 }
 .timetable__cell[data-state="now"] a {
   box-shadow: inset 0 -4px 0 var(--ink);
 }
-.timetable__cell[data-state="now"] .timetable__label {
+.timetable__cell[data-state="now"] .timetable__icon {
   color: var(--text-brand);
 }
 .timetable__cell[data-state="now"] .timetable__name {
@@ -430,9 +422,7 @@ html[data-tool="claude"] [data-for-tool]:not([data-for-tool~="claude"]) {
 .timetable__cell[data-state="past"] .timetable__name {
   color: var(--text-secondary);
 }
-.timetable__cell[data-state="past"] .timetable__label {
-  color: var(--text-tertiary);
-}
+
 
 /* ------------------------------------------------------------------ page */
 .page {
@@ -1479,10 +1469,15 @@ html[data-present] .video figcaption {
   background: var(--highlighter);
   border-color: var(--ink);
 }
-/* Type grows with the screen so it reads from the back of the room: 118% on a
-   1280px laptop, about 134% at 1424px, capped at 150% on a 1920px projector. */
+/* Slide-sized type that grows with the screen: about 24px on a 1280px
+   laptop, 26px at 1424px, capped at 30px (190%) on a 1920px projector. */
 html[data-present] {
-  font-size: clamp(118%, 1.5vw, 150%);
+  font-size: clamp(130%, 1.85vw, 190%);
+}
+/* The timetable is navigation, not slide content: keep it near its normal
+   size so the larger type goes to the slide itself. */
+html[data-present] .timetable {
+  zoom: 0.7;
 }
 /* The header is only chrome while presenting: P and the counter turn the mode off. */
 html[data-present] .site-header {
