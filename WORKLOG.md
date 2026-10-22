@@ -693,3 +693,11 @@
 - 준비 페이지의 결과 화면 예시도 `v24.22.1`로 바꿨다.
 - 시험: `public/setup.bat agy`를 `AI_LAB_DIR`(임시 폴더)·`AI_LAB_NO_ENV=1`로 실행 → Node.js `v24.22.1` 받기·SHA256 검사·실행 OK, "All done". 이미 `tools\node`가 있는 기존 실습 폴더는 다시 받지 않는다(예전 v24.22.0 그대로).
 - 2026-10-28부터 v26이 LTS가 된다. 그때 다시 올릴지 정한다.
+
+### 34. 고등학교 가정통신문 완성 예시
+
+- 30번에서 남긴 일. `docs/forms/notice-sample-h.values.json`(직접 쓴 문장)으로 `notice-form-h.hwpx`를 채워 `practice-pack/samples/mission2/notice-sample-h.hwpx`를 만들었다. 중학교 예시와 같은 방법(hwpx 스킬 `fill_hwpx.py replace`)이다. 10곳 교체, `blanks.py` 0, 스킬 `validate.py` 통과.
+  - 스킬은 전역에 다시 설치하지 않고 세션 임시 폴더에 `jkf87/hwpx-skill`(ba90fc5)을 받아 썼다.
+- `make-forms.mjs`가 두 예시를 함께 만든다. `verify-missions.mjs`의 `m2H`에 "완성 예시 문장을 복사함" 검사를 넣었다(예시에만 있는 문장, 30번의 agy·Claude 결과에는 없음을 확인).
+- 문서 작업 페이지 "막혔을 때"와 실습 폴더 README에 학교급별 예시를 적었다.
+- v26은 2026-10-22 현재 Current이고 LTS는 10-28부터라 setup.bat은 v24.22.1에 둔다.

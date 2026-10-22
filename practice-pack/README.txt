@@ -10,7 +10,8 @@ LLM CLI 기반 수업자료제작 및 업무활용 — 실습 폴더 (바탕화�
   mission2\          문서 작업: 한글 양식(.hwpx)과 메모(.txt). 이름 끝에 -h 가 붙은 것은 고등학교용
   mission1\site\     웹앱 제작: AI가 웹페이지(index.html)를 만들 곳
   samples\           완성 예시 (막혔을 때 보세요)
-                       samples\mission2\notice-sample.hwpx  가정통신문 완성본
+                       samples\mission2\notice-sample.hwpx  가정통신문 완성본 (중학교)
+                       samples\mission2\notice-sample-h.hwpx  가정통신문 완성본 (고등학교)
                        samples\mission1\  이 폴더를 Vercel에 올려 볼 수 있습니다
   slides\            슬라이드 제작: AI가 슬라이드(.pptx)를 만들 곳 (처음엔 없음)
   tools\             빈칸·슬라이드 검사 도구, Node.js와 Git (지우지 마세요)

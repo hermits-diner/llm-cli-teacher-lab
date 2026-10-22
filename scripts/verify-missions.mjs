@@ -144,7 +144,13 @@ const checks = {
       problems.push("완성 예시 문장을 복사함");
     return problems;
   },
-  m2H: (dir, before) => formChecks(dir, before, "notice-form-h.hwpx", "notice-h-result.hwpx", ["가상대학교", "19일", "10일"]),
+  m2H(dir, before) {
+    const problems = formChecks(dir, before, "notice-form-h.hwpx", "notice-h-result.hwpx", ["가상대학교", "19일", "10일"]);
+    const done = fs.existsSync(path.join(dir, "mission2/notice-h-result.hwpx"));
+    if (done && hwpxText(dir, "mission2/notice-h-result.hwpx").includes("자녀가 뜻깊은 시간을 보낼 수 있도록"))
+      problems.push("완성 예시 문장을 복사함");
+    return problems;
+  },
   m2xM3: (dir, before) => formChecks(dir, before, "worksheet-form.hwpx", "worksheet-m3-result.hwpx", ["국어", "주장", "근거"]),
   m2xH2: (dir, before) => formChecks(dir, before, "worksheet-form-h.hwpx", "worksheet-h2-result.hwpx", ["문학", "비유", "상징"]),
   slides: (dir) => slideChecks(dir, "parents-ai.pptx"),

@@ -35,21 +35,21 @@ for (const name of ["notice-form", "notice-form-h", "worksheet-form", "worksheet
 }
 
 const skill = process.env.HWPX_SKILL_SCRIPTS || path.join(os.homedir(), ".agents", "skills", "hwpx", "scripts");
-const values = JSON.parse(fs.readFileSync(path.join(root, "docs/forms/notice-sample.values.json"), "utf8"));
-const map = Object.fromEntries(Object.entries(values).map(([k, v]) => [k.startsWith("{{") ? k : `{{${k}}}`, v]));
-const mapFile = path.join(os.tmpdir(), "notice-sample.map.json");
-fs.writeFileSync(mapFile, JSON.stringify(map));
-const fill = spawnSync(
-  "python",
-  [
-    path.join(skill, "fill_hwpx.py"),
-    "replace",
-    "practice-pack/mission2/notice-form.hwpx",
-    "practice-pack/samples/mission2/notice-sample.hwpx",
-    "--map",
-    mapFile,
-  ],
-  { cwd: root, encoding: "utf8", env: { ...process.env, PYTHONUTF8: "1" } },
-);
-if (fill.status !== 0) throw new Error(`sample fill failed: ${fill.stdout}${fill.stderr}`);
-console.log("built practice-pack/samples/mission2/notice-sample.hwpx");
+// One finished notice per school level: [values file, blank form, sample]
+for (const [values, form, sample] of [
+  ["notice-sample.values.json", "notice-form.hwpx", "notice-sample.hwpx"],
+  ["notice-sample-h.values.json", "notice-form-h.hwpx", "notice-sample-h.hwpx"],
+]) {
+  const entries = Object.entries(JSON.parse(fs.readFileSync(path.join(root, "docs/forms", values), "utf8")));
+  const map = Object.fromEntries(entries.map(([k, v]) => [k.startsWith("{{") ? k : `{{${k}}}`, v]));
+  const mapFile = path.join(os.tmpdir(), `${sample}.map.json`);
+  fs.writeFileSync(mapFile, JSON.stringify(map));
+  const out = `practice-pack/samples/mission2/${sample}`;
+  const fill = spawnSync(
+    "python",
+    [path.join(skill, "fill_hwpx.py"), "replace", `practice-pack/mission2/${form}`, out, "--map", mapFile],
+    { cwd: root, encoding: "utf8", env: { ...process.env, PYTHONUTF8: "1" } },
+  );
+  if (fill.status !== 0) throw new Error(`sample fill failed: ${fill.stdout}${fill.stderr}`);
+  console.log(`built ${out}`);
+}
