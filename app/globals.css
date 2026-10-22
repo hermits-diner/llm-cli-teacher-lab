@@ -961,6 +961,24 @@ html[data-present] .page-photo img {
 .video__meta {
   color: var(--text-tertiary);
 }
+/* A terminal screenshot in the same row layout as the videos; the image
+   carries its own dark window frame. */
+.shot {
+  margin: 0;
+}
+.shot a {
+  display: block;
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shot figcaption {
+  margin-top: 0.45rem;
+  font-size: var(--text-small);
+  line-height: 1.5;
+}
 /* While presenting, keep the whole 16:9 frame on screen under the heading;
    in a row of videos the column width already keeps them short. */
 html[data-present] .video-grid {
