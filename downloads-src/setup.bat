@@ -23,15 +23,15 @@ rem the practice folder is "ai-lab" on the desktop
 if not defined AL_LAB call :find_desktop
 set "AL_TMP=%AL_LAB%\_setup"
 set "AL_LOG=%AL_LAB%\setup.log"
-set "AL_NODE_VER=v24.22.0"
+set "AL_NODE_VER=v24.22.1"
 set "AL_CURL=%SystemRoot%\System32\curl.exe"
 set "AL_TAR=%SystemRoot%\System32\tar.exe"
 set "AL_PS=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 
 set "AL_NODE_ARCH=x64"
-set "AL_NODE_SHA=f9683a19877e12a9b167305c8db71040d812876359de21f0d2e97c3f321f80c3"
+set "AL_NODE_SHA=d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5"
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_ARCH=arm64"
-if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_SHA=3a5c209a5bc59e65b3bc0fa13ed5e166a26bd3d55332847f498b76b037408d61"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "AL_NODE_SHA=a0c807319fede24c4a0d8f84564c82a619bd313b16b10c007c383c2609e99171"
 rem Python: official installer, per-user (no admin). Skills run Python.
 set "AL_PY_VER=3.14.9"
 set "AL_PY_DIR=%LOCALAPPDATA%\Programs\Python\Python314"
