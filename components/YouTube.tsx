@@ -6,10 +6,11 @@ import { useState } from "react";
 // thumbnail and a play button, so a page with several videos stays light and
 // nothing is fetched from YouTube's player for people who never press play.
 // Plays from youtube-nocookie.com with Korean captions when the video has them.
-export function YouTube({ id, title, channel, length }: { id: string; title: string; channel: string; length: string }) {
+export function YouTube({ id, title, channel, length, label }: { id: string; title: string; channel: string; length: string; label?: string }) {
   const [playing, setPlaying] = useState(false);
   return (
     <figure className="video">
+      {label && <p className="video__label">{label}</p>}
       <div className="video__frame">
         {playing ? (
           <iframe
